@@ -3,7 +3,7 @@ apply plugin: 'com.gorylenko.gradle-git-properties'
 apply plugin: 'com.moowork.node'
 
 dependencies {
-    testCompile "com.h2database:h2"
+
 }
 
 def profiles = 'prod'
@@ -31,11 +31,6 @@ war {
     webAppDirName = 'build/www/'
 }
 
-task copyIntoStatic (type: Copy) {
-    from 'build/www/'
-    into 'build/resources/main/static'
-}
-
 processResources {
     filesMatching('**/application.yml') {
         filter {
@@ -61,5 +56,3 @@ gitProperties {
 
 test.dependsOn webpack_test
 processResources.dependsOn webpack
-copyIntoStatic.dependsOn processResources
-bootJar.dependsOn copyIntoStatic

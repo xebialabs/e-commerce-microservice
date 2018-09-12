@@ -15,7 +15,6 @@ import userManagement, {
   deleteUser,
   reset
 } from 'app/modules/administration/user-management/user-management.reducer';
-import { defaultValue } from 'app/shared/model/user.model';
 
 describe('User management reducer tests', () => {
   function isEmpty(element): boolean {
@@ -161,25 +160,14 @@ describe('User management reducer tests', () => {
 
   describe('Reset', () => {
     it('should reset the state', () => {
-      const initialState = {
-        loading: false,
-        errorMessage: null,
-        users: [],
-        authorities: [] as any[],
-        user: defaultValue,
-        updating: false,
-        updateSuccess: false,
-        totalItems: 0
-      };
-      const payload = {
-        ...initialState,
-        loading: true
-      };
+      const payload = {};
       expect(
         userManagement(payload, {
           type: ACTION_TYPES.RESET
         })
-      ).toEqual(initialState);
+      ).toEqual({
+        user: {}
+      });
     });
   });
 

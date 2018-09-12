@@ -33,7 +33,7 @@ export class ProductDeleteDialog extends React.Component<IProductDeleteDialogPro
         <ModalHeader toggle={this.handleClose}>
           <Translate contentKey="entity.delete.title">Confirm delete operation</Translate>
         </ModalHeader>
-        <ModalBody id="storeApp.product.delete.question">
+        <ModalBody>
           <Translate contentKey="storeApp.product.delete.question" interpolate={{ id: productEntity.id }}>
             Are you sure you want to delete this Product?
           </Translate>
@@ -43,7 +43,7 @@ export class ProductDeleteDialog extends React.Component<IProductDeleteDialogPro
             <FontAwesomeIcon icon="ban" />&nbsp;
             <Translate contentKey="entity.action.cancel">Cancel</Translate>
           </Button>
-          <Button id="jhi-confirm-delete-product" color="danger" onClick={this.confirmDelete}>
+          <Button color="danger" onClick={this.confirmDelete}>
             <FontAwesomeIcon icon="trash" />&nbsp;
             <Translate contentKey="entity.action.delete">Delete</Translate>
           </Button>

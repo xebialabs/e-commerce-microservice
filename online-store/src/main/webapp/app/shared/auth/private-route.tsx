@@ -14,7 +14,6 @@ export interface IPrivateRouteProps extends IOwnProps, StateProps {}
 export const PrivateRouteComponent = ({
   component: Component,
   isAuthenticated,
-  sessionHasBeenFetched,
   isAuthorized,
   hasAnyAuthorities = [],
   ...rest
@@ -32,23 +31,18 @@ export const PrivateRouteComponent = ({
       </div>
     );
 
-  const renderRedirect = props => {
-    if (!sessionHasBeenFetched) {
-      return <div />;
-    } else {
-      return isAuthenticated ? (
-        checkAuthorities(props)
-      ) : (
-        <Redirect
-          to={{
-            pathname: '/login',
-            search: props.location.search,
-            state: { from: props.location }
-          }}
-        />
-      );
-    }
-  };
+  const renderRedirect = props =>
+    isAuthenticated ? (
+      checkAuthorities(props)
+    ) : (
+      <Redirect
+        to={{
+          pathname: '/login',
+          search: props.location.search,
+          state: { from: props.location }
+        }}
+      />
+    );
 
   if (!Component) throw new Error(`A component needs to be specified for private route for path ${(rest as any).path}`);
 
@@ -65,13 +59,9 @@ export const hasAnyAuthority = (authorities: string[], hasAnyAuthorities: string
   return false;
 };
 
-const mapStateToProps = (
-  { authentication: { isAuthenticated, account, sessionHasBeenFetched } }: IRootState,
-  { hasAnyAuthorities = [] }: IOwnProps
-) => ({
+const mapStateToProps = ({ authentication: { isAuthenticated, account } }: IRootState, { hasAnyAuthorities = [] }: IOwnProps) => ({
   isAuthenticated,
-  isAuthorized: hasAnyAuthority(account.authorities, hasAnyAuthorities),
-  sessionHasBeenFetched
+  isAuthorized: hasAnyAuthority(account.authorities, hasAnyAuthorities)
 });
 
 type StateProps = ReturnType<typeof mapStateToProps>;

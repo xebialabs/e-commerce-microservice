@@ -55,7 +55,9 @@ public class OrderItemResourceIntTest {
 
     @Autowired
     private OrderItemRepository orderItemRepository;
+
     
+
     @Autowired
     private OrderItemService orderItemService;
 
@@ -224,6 +226,7 @@ public class OrderItemResourceIntTest {
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())));
     }
     
+
     @Test
     @Transactional
     public void getOrderItem() throws Exception {
@@ -239,7 +242,6 @@ public class OrderItemResourceIntTest {
             .andExpect(jsonPath("$.totalPrice").value(DEFAULT_TOTAL_PRICE.intValue()))
             .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()));
     }
-
     @Test
     @Transactional
     public void getNonExistingOrderItem() throws Exception {
@@ -286,7 +288,7 @@ public class OrderItemResourceIntTest {
 
         // Create the OrderItem
 
-        // If the entity doesn't have an ID, it will throw BadRequestAlertException
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException 
         restOrderItemMockMvc.perform(put("/api/order-items")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(orderItem)))

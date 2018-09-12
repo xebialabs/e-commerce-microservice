@@ -33,7 +33,7 @@ export class NotificationDeleteDialog extends React.Component<INotificationDelet
         <ModalHeader toggle={this.handleClose}>
           <Translate contentKey="entity.delete.title">Confirm delete operation</Translate>
         </ModalHeader>
-        <ModalBody id="storeApp.notificationNotification.delete.question">
+        <ModalBody>
           <Translate contentKey="storeApp.notificationNotification.delete.question" interpolate={{ id: notificationEntity.id }}>
             Are you sure you want to delete this Notification?
           </Translate>
@@ -43,7 +43,7 @@ export class NotificationDeleteDialog extends React.Component<INotificationDelet
             <FontAwesomeIcon icon="ban" />&nbsp;
             <Translate contentKey="entity.action.cancel">Cancel</Translate>
           </Button>
-          <Button id="jhi-confirm-delete-notification" color="danger" onClick={this.confirmDelete}>
+          <Button color="danger" onClick={this.confirmDelete}>
             <FontAwesomeIcon icon="trash" />&nbsp;
             <Translate contentKey="entity.action.delete">Delete</Translate>
           </Button>

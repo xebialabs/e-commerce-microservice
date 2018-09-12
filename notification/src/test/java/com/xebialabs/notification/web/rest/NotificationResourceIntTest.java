@@ -61,6 +61,7 @@ public class NotificationResourceIntTest {
     @Autowired
     private NotificationRepository notificationRepository;
 
+
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
@@ -251,6 +252,7 @@ public class NotificationResourceIntTest {
             .andExpect(jsonPath("$.[*].productId").value(hasItem(DEFAULT_PRODUCT_ID.intValue())));
     }
     
+
     @Test
     public void getNotification() throws Exception {
         // Initialize the database
@@ -268,7 +270,6 @@ public class NotificationResourceIntTest {
             .andExpect(jsonPath("$.userId").value(DEFAULT_USER_ID.intValue()))
             .andExpect(jsonPath("$.productId").value(DEFAULT_PRODUCT_ID.intValue()));
     }
-
     @Test
     public void getNonExistingNotification() throws Exception {
         // Get the notification
@@ -316,7 +317,7 @@ public class NotificationResourceIntTest {
 
         // Create the Notification
 
-        // If the entity doesn't have an ID, it will throw BadRequestAlertException
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException 
         restNotificationMockMvc.perform(put("/api/notifications")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(notification)))
