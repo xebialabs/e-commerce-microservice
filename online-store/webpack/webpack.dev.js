@@ -6,7 +6,6 @@ const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const SimpleProgressWebpackPlugin = require('simple-progress-webpack-plugin');
 const WebpackNotifierPlugin = require('webpack-notifier');
 const path = require('path');
-const sass = require('sass');
 
 const utils = require('./utils.js');
 const commonConfig = require('./webpack.common.js');
@@ -29,11 +28,7 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
     rules: [
       {
         test: /\.(sa|sc|c)ss$/,
-        use: ['style-loader', 'css-loader', 'postcss-loader', {
-            loader: 'sass-loader',
-            options: { implementation: sass }
-          }
-        ]
+        loaders: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader']
       },
     ]
   },
@@ -61,13 +56,10 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
       ignored: /node_modules/
     }
   },
-  stats: process.env.DISABLE_WEBPACK_LOGS ? 'none' : options.stats,
   plugins: [
-    process.env.DISABLE_WEBPACK_LOGS
-      ? null
-      : new SimpleProgressWebpackPlugin({
-          format: options.stats === 'minimal' ? 'compact' : 'expanded'
-        }),
+    new SimpleProgressWebpackPlugin({
+        format: options.stats === 'minimal' ? 'compact' : 'expanded'
+    }),
     new FriendlyErrorsWebpackPlugin(),
     new BrowserSyncPlugin({
       host: 'localhost',
@@ -76,7 +68,7 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
         target: 'http://localhost:9060'
       }
     }, {
-      reload: false
+        reload: false
     }),
     new webpack.HotModuleReplacementPlugin(),
     new writeFilePlugin(),
@@ -87,5 +79,5 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
       title: 'JHipster',
       contentImage: path.join(__dirname, 'logo-jhipster.png')
     })
-  ].filter(Boolean)
+  ]
 });

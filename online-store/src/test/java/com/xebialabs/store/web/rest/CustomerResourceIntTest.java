@@ -71,7 +71,9 @@ public class CustomerResourceIntTest {
 
     @Autowired
     private CustomerRepository customerRepository;
+
     
+
     @Autowired
     private CustomerService customerService;
 
@@ -343,6 +345,7 @@ public class CustomerResourceIntTest {
             .andExpect(jsonPath("$.[*].country").value(hasItem(DEFAULT_COUNTRY.toString())));
     }
     
+
     @Test
     @Transactional
     public void getCustomer() throws Exception {
@@ -364,7 +367,6 @@ public class CustomerResourceIntTest {
             .andExpect(jsonPath("$.city").value(DEFAULT_CITY.toString()))
             .andExpect(jsonPath("$.country").value(DEFAULT_COUNTRY.toString()));
     }
-
     @Test
     @Transactional
     public void getNonExistingCustomer() throws Exception {
@@ -423,7 +425,7 @@ public class CustomerResourceIntTest {
 
         // Create the Customer
 
-        // If the entity doesn't have an ID, it will throw BadRequestAlertException
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException 
         restCustomerMockMvc.perform(put("/api/customers")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(customer)))

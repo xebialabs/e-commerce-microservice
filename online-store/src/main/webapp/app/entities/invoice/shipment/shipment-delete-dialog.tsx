@@ -33,7 +33,7 @@ export class ShipmentDeleteDialog extends React.Component<IShipmentDeleteDialogP
         <ModalHeader toggle={this.handleClose}>
           <Translate contentKey="entity.delete.title">Confirm delete operation</Translate>
         </ModalHeader>
-        <ModalBody id="storeApp.invoiceShipment.delete.question">
+        <ModalBody>
           <Translate contentKey="storeApp.invoiceShipment.delete.question" interpolate={{ id: shipmentEntity.id }}>
             Are you sure you want to delete this Shipment?
           </Translate>
@@ -43,7 +43,7 @@ export class ShipmentDeleteDialog extends React.Component<IShipmentDeleteDialogP
             <FontAwesomeIcon icon="ban" />&nbsp;
             <Translate contentKey="entity.action.cancel">Cancel</Translate>
           </Button>
-          <Button id="jhi-confirm-delete-shipment" color="danger" onClick={this.confirmDelete}>
+          <Button color="danger" onClick={this.confirmDelete}>
             <FontAwesomeIcon icon="trash" />&nbsp;
             <Translate contentKey="entity.action.delete">Delete</Translate>
           </Button>

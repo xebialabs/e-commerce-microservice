@@ -56,13 +56,15 @@ public class ProductResourceIntTest {
     private static final Size UPDATED_SIZE = Size.M;
 
     private static final byte[] DEFAULT_IMAGE = TestUtil.createByteArray(1, "0");
-    private static final byte[] UPDATED_IMAGE = TestUtil.createByteArray(1, "1");
+    private static final byte[] UPDATED_IMAGE = TestUtil.createByteArray(2, "1");
     private static final String DEFAULT_IMAGE_CONTENT_TYPE = "image/jpg";
     private static final String UPDATED_IMAGE_CONTENT_TYPE = "image/png";
 
     @Autowired
     private ProductRepository productRepository;
+
     
+
     @Autowired
     private ProductService productService;
 
@@ -230,6 +232,7 @@ public class ProductResourceIntTest {
             .andExpect(jsonPath("$.[*].image").value(hasItem(Base64Utils.encodeToString(DEFAULT_IMAGE))));
     }
     
+
     @Test
     @Transactional
     public void getProduct() throws Exception {
@@ -248,7 +251,6 @@ public class ProductResourceIntTest {
             .andExpect(jsonPath("$.imageContentType").value(DEFAULT_IMAGE_CONTENT_TYPE))
             .andExpect(jsonPath("$.image").value(Base64Utils.encodeToString(DEFAULT_IMAGE)));
     }
-
     @Test
     @Transactional
     public void getNonExistingProduct() throws Exception {
@@ -301,7 +303,7 @@ public class ProductResourceIntTest {
 
         // Create the Product
 
-        // If the entity doesn't have an ID, it will throw BadRequestAlertException
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException 
         restProductMockMvc.perform(put("/api/products")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(product)))

@@ -3,7 +3,6 @@ import { browser } from 'protractor';
 
 import NavBarPage from './../../page-objects/navbar-page';
 import ProductComponentsPage from './product.page-object';
-import { ProductDeleteDialog } from './product.page-object';
 import ProductUpdatePage from './product-update.page-object';
 import path from 'path';
 
@@ -13,7 +12,6 @@ describe('Product e2e test', () => {
   let navBarPage: NavBarPage;
   let productUpdatePage: ProductUpdatePage;
   let productComponentsPage: ProductComponentsPage;
-  let productDeleteDialog: ProductDeleteDialog;
   const fileToUpload = '../../../../../main/webapp/static/images/logo-jhipster.png';
   const absolutePath = path.resolve(__dirname, fileToUpload);
 
@@ -47,19 +45,6 @@ describe('Product e2e test', () => {
     productUpdatePage.productCategorySelectLastOption();
     await productUpdatePage.save();
     expect(await productUpdatePage.getSaveButton().isPresent()).to.be.false;
-  });
-
-  it('should delete last Product', async () => {
-    productComponentsPage.waitUntilLoaded();
-    const nbButtonsBeforeDelete = await productComponentsPage.countDeleteButtons();
-    await productComponentsPage.clickOnLastDeleteButton();
-
-    productDeleteDialog = new ProductDeleteDialog();
-    expect(await productDeleteDialog.getDialogTitle().getAttribute('id')).to.match(/storeApp.product.delete.question/);
-    await productDeleteDialog.clickOnConfirmButton();
-
-    productComponentsPage.waitUntilDeleteButtonsLength(nbButtonsBeforeDelete - 1);
-    expect(await productComponentsPage.countDeleteButtons()).to.eq(nbButtonsBeforeDelete - 1);
   });
 
   after(() => {

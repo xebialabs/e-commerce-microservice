@@ -7,7 +7,6 @@ import com.xebialabs.store.repository.UserRepository;
 import com.xebialabs.store.security.SecurityUtils;
 import com.xebialabs.store.service.MailService;
 import com.xebialabs.store.service.UserService;
-import com.xebialabs.store.service.dto.PasswordChangeDTO;
 import com.xebialabs.store.service.dto.UserDTO;
 import com.xebialabs.store.web.rest.errors.*;
 import com.xebialabs.store.web.rest.vm.KeyAndPasswordVM;
@@ -21,8 +20,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import com.xebialabs.store.service.dto.PasswordChangeDTO;
 import java.util.*;
-
 
 /**
  * REST controller for managing the current user's account.
@@ -61,6 +60,8 @@ public class AccountResource {
         if (!checkPasswordLength(managedUserVM.getPassword())) {
             throw new InvalidPasswordException();
         }
+        userRepository.findOneByLogin(managedUserVM.getLogin().toLowerCase()).ifPresent(u -> {throw new LoginAlreadyUsedException();});
+        userRepository.findOneByEmailIgnoreCase(managedUserVM.getEmail()).ifPresent(u -> {throw new EmailAlreadyUsedException();});
         User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
         mailService.sendActivationEmail(user);
     }
@@ -128,7 +129,7 @@ public class AccountResource {
         }
         userService.updateUser(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(),
             userDTO.getLangKey(), userDTO.getImageUrl());
-    }
+   }
 
     /**
      * POST  /account/change-password : changes the current user's password
@@ -143,7 +144,7 @@ public class AccountResource {
             throw new InvalidPasswordException();
         }
         userService.changePassword(passwordChangeDto.getCurrentPassword(), passwordChangeDto.getNewPassword());
-    }
+   }
 
     /**
      * POST   /account/reset-password/init : Send an email to reset the password of the user

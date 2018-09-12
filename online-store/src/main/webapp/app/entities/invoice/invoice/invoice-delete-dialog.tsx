@@ -33,7 +33,7 @@ export class InvoiceDeleteDialog extends React.Component<IInvoiceDeleteDialogPro
         <ModalHeader toggle={this.handleClose}>
           <Translate contentKey="entity.delete.title">Confirm delete operation</Translate>
         </ModalHeader>
-        <ModalBody id="storeApp.invoiceInvoice.delete.question">
+        <ModalBody>
           <Translate contentKey="storeApp.invoiceInvoice.delete.question" interpolate={{ id: invoiceEntity.id }}>
             Are you sure you want to delete this Invoice?
           </Translate>
@@ -43,7 +43,7 @@ export class InvoiceDeleteDialog extends React.Component<IInvoiceDeleteDialogPro
             <FontAwesomeIcon icon="ban" />&nbsp;
             <Translate contentKey="entity.action.cancel">Cancel</Translate>
           </Button>
-          <Button id="jhi-confirm-delete-invoice" color="danger" onClick={this.confirmDelete}>
+          <Button color="danger" onClick={this.confirmDelete}>
             <FontAwesomeIcon icon="trash" />&nbsp;
             <Translate contentKey="entity.action.delete">Delete</Translate>
           </Button>

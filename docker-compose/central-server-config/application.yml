@@ -7,7 +7,7 @@ jhipster:
     security:
         authentication:
             jwt:
-                base64-secret: YTI0ZDdiZDgzOGY3YzlhOGE3YmU4M2M0MDk4YTg1ODM5ZTYyMWQyMDI5MTA5NTcxMjc3MTMyZWExMjU1MWY3ZmYzMGVkNGYyY2E3ZGM5NTY4MWE3M2JmODExOTU2NDhiNGZmYg==
+                secret: YTI0ZDdiZDgzOGY3YzlhOGE3YmU4M2M0MDk4YTg1ODM5ZTYyMWQyMDI5MTA5NTcxMjc3MTMyZWExMjU1MWY3ZmYzMGVkNGYyY2E3ZGM5NTY4MWE3M2JmODExOTU2NDhiNGZmYg==
     logging:
         logstash: # forward logs to ELK
             enabled: true

@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: application-config
-  namespace: default
+  namespace: xl-demo
 #common configuration shared between all applications
 data:
   application.yml: |-
@@ -24,10 +24,10 @@ data:
       security:
         authentication:
           jwt:
-            base64-secret: NWJhN2MyYmEzYWY5ZmE4NmE1ODVkOTFmNzFkOTBmMDE0ZGEyOGZkZDgyZDhkMmIwNGYzZDU0YTY5OGU2OGY1YjcwZmJjYzIyZGMzOTlmNDA5NjdlODI5N2NiYmJjM2ZhMzNkYQ==
+            secret: NWJhN2MyYmEzYWY5ZmE4NmE1ODVkOTFmNzFkOTBmMDE0ZGEyOGZkZDgyZDhkMmIwNGYzZDU0YTY5OGU2OGY1YjcwZmJjYzIyZGMzOTlmNDA5NjdlODI5N2NiYmJjM2ZhMzNkYQ==
   # app specific configuration
   jhipster-registry.yml: |-
     eureka:
       client:
         service-url:
-          defaultZone: http://admin:${spring.security.user.password}@jhipster-registry-0.jhipster-registry.default.svc.cluster.local:8761/eureka/,http://admin:${spring.security.user.password}@jhipster-registry-1.jhipster-registry.default.svc.cluster.local:8761/eureka/
+          defaultZone: http://admin:${spring.security.user.password}@jhipster-registry-0.jhipster-registry.xl-demo.svc.cluster.local:8761/eureka/,http://admin:${spring.security.user.password}@jhipster-registry-1.jhipster-registry.xl-demo.svc.cluster.local:8761/eureka/

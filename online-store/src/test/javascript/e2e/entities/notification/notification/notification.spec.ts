@@ -3,7 +3,6 @@ import { browser, protractor } from 'protractor';
 
 import NavBarPage from './../../../page-objects/navbar-page';
 import NotificationComponentsPage from './notification.page-object';
-import { NotificationDeleteDialog } from './notification.page-object';
 import NotificationUpdatePage from './notification-update.page-object';
 
 const expect = chai.expect;
@@ -12,7 +11,6 @@ describe('Notification e2e test', () => {
   let navBarPage: NavBarPage;
   let notificationUpdatePage: NotificationUpdatePage;
   let notificationComponentsPage: NotificationComponentsPage;
-  let notificationDeleteDialog: NotificationDeleteDialog;
 
   before(() => {
     browser.get('/');
@@ -48,21 +46,6 @@ describe('Notification e2e test', () => {
     expect(await notificationUpdatePage.getProductIdInput()).to.eq('5');
     await notificationUpdatePage.save();
     expect(await notificationUpdatePage.getSaveButton().isPresent()).to.be.false;
-  });
-
-  it('should delete last Notification', async () => {
-    notificationComponentsPage.waitUntilLoaded();
-    const nbButtonsBeforeDelete = await notificationComponentsPage.countDeleteButtons();
-    await notificationComponentsPage.clickOnLastDeleteButton();
-
-    notificationDeleteDialog = new NotificationDeleteDialog();
-    expect(await notificationDeleteDialog.getDialogTitle().getAttribute('id')).to.match(
-      /storeApp.notificationNotification.delete.question/
-    );
-    await notificationDeleteDialog.clickOnConfirmButton();
-
-    notificationComponentsPage.waitUntilDeleteButtonsLength(nbButtonsBeforeDelete - 1);
-    expect(await notificationComponentsPage.countDeleteButtons()).to.eq(nbButtonsBeforeDelete - 1);
   });
 
   after(() => {

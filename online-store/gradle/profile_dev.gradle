@@ -26,11 +26,6 @@ war {
     webAppDirName = 'src/main/webapp/'
 }
 
-task copyIntoStatic (type: Copy) {
-    from 'build/www/'
-    into 'build/resources/main/static'
-}
-
 processResources {
     filesMatching('**/application.yml') {
         filter {
@@ -45,9 +40,6 @@ processResources {
 }
 
 processResources.dependsOn webpackBuildDev
-copyIntoStatic.dependsOn processResources
-bootJar.dependsOn copyIntoStatic
-
 yarn_install.onlyIf { shouldWebpackRun() == true }
 
 def shouldWebpackRun() {

@@ -65,7 +65,9 @@ public class InvoiceResourceIntTest {
 
     @Autowired
     private InvoiceRepository invoiceRepository;
+
     
+
     @Autowired
     private InvoiceService invoiceService;
 
@@ -269,6 +271,7 @@ public class InvoiceResourceIntTest {
             .andExpect(jsonPath("$.[*].paymentAmount").value(hasItem(DEFAULT_PAYMENT_AMOUNT.intValue())));
     }
     
+
     @Test
     @Transactional
     public void getInvoice() throws Exception {
@@ -287,7 +290,6 @@ public class InvoiceResourceIntTest {
             .andExpect(jsonPath("$.paymentDate").value(DEFAULT_PAYMENT_DATE.toString()))
             .andExpect(jsonPath("$.paymentAmount").value(DEFAULT_PAYMENT_AMOUNT.intValue()));
     }
-
     @Test
     @Transactional
     public void getNonExistingInvoice() throws Exception {
@@ -340,7 +342,7 @@ public class InvoiceResourceIntTest {
 
         // Create the Invoice
 
-        // If the entity doesn't have an ID, it will throw BadRequestAlertException
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException 
         restInvoiceMockMvc.perform(put("/api/invoices")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(invoice)))
