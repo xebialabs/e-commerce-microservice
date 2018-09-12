@@ -43,6 +43,8 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
     contentBase: './build/www',
     proxy: [{
       context: [
+        '/notification',
+        '/invoice',
         /* jhipster-needle-add-entity-to-webpack - JHipster will add entity api paths here */
         '/api',
         '/management',
@@ -59,10 +61,13 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
       ignored: /node_modules/
     }
   },
+  stats: process.env.DISABLE_WEBPACK_LOGS ? 'none' : options.stats,
   plugins: [
-    new SimpleProgressWebpackPlugin({
-      format: options.stats === 'minimal' ? 'compact' : 'expanded'
-    }),
+    process.env.DISABLE_WEBPACK_LOGS
+      ? null
+      : new SimpleProgressWebpackPlugin({
+          format: options.stats === 'minimal' ? 'compact' : 'expanded'
+        }),
     new FriendlyErrorsWebpackPlugin(),
     new BrowserSyncPlugin({
       host: 'localhost',
@@ -82,5 +87,5 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
       title: 'JHipster',
       contentImage: path.join(__dirname, 'logo-jhipster.png')
     })
-  ]
+  ].filter(Boolean)
 });

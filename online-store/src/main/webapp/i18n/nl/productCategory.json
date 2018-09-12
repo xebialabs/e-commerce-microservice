@@ -1,0 +1,24 @@
+
+{
+    "storeApp": {
+        "productCategory" : {
+            "home": {
+                "title": "Product Categories",
+                "createLabel": "Maak een nieuwe Product Category",
+                "createOrEditLabel": "Maak of wijzig een Product Category"
+            },
+            "created": "A new Product Category is created with identifier {{ param }}",
+            "updated": "A Product Category is updated with identifier {{ param }}",
+            "deleted": "A Product Category is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Bent u zeker dat u Product Category {{ id }} wilt verwijderen?"
+            },
+            "detail": {
+                "title": "Product Category"
+            },
+            "name": "Name",
+            "description": "Description",
+            "product": "Product"
+        }
+    }
+}
