@@ -2,7 +2,7 @@
 
 The stack is based on JHipster microservice architecture. Below are the componenets
 
-[![Architecture][arch-image]][#]
+[![Architecture][arch-image]]
 
 ## Online-store app:
 
