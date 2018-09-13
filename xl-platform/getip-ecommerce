@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -x
+SGID=$(aws ec2 describe-security-groups --filter "Name=group-name,Values=`whoami`-ecommerce-ecs-security-group" --output text --query 'SecurityGroups[0].GroupId')
+PUBIP=$(aws ec2 describe-network-interfaces --filter="Name=group-id,Values=$SGID" --output text --query 'NetworkInterfaces[0].Association.PublicIp')
+echo "Access Gateway at http://$PUBIP:8080"
+echo "Access Registry at http://$PUBIP:8761"
+
+# The open command only works on macOS
+if [ `uname -s` == "Darwin" ]; then
+  open "http://$PUBIP"
+fi
