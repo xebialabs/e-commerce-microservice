@@ -2,7 +2,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: jhipster-import-dashboards
-  namespace: xl-demo
+  namespace: default
   labels:
     job: jhipster-import-dashboards
 spec:

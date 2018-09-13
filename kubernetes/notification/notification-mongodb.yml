@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  namespace: xl-demo
+  namespace: default
   name: notification-mongodb-config
 data:
   mongod.conf: |
@@ -16,7 +16,7 @@ apiVersion: apps/v1beta1
 kind: StatefulSet
 metadata:
   name: notification-mongodb
-  namespace: xl-demo
+  namespace: default
 spec:
   serviceName: notification-mongodb
   replicas: 1
@@ -112,7 +112,7 @@ metadata:
   annotations:
     service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
   name: notification-mongodb
-  namespace: xl-demo
+  namespace: default
 spec:
   type: ClusterIP
   clusterIP: None

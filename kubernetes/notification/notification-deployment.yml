@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: notification
-  namespace: xl-demo
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -39,18 +39,18 @@ spec:
         - name: SPRING_PROFILES_ACTIVE
           value: prod
         - name: SPRING_CLOUD_CONFIG_URI
-          value: http://admin:${jhipster.registry.password}@jhipster-registry.xl-demo.svc.cluster.local:8761/config
+          value: http://admin:${jhipster.registry.password}@jhipster-registry.default.svc.cluster.local:8761/config
         - name: JHIPSTER_REGISTRY_PASSWORD
           valueFrom:
             secretKeyRef:
               name: registry-secret
               key: registry-admin-password
         - name: EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE
-          value: http://admin:${jhipster.registry.password}@jhipster-registry.xl-demo.svc.cluster.local:8761/eureka/
+          value: http://admin:${jhipster.registry.password}@jhipster-registry.default.svc.cluster.local:8761/eureka/
         - name: SPRING_DATA_MONGODB_DATABASE
           value: notification
         - name: SPRING_DATA_MONGODB_URI
-          value: "mongodb://notification-mongodb-0.notification-mongodb.xl-demo:27017"
+          value: "mongodb://notification-mongodb-0.notification-mongodb.default:27017"
         - name: JHIPSTER_METRICS_LOGS_ENABLED
           value: 'true'
         - name: JHIPSTER_LOGGING_LOGSTASH_ENABLED

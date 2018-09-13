@@ -27,7 +27,7 @@ You can deploy all your apps by running the below bash command:
 Use these commands to find your application's IP addresses:
 
 ```
-$ kubectl get svc store -n xl-demo
+$ kubectl get svc store
 ```
 
 ## Scaling your deployments
@@ -35,7 +35,7 @@ $ kubectl get svc store -n xl-demo
 You can scale your apps using
 
 ```
-$ kubectl scale deployment <app-name> --replicas <replica-count> -n xl-demo
+$ kubectl scale deployment <app-name> --replicas <replica-count>
 ```
 
 ## zero-downtime deployments
@@ -43,7 +43,7 @@ $ kubectl scale deployment <app-name> --replicas <replica-count> -n xl-demo
 The default way to update a running app in kubernetes, is to deploy a new image tag to your docker registry and then deploy it using
 
 ```
-$ kubectl set image deployment/<app-name>-app <app-name>=<new-image>  -n xl-demo
+$ kubectl set image deployment/<app-name>-app <app-name>=<new-image> 
 ```
 
 Using livenessProbes and readinessProbe allows you to tell kubernetes about the state of your apps, in order to ensure availablity of your services. You will need minimum 2 replicas for every app deployment, you want to have zero-downtime deployed. This is because the rolling upgrade strategy first kills a running replica in order to place a new. Running only one replica, will cause a short downtime during upgrades.
@@ -54,7 +54,7 @@ Using livenessProbes and readinessProbe allows you to tell kubernetes about the 
 
 Your application logs can be found in JHipster console (powered by Kibana). You can find its service details by
 ```
-$ kubectl get svc jhipster-console -n xl-demo
+$ kubectl get svc jhipster-console
 ```
 
 * If you have chosen *Ingress*, then you should be able to access Kibana using the given ingress domain.
@@ -66,19 +66,19 @@ $ kubectl get svc jhipster-console -n xl-demo
 The registry is deployed using a headless service in kubernetes, so the primary service has no IP address, and cannot get a node port. You can create a secondary service for any type, using:
 
 ```
-$ kubectl expose service jhipster-registry --type=NodePort --name=exposed-registry -n xl-demo
+$ kubectl expose service jhipster-registry --type=NodePort --name=exposed-registry
 ```
 
 and explore the details using
 
 ```
-$ kubectl get svc exposed-registry -n xl-demo
+$ kubectl get svc exposed-registry
 ```
 
 For scaling the JHipster registry, use
 
 ```
-$ kubectl scale statefulset jhipster-registry --replicas 3 -n xl-demo
+$ kubectl scale statefulset jhipster-registry --replicas 3
 ```
 
 
