@@ -32,7 +32,7 @@ public class InvoiceResource {
 
     private final Logger log = LoggerFactory.getLogger(InvoiceResource.class);
 
-    private static final String ENTITY_NAME = "invoice";
+    private static final String ENTITY_NAME = "invoiceInvoice";
 
     private final InvoiceService invoiceService;
 

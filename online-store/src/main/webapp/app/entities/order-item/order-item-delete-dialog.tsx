@@ -33,7 +33,7 @@ export class OrderItemDeleteDialog extends React.Component<IOrderItemDeleteDialo
         <ModalHeader toggle={this.handleClose}>
           <Translate contentKey="entity.delete.title">Confirm delete operation</Translate>
         </ModalHeader>
-        <ModalBody>
+        <ModalBody id="storeApp.orderItem.delete.question">
           <Translate contentKey="storeApp.orderItem.delete.question" interpolate={{ id: orderItemEntity.id }}>
             Are you sure you want to delete this OrderItem?
           </Translate>
@@ -43,7 +43,7 @@ export class OrderItemDeleteDialog extends React.Component<IOrderItemDeleteDialo
             <FontAwesomeIcon icon="ban" />&nbsp;
             <Translate contentKey="entity.action.cancel">Cancel</Translate>
           </Button>
-          <Button color="danger" onClick={this.confirmDelete}>
+          <Button id="jhi-confirm-delete-orderItem" color="danger" onClick={this.confirmDelete}>
             <FontAwesomeIcon icon="trash" />&nbsp;
             <Translate contentKey="entity.action.delete">Delete</Translate>
           </Button>

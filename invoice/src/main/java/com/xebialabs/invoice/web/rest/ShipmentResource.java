@@ -32,7 +32,7 @@ public class ShipmentResource {
 
     private final Logger log = LoggerFactory.getLogger(ShipmentResource.class);
 
-    private static final String ENTITY_NAME = "shipment";
+    private static final String ENTITY_NAME = "invoiceShipment";
 
     private final ShipmentService shipmentService;
 

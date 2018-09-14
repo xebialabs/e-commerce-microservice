@@ -3,6 +3,7 @@ import { browser, protractor } from 'protractor';
 
 import NavBarPage from './../../../page-objects/navbar-page';
 import InvoiceComponentsPage from './invoice.page-object';
+import { InvoiceDeleteDialog } from './invoice.page-object';
 import InvoiceUpdatePage from './invoice-update.page-object';
 
 const expect = chai.expect;
@@ -11,6 +12,7 @@ describe('Invoice e2e test', () => {
   let navBarPage: NavBarPage;
   let invoiceUpdatePage: InvoiceUpdatePage;
   let invoiceComponentsPage: InvoiceComponentsPage;
+  let invoiceDeleteDialog: InvoiceDeleteDialog;
 
   before(() => {
     browser.get('/');
@@ -31,6 +33,8 @@ describe('Invoice e2e test', () => {
   });
 
   it('should create and save Invoices', async () => {
+    const nbButtonsBeforeCreate = await invoiceComponentsPage.countDeleteButtons();
+
     invoiceUpdatePage.setCodeInput('code');
     expect(await invoiceUpdatePage.getCodeInput()).to.match(/code/);
     invoiceUpdatePage.setDateInput('01/01/2001' + protractor.Key.TAB + '02:30AM');
@@ -45,6 +49,22 @@ describe('Invoice e2e test', () => {
     expect(await invoiceUpdatePage.getPaymentAmountInput()).to.eq('5');
     await invoiceUpdatePage.save();
     expect(await invoiceUpdatePage.getSaveButton().isPresent()).to.be.false;
+
+    invoiceComponentsPage.waitUntilDeleteButtonsLength(nbButtonsBeforeCreate + 1);
+    expect(await invoiceComponentsPage.countDeleteButtons()).to.eq(nbButtonsBeforeCreate + 1);
+  });
+
+  it('should delete last Invoice', async () => {
+    invoiceComponentsPage.waitUntilLoaded();
+    const nbButtonsBeforeDelete = await invoiceComponentsPage.countDeleteButtons();
+    await invoiceComponentsPage.clickOnLastDeleteButton();
+
+    invoiceDeleteDialog = new InvoiceDeleteDialog();
+    expect(await invoiceDeleteDialog.getDialogTitle().getAttribute('id')).to.match(/storeApp.invoiceInvoice.delete.question/);
+    await invoiceDeleteDialog.clickOnConfirmButton();
+
+    invoiceComponentsPage.waitUntilDeleteButtonsLength(nbButtonsBeforeDelete - 1);
+    expect(await invoiceComponentsPage.countDeleteButtons()).to.eq(nbButtonsBeforeDelete - 1);
   });
 
   after(() => {

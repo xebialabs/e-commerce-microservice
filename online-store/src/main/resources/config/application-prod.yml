@@ -38,6 +38,7 @@ spring:
         username: root
         password:
         hikari:
+            auto-commit: false
             data-source-properties:
                 cachePrepStmts: true
                 prepStmtCacheSize: 250
@@ -49,6 +50,7 @@ spring:
         show-sql: false
         properties:
             hibernate.id.new_generator_mappings: true
+            hibernate.connection.provider_disables_autocommit: true
             hibernate.cache.use_second_level_cache: true
             hibernate.cache.use_query_cache: false
             hibernate.generate_statistics: false
@@ -73,7 +75,7 @@ spring:
                 enabled: true
 
 # ===================================================================
-# To enable SSL, generate a certificate using:
+# To enable TLS in production, generate a certificate using:
 # keytool -genkey -alias store -storetype PKCS12 -keyalg RSA -keysize 2048 -keystore keystore.p12 -validity 3650
 #
 # You can also use Let's Encrypt:
@@ -84,8 +86,8 @@ spring:
 # server:
 #    port: 443
 #    ssl:
-#        key-store: keystore.p12
-#        key-store-password: <your-password>
+#        key-store: classpath:config/tls/keystore.p12
+#        key-store-password: password
 #        key-store-type: PKCS12
 #        key-alias: store
 #        # The ciphers suite enforce the security by deactivating some old and deprecated SSL cipher, this list was tested against SSL Labs (https://www.ssllabs.com/ssltest/)
@@ -125,7 +127,12 @@ jhipster:
     security:
         authentication:
             jwt:
-                secret: MTU0MzNkYjY0N2Y5Y2U5Y2IxOGE1YjZiYTVjMGQ1YjVhOWI5ZTY5NjA0ZjgwYTkzMWVkYmJiNTY1ZjljNmEwNjFiNmU5Y2Q3ZTMxMTkzOGI3MTFiZjhkZmM1OTRhNmZlNDNjODI2MzQxMDAxNDkyZDA1MjliOTEyZThhZjZjZjM=
+                # This token must be encoded using Base64 (you can type `echo 'secret-key'|base64` on your command line)
+                # As this is the PRODUCTION configuration, you MUST change the default key, and store it securely:
+                # - In the JHipster Registry (which includes a Spring Cloud Config server)
+                # - In a separate `application-prod.yml` file, in the same folder as your executable WAR file
+                # - In the `JHIPSTER_SECURITY_AUTHENTICATION_JWT_SECRET` environment variable
+                base64-secret: MTU0MzNkYjY0N2Y5Y2U5Y2IxOGE1YjZiYTVjMGQ1YjVhOWI5ZTY5NjA0ZjgwYTkzMWVkYmJiNTY1ZjljNmEwNjFiNmU5Y2Q3ZTMxMTkzOGI3MTFiZjhkZmM1OTRhNmZlNDNjODI2MzQxMDAxNDkyZDA1MjliOTEyZThhZjZjZjM=
                 # Token is valid 24 hours
                 token-validity-in-seconds: 86400
                 token-validity-in-seconds-for-remember-me: 2592000

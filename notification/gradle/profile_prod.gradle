@@ -2,7 +2,6 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'com.gorylenko.gradle-git-properties'
 
 dependencies {
-
 }
 
 def profiles = 'prod'

@@ -3,6 +3,7 @@ import { browser, protractor } from 'protractor';
 
 import NavBarPage from './../../../page-objects/navbar-page';
 import ShipmentComponentsPage from './shipment.page-object';
+import { ShipmentDeleteDialog } from './shipment.page-object';
 import ShipmentUpdatePage from './shipment-update.page-object';
 
 const expect = chai.expect;
@@ -11,6 +12,7 @@ describe('Shipment e2e test', () => {
   let navBarPage: NavBarPage;
   let shipmentUpdatePage: ShipmentUpdatePage;
   let shipmentComponentsPage: ShipmentComponentsPage;
+  /*let shipmentDeleteDialog: ShipmentDeleteDialog;*/
 
   before(() => {
     browser.get('/');
@@ -31,6 +33,8 @@ describe('Shipment e2e test', () => {
   });
 
   /* it('should create and save Shipments', async () => {
+        const nbButtonsBeforeCreate = await shipmentComponentsPage.countDeleteButtons();
+
         shipmentUpdatePage.setTrackingCodeInput('trackingCode');
         expect(await shipmentUpdatePage.getTrackingCodeInput()).to.match(/trackingCode/);
         shipmentUpdatePage.setDateInput('01/01/2001' + protractor.Key.TAB + '02:30AM');
@@ -40,6 +44,22 @@ describe('Shipment e2e test', () => {
         shipmentUpdatePage.invoiceSelectLastOption();
         await shipmentUpdatePage.save();
         expect(await shipmentUpdatePage.getSaveButton().isPresent()).to.be.false;
+
+        shipmentComponentsPage.waitUntilDeleteButtonsLength(nbButtonsBeforeCreate + 1);
+        expect(await shipmentComponentsPage.countDeleteButtons()).to.eq(nbButtonsBeforeCreate + 1);
+    });*/
+
+  /* it('should delete last Shipment', async () => {
+        shipmentComponentsPage.waitUntilLoaded();
+        const nbButtonsBeforeDelete = await shipmentComponentsPage.countDeleteButtons();
+        await shipmentComponentsPage.clickOnLastDeleteButton();
+
+        shipmentDeleteDialog = new ShipmentDeleteDialog();
+        expect(await shipmentDeleteDialog.getDialogTitle().getAttribute('id')).to.match(/storeApp.invoiceShipment.delete.question/);
+        await shipmentDeleteDialog.clickOnConfirmButton();
+
+        shipmentComponentsPage.waitUntilDeleteButtonsLength(nbButtonsBeforeDelete - 1);
+        expect(await shipmentComponentsPage.countDeleteButtons()).to.eq(nbButtonsBeforeDelete - 1);
     });*/
 
   after(() => {

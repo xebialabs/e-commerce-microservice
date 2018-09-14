@@ -54,9 +54,7 @@ public class ShipmentResourceIntTest {
 
     @Autowired
     private ShipmentRepository shipmentRepository;
-
     
-
     @Autowired
     private ShipmentService shipmentService;
 
@@ -184,7 +182,6 @@ public class ShipmentResourceIntTest {
             .andExpect(jsonPath("$.[*].details").value(hasItem(DEFAULT_DETAILS.toString())));
     }
     
-
     @Test
     @Transactional
     public void getShipment() throws Exception {
@@ -200,6 +197,7 @@ public class ShipmentResourceIntTest {
             .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()))
             .andExpect(jsonPath("$.details").value(DEFAULT_DETAILS.toString()));
     }
+
     @Test
     @Transactional
     public void getNonExistingShipment() throws Exception {
@@ -246,7 +244,7 @@ public class ShipmentResourceIntTest {
 
         // Create the Shipment
 
-        // If the entity doesn't have an ID, it will throw BadRequestAlertException 
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restShipmentMockMvc.perform(put("/api/shipments")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(shipment)))

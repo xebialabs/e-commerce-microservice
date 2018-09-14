@@ -3,6 +3,7 @@ import { browser, protractor } from 'protractor';
 
 import NavBarPage from './../../page-objects/navbar-page';
 import ProductOrderComponentsPage from './product-order.page-object';
+import { ProductOrderDeleteDialog } from './product-order.page-object';
 import ProductOrderUpdatePage from './product-order-update.page-object';
 
 const expect = chai.expect;
@@ -11,6 +12,7 @@ describe('ProductOrder e2e test', () => {
   let navBarPage: NavBarPage;
   let productOrderUpdatePage: ProductOrderUpdatePage;
   let productOrderComponentsPage: ProductOrderComponentsPage;
+  /*let productOrderDeleteDialog: ProductOrderDeleteDialog;*/
 
   before(() => {
     browser.get('/');
@@ -31,6 +33,8 @@ describe('ProductOrder e2e test', () => {
   });
 
   /* it('should create and save ProductOrders', async () => {
+        const nbButtonsBeforeCreate = await productOrderComponentsPage.countDeleteButtons();
+
         productOrderUpdatePage.setPlacedDateInput('01/01/2001' + protractor.Key.TAB + '02:30AM');
         expect(await productOrderUpdatePage.getPlacedDateInput()).to.contain('2001-01-01T02:30');
         productOrderUpdatePage.statusSelectLastOption();
@@ -41,6 +45,22 @@ describe('ProductOrder e2e test', () => {
         productOrderUpdatePage.customerSelectLastOption();
         await productOrderUpdatePage.save();
         expect(await productOrderUpdatePage.getSaveButton().isPresent()).to.be.false;
+
+        productOrderComponentsPage.waitUntilDeleteButtonsLength(nbButtonsBeforeCreate + 1);
+        expect(await productOrderComponentsPage.countDeleteButtons()).to.eq(nbButtonsBeforeCreate + 1);
+    });*/
+
+  /* it('should delete last ProductOrder', async () => {
+        productOrderComponentsPage.waitUntilLoaded();
+        const nbButtonsBeforeDelete = await productOrderComponentsPage.countDeleteButtons();
+        await productOrderComponentsPage.clickOnLastDeleteButton();
+
+        productOrderDeleteDialog = new ProductOrderDeleteDialog();
+        expect(await productOrderDeleteDialog.getDialogTitle().getAttribute('id')).to.match(/storeApp.productOrder.delete.question/);
+        await productOrderDeleteDialog.clickOnConfirmButton();
+
+        productOrderComponentsPage.waitUntilDeleteButtonsLength(nbButtonsBeforeDelete - 1);
+        expect(await productOrderComponentsPage.countDeleteButtons()).to.eq(nbButtonsBeforeDelete - 1);
     });*/
 
   after(() => {
