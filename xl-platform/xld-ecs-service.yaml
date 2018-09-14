@@ -19,6 +19,7 @@ spec:
           assignPublicIp: true
           cpu: 1024
           memory: 2048
+          executionRole: 'arn:aws:iam::932770550094:role/ecsTaskExecutionRole'
           subnets:
           - 'Name:{{username}}-ecommerce-ecs-subnet-ipv4-az-1a'
           - 'Name:{{username}}-ecommerce-ecs-subnet-ipv4-az-1b'
@@ -39,8 +40,18 @@ spec:
               SPRING_PROFILES_ACTIVE: dev
               SPRING_SECURITY_USER_PASSWORD: admin
               JHIPSTER_REGISTRY_PASSWORD: admin
+              JHIPSTER_SECURITY_AUTHENTICATION_JWT_SECRET: bXktc2VjcmV0LXRva2VuLXRvLWNoYW5nZS1pbi1wcm9kdWN0aW9uLWFuZC10by1rZWVwLWluLWEtc2VjdXJlLXBsYWNl
               SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_TYPE: native
-              SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_SEARCH_LOCATIONS: file:./central-config
+              # SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_SEARCH_LOCATIONS: file:./central-config
+              EUREKA_INSTANCE_LEASE_RENEWAL_INTERVAL_IN_SECONDS: 15
+              EUREKA_INSTANCE_LEASE_EXPIRATION_DURATION_IN_SECONDS: 30
+              EUREKA_SERVER_PEER_EUREKA_NODES_UPDATE_INTERVAL_MS: 15000
+              EUREKA_SERVER_RENAWAL_THRESHOLD_UPDATE_INTERVAL_MS: 15000
+              EUREKA_SERVER_REGISTRY_SYNC_RETRIES: 3
+              EUREKA_SERVER_ENABLE_SELF_PRESERVATION: false
+              EUREKA_SERVER_PEER_NODE_CONNECT_TIMEOUT_MS: 2000
+              EUREKA_CLIENT_FETCH_REGISTRY: true
+              EUREKA_CLIENT_REGISTER_WITH_EUREKA: true
               JHIPSTER_LOGGING_LOGSTASH_ENABLED: true
               JHIPSTER_LOGGING_LOGSTASH_HOST: jhipster-logstash
               JHIPSTER_METRICS_LOGS_ENABLED: true
@@ -50,7 +61,7 @@ spec:
               type: aws.ecs.LogConfigurationSpec
               logDriver: awslogs
               options:
-                awslogs-group: "/ecs/test"
+                awslogs-group: "/ecs/ecommerce"
                 awslogs-region: "{{region}}"
                 awslogs-stream-prefix: "ecs"
         - name: ecommerce-store-app
@@ -60,6 +71,7 @@ spec:
           launchType: FARGATE
           networkMode: awsvpc
           assignPublicIp: true
+          executionRole: 'arn:aws:iam::932770550094:role/ecsTaskExecutionRole'
           cpu: 1024
           memory: 2048
           subnets:
@@ -78,6 +90,14 @@ spec:
             - name: port-mapping-8080
               type: aws.ecs.PortSpec
               containerPort: 8080
+            logConfiguration:
+            - name: cloudwatch-log-registry
+              type: aws.ecs.LogConfigurationSpec
+              logDriver: awslogs
+              options:
+                awslogs-group: "/ecs/ecommerce"
+                awslogs-region: "{{region}}"
+                awslogs-stream-prefix: "ecs"
             environment:
               SPRING_PROFILES_ACTIVE: prod,swagger
               EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka
@@ -92,6 +112,7 @@ spec:
           launchType: FARGATE
           networkMode: awsvpc
           assignPublicIp: true
+          executionRole: 'arn:aws:iam::932770550094:role/ecsTaskExecutionRole'
           cpu: 1024
           memory: 2048
           subnets:
@@ -106,6 +127,14 @@ spec:
             image: mysql:5.7.20
             cpu: 1024
             softMemoryLimit: 768
+            logConfiguration:
+            - name: cloudwatch-log-registry
+              type: aws.ecs.LogConfigurationSpec
+              logDriver: awslogs
+              options:
+                awslogs-group: "/ecs/ecommerce"
+                awslogs-region: "{{region}}"
+                awslogs-stream-prefix: "ecs"
             environment:
               MYSQL_USER: root
               MYSQL_ALLOW_EMPTY_PASSWORD: yes
@@ -118,6 +147,7 @@ spec:
           launchType: FARGATE
           networkMode: awsvpc
           assignPublicIp: true
+          executionRole: 'arn:aws:iam::932770550094:role/ecsTaskExecutionRole'
           cpu: 1024
           memory: 2048
           subnets:
@@ -132,6 +162,25 @@ spec:
             image: xebialabsunsupported/ecommerce-invoice
             cpu: 512
             softMemoryLimit: 768
+            # portMappings:
+            # - name: port-mapping-8080
+            #   type: aws.ecs.PortSpec
+            #   containerPort: 8080
+            logConfiguration:
+            - name: cloudwatch-log-registry
+              type: aws.ecs.LogConfigurationSpec
+              logDriver: awslogs
+              options:
+                awslogs-group: "/ecs/ecommerce"
+                awslogs-region: "{{region}}"
+                awslogs-stream-prefix: "ecs"
+            environment:
+              SPRING_PROFILES_ACTIVE: prod,swagger
+              EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka
+              SPRING_CLOUD_CONFIG_URI: http://admin:$${jhipster.registry.password}@jhipster-registry:8761/config
+              SPRING_DATASOURCE_URL: jdbc:mysql://invoice-mysql:3306/invoice?useUnicode=true&characterEncoding=utf8&useSSL=false
+              JHIPSTER_SLEEP: 30
+              JHIPSTER_REGISTRY_PASSWORD: admin
         - name: ecommerce-invoice-db
           type: aws.ecs.ServiceSpec
           serviceName: ecommerce-invoice-db
@@ -139,6 +188,7 @@ spec:
           launchType: FARGATE
           networkMode: awsvpc
           assignPublicIp: true
+          executionRole: 'arn:aws:iam::932770550094:role/ecsTaskExecutionRole'
           cpu: 1024
           memory: 2048
           subnets:
@@ -153,6 +203,14 @@ spec:
             image: mysql:5.7.20
             cpu: 512
             softMemoryLimit: 768
+            logConfiguration:
+            - name: cloudwatch-log-registry
+              type: aws.ecs.LogConfigurationSpec
+              logDriver: awslogs
+              options:
+                awslogs-group: "/ecs/ecommerce"
+                awslogs-region: "{{region}}"
+                awslogs-stream-prefix: "ecs"
             environment:
               MYSQL_USER: root
               MYSQL_ALLOW_EMPTY_PASSWORD: yes
@@ -165,6 +223,7 @@ spec:
           launchType: FARGATE
           networkMode: awsvpc
           assignPublicIp: true
+          executionRole: 'arn:aws:iam::932770550094:role/ecsTaskExecutionRole'
           cpu: 1024
           memory: 2048
           subnets:
@@ -179,6 +238,14 @@ spec:
             image: xebialabsunsupported/ecommerce-notification
             cpu: 512
             softMemoryLimit: 768
+            logConfiguration:
+            - name: cloudwatch-log-registry
+              type: aws.ecs.LogConfigurationSpec
+              logDriver: awslogs
+              options:
+                awslogs-group: "/ecs/ecommerce"
+                awslogs-region: "{{region}}"
+                awslogs-stream-prefix: "ecs"
             environment:
               SPRING_PROFILES_ACTIVE: prod,swagger
               EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka
@@ -194,6 +261,7 @@ spec:
           launchType: FARGATE
           networkMode: awsvpc
           assignPublicIp: true
+          executionRole: 'arn:aws:iam::932770550094:role/ecsTaskExecutionRole'
           cpu: 1024
           memory: 2048
           subnets:
@@ -208,3 +276,11 @@ spec:
             image: mongo:3.6.3
             cpu: 512
             softMemoryLimit: 768
+            logConfiguration:
+            - name: cloudwatch-log-registry
+              type: aws.ecs.LogConfigurationSpec
+              logDriver: awslogs
+              options:
+                awslogs-group: "/ecs/ecommerce"
+                awslogs-region: "{{region}}"
+                awslogs-stream-prefix: "ecs"
