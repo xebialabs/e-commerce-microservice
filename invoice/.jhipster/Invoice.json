@@ -2,6 +2,13 @@
     "name": "Invoice",
     "fields": [
         {
+            "fieldName": "code",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
             "fieldName": "date",
             "fieldType": "Instant",
             "fieldValidateRules": [
@@ -58,7 +65,7 @@
     "service": "serviceClass",
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,
-    "clientRootFolder": "invoice",
+    "clientRootFolder": "",
     "applications": "*",
     "microserviceName": "invoice"
 }

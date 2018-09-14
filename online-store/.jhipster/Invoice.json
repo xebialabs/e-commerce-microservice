@@ -2,6 +2,13 @@
     "name": "Invoice",
     "fields": [
         {
+            "fieldName": "code",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
             "fieldName": "date",
             "fieldType": "Instant",
             "fieldValidateRules": [

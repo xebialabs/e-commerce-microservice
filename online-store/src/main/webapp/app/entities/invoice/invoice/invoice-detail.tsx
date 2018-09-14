@@ -29,6 +29,12 @@ export class InvoiceDetail extends React.Component<IInvoiceDetailProps> {
           </h2>
           <dl className="jh-entity-details">
             <dt>
+              <span id="code">
+                <Translate contentKey="storeApp.invoiceInvoice.code">Code</Translate>
+              </span>
+            </dt>
+            <dd>{invoiceEntity.code}</dd>
+            <dt>
               <span id="date">
                 <Translate contentKey="storeApp.invoiceInvoice.date">Date</Translate>
               </span>

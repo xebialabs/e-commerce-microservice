@@ -31,6 +31,8 @@ describe('Invoice e2e test', () => {
   });
 
   it('should create and save Invoices', async () => {
+    invoiceUpdatePage.setCodeInput('code');
+    expect(await invoiceUpdatePage.getCodeInput()).to.match(/code/);
     invoiceUpdatePage.setDateInput('01/01/2001' + protractor.Key.TAB + '02:30AM');
     expect(await invoiceUpdatePage.getDateInput()).to.contain('2001-01-01T02:30');
     invoiceUpdatePage.setDetailsInput('details');

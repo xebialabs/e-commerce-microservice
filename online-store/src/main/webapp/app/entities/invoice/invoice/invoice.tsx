@@ -74,6 +74,9 @@ export class Invoice extends React.Component<IInvoiceProps, IInvoiceState> {
                 <th className="hand" onClick={this.sort('id')}>
                   <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
+                <th className="hand" onClick={this.sort('code')}>
+                  <Translate contentKey="storeApp.invoiceInvoice.code">Code</Translate> <FontAwesomeIcon icon="sort" />
+                </th>
                 <th className="hand" onClick={this.sort('date')}>
                   <Translate contentKey="storeApp.invoiceInvoice.date">Date</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
@@ -103,6 +106,7 @@ export class Invoice extends React.Component<IInvoiceProps, IInvoiceState> {
                       {invoice.id}
                     </Button>
                   </td>
+                  <td>{invoice.code}</td>
                   <td>
                     <TextFormat type="date" value={invoice.date} format={APP_DATE_FORMAT} />
                   </td>

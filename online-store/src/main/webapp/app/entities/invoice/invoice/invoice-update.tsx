@@ -88,6 +88,19 @@ export class InvoiceUpdate extends React.Component<IInvoiceUpdateProps, IInvoice
                   </AvGroup>
                 ) : null}
                 <AvGroup>
+                  <Label id="codeLabel" for="code">
+                    <Translate contentKey="storeApp.invoiceInvoice.code">Code</Translate>
+                  </Label>
+                  <AvField
+                    id="invoice-code"
+                    type="text"
+                    name="code"
+                    validate={{
+                      required: { value: true, errorMessage: translate('entity.validation.required') }
+                    }}
+                  />
+                </AvGroup>
+                <AvGroup>
                   <Label id="dateLabel" for="date">
                     <Translate contentKey="storeApp.invoiceInvoice.date">Date</Translate>
                   </Label>

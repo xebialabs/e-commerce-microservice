@@ -120,15 +120,20 @@ export class ShipmentUpdate extends React.Component<IShipmentUpdateProps, IShipm
                   <AvField id="shipment-details" type="text" name="details" />
                 </AvGroup>
                 <AvGroup>
-                  <Label for="invoice.id">
+                  <Label for="invoice.code">
                     <Translate contentKey="storeApp.invoiceShipment.invoice">Invoice</Translate>
                   </Label>
-                  <AvInput id="shipment-invoice" type="select" className="form-control" name="invoice.id">
-                    <option value="" key="0" />
+                  <AvInput
+                    id="shipment-invoice"
+                    type="select"
+                    className="form-control"
+                    name="invoice.id"
+                    value={isNew ? invoices[0] && invoices[0].id : shipmentEntity.invoice.id}
+                  >
                     {invoices
                       ? invoices.map(otherEntity => (
                           <option value={otherEntity.id} key={otherEntity.id}>
-                            {otherEntity.id}
+                            {otherEntity.code}
                           </option>
                         ))
                       : null}

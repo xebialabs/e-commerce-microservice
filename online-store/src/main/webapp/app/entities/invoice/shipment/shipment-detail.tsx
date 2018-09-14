@@ -51,7 +51,7 @@ export class ShipmentDetail extends React.Component<IShipmentDetailProps> {
             <dt>
               <Translate contentKey="storeApp.invoiceShipment.invoice">Invoice</Translate>
             </dt>
-            <dd>{shipmentEntity.invoice ? shipmentEntity.invoice.id : ''}</dd>
+            <dd>{shipmentEntity.invoice ? shipmentEntity.invoice.code : ''}</dd>
           </dl>
           <Button tag={Link} to="/entity/shipment" replace color="info">
             <FontAwesomeIcon icon="arrow-left" />{' '}

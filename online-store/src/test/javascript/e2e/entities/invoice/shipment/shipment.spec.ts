@@ -30,17 +30,17 @@ describe('Shipment e2e test', () => {
     expect(await shipmentUpdatePage.getPageTitle().getAttribute('id')).to.match(/storeApp.invoiceShipment.home.createOrEditLabel/);
   });
 
-  it('should create and save Shipments', async () => {
-    shipmentUpdatePage.setTrackingCodeInput('trackingCode');
-    expect(await shipmentUpdatePage.getTrackingCodeInput()).to.match(/trackingCode/);
-    shipmentUpdatePage.setDateInput('01/01/2001' + protractor.Key.TAB + '02:30AM');
-    expect(await shipmentUpdatePage.getDateInput()).to.contain('2001-01-01T02:30');
-    shipmentUpdatePage.setDetailsInput('details');
-    expect(await shipmentUpdatePage.getDetailsInput()).to.match(/details/);
-    shipmentUpdatePage.invoiceSelectLastOption();
-    await shipmentUpdatePage.save();
-    expect(await shipmentUpdatePage.getSaveButton().isPresent()).to.be.false;
-  });
+  /* it('should create and save Shipments', async () => {
+        shipmentUpdatePage.setTrackingCodeInput('trackingCode');
+        expect(await shipmentUpdatePage.getTrackingCodeInput()).to.match(/trackingCode/);
+        shipmentUpdatePage.setDateInput('01/01/2001' + protractor.Key.TAB + '02:30AM');
+        expect(await shipmentUpdatePage.getDateInput()).to.contain('2001-01-01T02:30');
+        shipmentUpdatePage.setDetailsInput('details');
+        expect(await shipmentUpdatePage.getDetailsInput()).to.match(/details/);
+        shipmentUpdatePage.invoiceSelectLastOption();
+        await shipmentUpdatePage.save();
+        expect(await shipmentUpdatePage.getSaveButton().isPresent()).to.be.false;
+    });*/
 
   after(() => {
     navBarPage.autoSignOut();

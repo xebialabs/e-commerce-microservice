@@ -45,6 +45,9 @@ import com.xebialabs.invoice.domain.enumeration.PaymentMethod;
 @SpringBootTest(classes = InvoiceApp.class)
 public class InvoiceResourceIntTest {
 
+    private static final String DEFAULT_CODE = "AAAAAAAAAA";
+    private static final String UPDATED_CODE = "BBBBBBBBBB";
+
     private static final Instant DEFAULT_DATE = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
@@ -106,6 +109,7 @@ public class InvoiceResourceIntTest {
      */
     public static Invoice createEntity(EntityManager em) {
         Invoice invoice = new Invoice()
+            .code(DEFAULT_CODE)
             .date(DEFAULT_DATE)
             .details(DEFAULT_DETAILS)
             .status(DEFAULT_STATUS)
@@ -135,6 +139,7 @@ public class InvoiceResourceIntTest {
         List<Invoice> invoiceList = invoiceRepository.findAll();
         assertThat(invoiceList).hasSize(databaseSizeBeforeCreate + 1);
         Invoice testInvoice = invoiceList.get(invoiceList.size() - 1);
+        assertThat(testInvoice.getCode()).isEqualTo(DEFAULT_CODE);
         assertThat(testInvoice.getDate()).isEqualTo(DEFAULT_DATE);
         assertThat(testInvoice.getDetails()).isEqualTo(DEFAULT_DETAILS);
         assertThat(testInvoice.getStatus()).isEqualTo(DEFAULT_STATUS);
@@ -160,6 +165,24 @@ public class InvoiceResourceIntTest {
         // Validate the Invoice in the database
         List<Invoice> invoiceList = invoiceRepository.findAll();
         assertThat(invoiceList).hasSize(databaseSizeBeforeCreate);
+    }
+
+    @Test
+    @Transactional
+    public void checkCodeIsRequired() throws Exception {
+        int databaseSizeBeforeTest = invoiceRepository.findAll().size();
+        // set the field null
+        invoice.setCode(null);
+
+        // Create the Invoice, which fails.
+
+        restInvoiceMockMvc.perform(post("/api/invoices")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(invoice)))
+            .andExpect(status().isBadRequest());
+
+        List<Invoice> invoiceList = invoiceRepository.findAll();
+        assertThat(invoiceList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
@@ -263,6 +286,7 @@ public class InvoiceResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(invoice.getId().intValue())))
+            .andExpect(jsonPath("$.[*].code").value(hasItem(DEFAULT_CODE.toString())))
             .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())))
             .andExpect(jsonPath("$.[*].details").value(hasItem(DEFAULT_DETAILS.toString())))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())))
@@ -283,6 +307,7 @@ public class InvoiceResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(invoice.getId().intValue()))
+            .andExpect(jsonPath("$.code").value(DEFAULT_CODE.toString()))
             .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()))
             .andExpect(jsonPath("$.details").value(DEFAULT_DETAILS.toString()))
             .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()))
@@ -311,6 +336,7 @@ public class InvoiceResourceIntTest {
         // Disconnect from session so that the updates on updatedInvoice are not directly saved in db
         em.detach(updatedInvoice);
         updatedInvoice
+            .code(UPDATED_CODE)
             .date(UPDATED_DATE)
             .details(UPDATED_DETAILS)
             .status(UPDATED_STATUS)
@@ -327,6 +353,7 @@ public class InvoiceResourceIntTest {
         List<Invoice> invoiceList = invoiceRepository.findAll();
         assertThat(invoiceList).hasSize(databaseSizeBeforeUpdate);
         Invoice testInvoice = invoiceList.get(invoiceList.size() - 1);
+        assertThat(testInvoice.getCode()).isEqualTo(UPDATED_CODE);
         assertThat(testInvoice.getDate()).isEqualTo(UPDATED_DATE);
         assertThat(testInvoice.getDetails()).isEqualTo(UPDATED_DETAILS);
         assertThat(testInvoice.getStatus()).isEqualTo(UPDATED_STATUS);

@@ -1,4 +1,5 @@
 entity Invoice {
+    code String required
     date Instant required
     details String
     status InvoiceStatus required
@@ -22,7 +23,7 @@ enum PaymentMethod {
 }
 
 relationship OneToMany {
-    Invoice{shipment} to Shipment{invoice}
+    Invoice{shipment} to Shipment{invoice(code) required}
 }
 
 service * with serviceClass
