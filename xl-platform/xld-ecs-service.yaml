@@ -1,4 +1,4 @@
-apiVersion: xl-deploy/v1alpha1
+apiVersion: xl-deploy/v1beta1
 kind: Applications
 spec:
 - name: ecommerce
@@ -45,12 +45,14 @@ spec:
               JHIPSTER_LOGGING_LOGSTASH_HOST: jhipster-logstash
               JHIPSTER_METRICS_LOGS_ENABLED: true
               JHIPSTER_METRICS_LOGS_REPORTFREQUENCY: 60
-#            logConfiguration:
-#              logDriver: awslogs
-#              options:
-#                awslogs-group: "/ecs/test"
-#                awslogs-region: "{{region}}"
-#                awslogs-stream-prefix: "ecs"
+            logConfiguration:
+            - name: cloudwatch-log-registry
+              type: aws.ecs.LogConfigurationSpec
+              logDriver: awslogs
+              options:
+                awslogs-group: "/ecs/test"
+                awslogs-region: "{{region}}"
+                awslogs-stream-prefix: "ecs"
         - name: ecommerce-store-app
           type: aws.ecs.ServiceSpec
           serviceName: ecommerce-store-app

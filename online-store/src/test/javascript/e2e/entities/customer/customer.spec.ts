@@ -3,6 +3,7 @@ import { browser } from 'protractor';
 
 import NavBarPage from './../../page-objects/navbar-page';
 import CustomerComponentsPage from './customer.page-object';
+import { CustomerDeleteDialog } from './customer.page-object';
 import CustomerUpdatePage from './customer-update.page-object';
 
 const expect = chai.expect;
@@ -11,6 +12,7 @@ describe('Customer e2e test', () => {
   let navBarPage: NavBarPage;
   let customerUpdatePage: CustomerUpdatePage;
   let customerComponentsPage: CustomerComponentsPage;
+  /*let customerDeleteDialog: CustomerDeleteDialog;*/
 
   before(() => {
     browser.get('/');
@@ -31,6 +33,8 @@ describe('Customer e2e test', () => {
   });
 
   /* it('should create and save Customers', async () => {
+        const nbButtonsBeforeCreate = await customerComponentsPage.countDeleteButtons();
+
         customerUpdatePage.setFirstNameInput('firstName');
         expect(await customerUpdatePage.getFirstNameInput()).to.match(/firstName/);
         customerUpdatePage.setLastNameInput('lastName');
@@ -51,6 +55,22 @@ describe('Customer e2e test', () => {
         customerUpdatePage.userSelectLastOption();
         await customerUpdatePage.save();
         expect(await customerUpdatePage.getSaveButton().isPresent()).to.be.false;
+
+        customerComponentsPage.waitUntilDeleteButtonsLength(nbButtonsBeforeCreate + 1);
+        expect(await customerComponentsPage.countDeleteButtons()).to.eq(nbButtonsBeforeCreate + 1);
+    });*/
+
+  /* it('should delete last Customer', async () => {
+        customerComponentsPage.waitUntilLoaded();
+        const nbButtonsBeforeDelete = await customerComponentsPage.countDeleteButtons();
+        await customerComponentsPage.clickOnLastDeleteButton();
+
+        customerDeleteDialog = new CustomerDeleteDialog();
+        expect(await customerDeleteDialog.getDialogTitle().getAttribute('id')).to.match(/storeApp.customer.delete.question/);
+        await customerDeleteDialog.clickOnConfirmButton();
+
+        customerComponentsPage.waitUntilDeleteButtonsLength(nbButtonsBeforeDelete - 1);
+        expect(await customerComponentsPage.countDeleteButtons()).to.eq(nbButtonsBeforeDelete - 1);
     });*/
 
   after(() => {

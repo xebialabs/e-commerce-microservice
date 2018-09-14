@@ -1,4 +1,4 @@
-apiVersion: xl-deploy/v1alpha1
+apiVersion: xl-deploy/v1beta1
 kind: Applications
 spec:
 - name: ecommerce

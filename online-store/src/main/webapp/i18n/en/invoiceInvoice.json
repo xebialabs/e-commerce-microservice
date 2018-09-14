@@ -13,6 +13,7 @@
             "detail": {
                 "title": "Invoice"
             },
+            "code": "Code",
             "date": "Date",
             "details": "Details",
             "status": "Status",

@@ -3,6 +3,7 @@ import { browser } from 'protractor';
 
 import NavBarPage from './../../page-objects/navbar-page';
 import ProductCategoryComponentsPage from './product-category.page-object';
+import { ProductCategoryDeleteDialog } from './product-category.page-object';
 import ProductCategoryUpdatePage from './product-category-update.page-object';
 
 const expect = chai.expect;
@@ -11,6 +12,7 @@ describe('ProductCategory e2e test', () => {
   let navBarPage: NavBarPage;
   let productCategoryUpdatePage: ProductCategoryUpdatePage;
   let productCategoryComponentsPage: ProductCategoryComponentsPage;
+  let productCategoryDeleteDialog: ProductCategoryDeleteDialog;
 
   before(() => {
     browser.get('/');
@@ -31,12 +33,30 @@ describe('ProductCategory e2e test', () => {
   });
 
   it('should create and save ProductCategories', async () => {
+    const nbButtonsBeforeCreate = await productCategoryComponentsPage.countDeleteButtons();
+
     productCategoryUpdatePage.setNameInput('name');
     expect(await productCategoryUpdatePage.getNameInput()).to.match(/name/);
     productCategoryUpdatePage.setDescriptionInput('description');
     expect(await productCategoryUpdatePage.getDescriptionInput()).to.match(/description/);
     await productCategoryUpdatePage.save();
     expect(await productCategoryUpdatePage.getSaveButton().isPresent()).to.be.false;
+
+    productCategoryComponentsPage.waitUntilDeleteButtonsLength(nbButtonsBeforeCreate + 1);
+    expect(await productCategoryComponentsPage.countDeleteButtons()).to.eq(nbButtonsBeforeCreate + 1);
+  });
+
+  it('should delete last ProductCategory', async () => {
+    productCategoryComponentsPage.waitUntilLoaded();
+    const nbButtonsBeforeDelete = await productCategoryComponentsPage.countDeleteButtons();
+    await productCategoryComponentsPage.clickOnLastDeleteButton();
+
+    productCategoryDeleteDialog = new ProductCategoryDeleteDialog();
+    expect(await productCategoryDeleteDialog.getDialogTitle().getAttribute('id')).to.match(/storeApp.productCategory.delete.question/);
+    await productCategoryDeleteDialog.clickOnConfirmButton();
+
+    productCategoryComponentsPage.waitUntilDeleteButtonsLength(nbButtonsBeforeDelete - 1);
+    expect(await productCategoryComponentsPage.countDeleteButtons()).to.eq(nbButtonsBeforeDelete - 1);
   });
 
   after(() => {

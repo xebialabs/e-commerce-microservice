@@ -48,9 +48,7 @@ public class ProductCategoryResourceIntTest {
 
     @Autowired
     private ProductCategoryRepository productCategoryRepository;
-
     
-
     @Autowired
     private ProductCategoryService productCategoryService;
 
@@ -170,7 +168,6 @@ public class ProductCategoryResourceIntTest {
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())));
     }
     
-
     @Test
     @Transactional
     public void getProductCategory() throws Exception {
@@ -185,6 +182,7 @@ public class ProductCategoryResourceIntTest {
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()));
     }
+
     @Test
     @Transactional
     public void getNonExistingProductCategory() throws Exception {
@@ -229,7 +227,7 @@ public class ProductCategoryResourceIntTest {
 
         // Create the ProductCategory
 
-        // If the entity doesn't have an ID, it will throw BadRequestAlertException 
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restProductCategoryMockMvc.perform(put("/api/product-categories")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(productCategory)))

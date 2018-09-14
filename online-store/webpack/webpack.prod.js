@@ -6,6 +6,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 const path = require('path');
+const sass = require('sass');
 
 const utils = require('./utils.js');
 const commonConfig = require('./webpack.common.js');
@@ -41,7 +42,10 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
           },
           'css-loader',
           'postcss-loader',
-          'sass-loader'
+          { 
+            loader: 'sass-loader', 
+            options: { implementation: sass }
+          }
         ]
       },
     ]

@@ -29,7 +29,10 @@ eureka:
 spring:
     profiles:
         active: dev
-        include: swagger
+        include:
+            - swagger
+            # Uncomment to activate TLS for the dev profile
+            #- tls
     devtools:
         restart:
             enabled: true
@@ -42,6 +45,8 @@ spring:
         url: jdbc:h2:file:./build/h2db/db/store;DB_CLOSE_DELAY=-1
         username: store
         password:
+        hikari:
+            auto-commit: false
     h2:
         console:
             enabled: false
@@ -51,6 +56,7 @@ spring:
         show-sql: true
         properties:
             hibernate.id.new_generator_mappings: true
+            hibernate.connection.provider_disables_autocommit: true
             hibernate.cache.use_second_level_cache: true
             hibernate.cache.use_query_cache: false
             hibernate.generate_statistics: true
@@ -76,23 +82,6 @@ spring:
             discovery:
                 enabled: true
 
-# ===================================================================
-# To enable SSL, generate a certificate using:
-# keytool -genkey -alias store -storetype PKCS12 -keyalg RSA -keysize 2048 -keystore keystore.p12 -validity 3650
-#
-# You can also use Let's Encrypt:
-# https://maximilian-boehm.com/hp2121/Create-a-Java-Keystore-JKS-from-Let-s-Encrypt-Certificates.htm
-#
-# Then, modify the server.ssl properties so your "server" configuration looks like:
-#
-# server:
-#    port: 8443
-#    ssl:
-#        key-store: keystore.p12
-#        key-store-password: <your-password>
-#        key-store-type: PKCS12
-#        key-alias: store
-# ===================================================================
 server:
     port: 8080
 
@@ -111,7 +100,7 @@ jhipster:
         authorized-microservices-endpoints: # Access Control Policy, if left empty for a route, all endpoints will be accessible
             app1: /api,/v2/api-docs # recommended dev configuration
     http:
-        version: V_1_1 # To use HTTP/2 you will need SSL support (see above the "server.ssl" configuration)
+        version: V_1_1 # To use HTTP/2 you will need to activate TLS (see application-tls.yml)
     cache: # Cache configuration
         hazelcast: # Hazelcast distributed cache
             time-to-live-seconds: 3600
@@ -131,7 +120,8 @@ jhipster:
     security:
         authentication:
             jwt:
-                secret: my-secret-token-to-change-in-production
+                # This token must be encoded using Base64 (you can type `echo 'secret-key'|base64` on your command line)
+                base64-secret: MTU0MzNkYjY0N2Y5Y2U5Y2IxOGE1YjZiYTVjMGQ1YjVhOWI5ZTY5NjA0ZjgwYTkzMWVkYmJiNTY1ZjljNmEwNjFiNmU5Y2Q3ZTMxMTkzOGI3MTFiZjhkZmM1OTRhNmZlNDNjODI2MzQxMDAxNDkyZDA1MjliOTEyZThhZjZjZjM=
                 # Token is valid 24 hours
                 token-validity-in-seconds: 86400
                 token-validity-in-seconds-for-remember-me: 2592000

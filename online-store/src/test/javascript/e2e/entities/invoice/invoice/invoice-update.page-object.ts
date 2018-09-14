@@ -4,6 +4,7 @@ export default class InvoiceUpdatePage {
   pageTitle: ElementFinder = element(by.id('storeApp.invoiceInvoice.home.createOrEditLabel'));
   saveButton: ElementFinder = element(by.id('save-entity'));
   cancelButton: ElementFinder = element(by.id('cancel-save'));
+  codeInput: ElementFinder = element(by.css('input#invoice-code'));
   dateInput: ElementFinder = element(by.css('input#invoice-date'));
   detailsInput: ElementFinder = element(by.css('input#invoice-details'));
   statusSelect: ElementFinder = element(by.css('select#invoice-status'));
@@ -13,6 +14,14 @@ export default class InvoiceUpdatePage {
 
   getPageTitle() {
     return this.pageTitle;
+  }
+
+  setCodeInput(code) {
+    this.codeInput.sendKeys(code);
+  }
+
+  getCodeInput() {
+    return this.codeInput.getAttribute('value');
   }
 
   setDateInput(date) {

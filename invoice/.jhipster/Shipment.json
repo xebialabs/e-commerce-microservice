@@ -20,9 +20,10 @@
     "relationships": [
         {
             "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
             "relationshipName": "invoice",
             "otherEntityName": "invoice",
-            "otherEntityField": "id"
+            "otherEntityField": "code"
         }
     ],
     "changelogDate": "20180912102446",
@@ -32,7 +33,7 @@
     "service": "serviceClass",
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,
-    "clientRootFolder": "invoice",
+    "clientRootFolder": "",
     "applications": "*",
     "microserviceName": "invoice"
 }

@@ -2,7 +2,7 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'com.gorylenko.gradle-git-properties'
 
 dependencies {
-
+    testCompile "com.h2database:h2"
 }
 
 def profiles = 'prod'

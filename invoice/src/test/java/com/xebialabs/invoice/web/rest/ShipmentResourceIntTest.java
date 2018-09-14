@@ -3,6 +3,7 @@ package com.xebialabs.invoice.web.rest;
 import com.xebialabs.invoice.InvoiceApp;
 
 import com.xebialabs.invoice.domain.Shipment;
+import com.xebialabs.invoice.domain.Invoice;
 import com.xebialabs.invoice.repository.ShipmentRepository;
 import com.xebialabs.invoice.service.ShipmentService;
 import com.xebialabs.invoice.web.rest.errors.ExceptionTranslator;
@@ -53,9 +54,7 @@ public class ShipmentResourceIntTest {
 
     @Autowired
     private ShipmentRepository shipmentRepository;
-
     
-
     @Autowired
     private ShipmentService shipmentService;
 
@@ -97,6 +96,11 @@ public class ShipmentResourceIntTest {
             .trackingCode(DEFAULT_TRACKING_CODE)
             .date(DEFAULT_DATE)
             .details(DEFAULT_DETAILS);
+        // Add required entity
+        Invoice invoice = InvoiceResourceIntTest.createEntity(em);
+        em.persist(invoice);
+        em.flush();
+        shipment.setInvoice(invoice);
         return shipment;
     }
 
@@ -178,7 +182,6 @@ public class ShipmentResourceIntTest {
             .andExpect(jsonPath("$.[*].details").value(hasItem(DEFAULT_DETAILS.toString())));
     }
     
-
     @Test
     @Transactional
     public void getShipment() throws Exception {
@@ -194,6 +197,7 @@ public class ShipmentResourceIntTest {
             .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()))
             .andExpect(jsonPath("$.details").value(DEFAULT_DETAILS.toString()));
     }
+
     @Test
     @Transactional
     public void getNonExistingShipment() throws Exception {
@@ -240,7 +244,7 @@ public class ShipmentResourceIntTest {
 
         // Create the Shipment
 
-        // If the entity doesn't have an ID, it will throw BadRequestAlertException 
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restShipmentMockMvc.perform(put("/api/shipments")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(shipment)))

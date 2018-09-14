@@ -15,6 +15,7 @@ export const enum PaymentMethod {
 
 export interface IInvoice {
   id?: number;
+  code?: string;
   date?: Moment;
   details?: string;
   status?: InvoiceStatus;
