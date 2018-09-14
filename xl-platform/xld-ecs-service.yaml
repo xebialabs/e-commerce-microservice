@@ -29,7 +29,7 @@ spec:
           - name: ecommerce-registry
             containerName: ecommerce-registry
             type: aws.ecs.ContainerDefinitionSpec
-            image: jhipster/jhipster-registry:v4.0.0
+            image: jhipster/jhipster-registry:v4.0.2
             cpu: 1024
             softMemoryLimit: 768
             portMappings:
