@@ -1,7 +1,7 @@
 version: '2'
 services:
     invoice-app:
-        image: invoice
+        image: ecommerce-invoice
         environment:
             - SPRING_PROFILES_ACTIVE=prod,swagger
             - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka
@@ -19,7 +19,7 @@ services:
             --character_set_server=utf8mb4 --explicit_defaults_for_timestamp
     
     notification-app:
-        image: notification
+        image: ecommerce-notification
         environment:
             - SPRING_PROFILES_ACTIVE=prod,swagger
             - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka
@@ -32,7 +32,7 @@ services:
         image: mongo:3.6.3
     
     store-app:
-        image: store
+        image: ecommerce-store
         environment:
             - SPRING_PROFILES_ACTIVE=prod,swagger
             - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka
