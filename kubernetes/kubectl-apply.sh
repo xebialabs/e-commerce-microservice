@@ -6,4 +6,4 @@ kubectl apply -f registry/
 kubectl apply -f invoice/
 kubectl apply -f notification/
 kubectl apply -f store/
-kubectl apply -f console/
+#kubectl apply -f console/
