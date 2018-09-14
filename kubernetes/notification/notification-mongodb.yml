@@ -29,6 +29,8 @@ metadata:
   name: notification-mongodb
   namespace: default
 spec:
+  type: ClusterIP
+  clusterIP: None        
   selector:
     app: notification-mongodb
   ports:
