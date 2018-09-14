@@ -31,7 +31,7 @@ def aws_credentials_to_infrastructure(credentialsfile):
 
     # Build CIs for XL Deploy
     return {
-        'apiVersion': 'xl-deploy/v1alpha1',
+        'apiVersion': 'xl-deploy/v1beta1',
         'kind': 'Infrastructure',
         'spec': [
             {
@@ -50,7 +50,7 @@ def aws_config_to_environment(configfile, infrastructure):
 
     # Build CIs for XL Deploy
     return {
-        'apiVersion': 'xl-deploy/v1alpha1',
+        'apiVersion': 'xl-deploy/v1beta1',
         'kind': 'Environments',
         'spec': [
             {
