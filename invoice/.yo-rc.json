@@ -1,38 +1,38 @@
 {
   "generator-jhipster": {
-    "promptValues": {
-      "packageName": "com.xebialabs.invoice",
-      "nativeLanguage": "en"
-    },
-    "jhipsterVersion": "5.3.1",
     "applicationType": "microservice",
-    "baseName": "invoice",
-    "packageName": "com.xebialabs.invoice",
-    "packageFolder": "com/xebialabs/invoice",
-    "serverPort": "8081",
     "authenticationType": "jwt",
+    "baseName": "invoice",
+    "buildTool": "gradle",
     "cacheProvider": "hazelcast",
-    "enableHibernateCache": true,
-    "websocket": false,
+    "clientPackageManager": "npm",
     "databaseType": "sql",
     "devDatabaseType": "h2Disk",
-    "prodDatabaseType": "mysql",
-    "searchEngine": false,
-    "messageBroker": false,
-    "serviceDiscoveryType": "eureka",
-    "buildTool": "gradle",
+    "enableHibernateCache": true,
     "enableSwaggerCodegen": false,
-    "jwtSecretKey": "ZTk4MjZjYjg5ODE0NTJlODFiNTlmOTJmZWNkNmY0MTFhYTQ3M2IxYzFkNTMyYmI3MTg0MWNlNDdkYjFlZTAwNzQ2NTBjZGJlZjkyMjYzODhjNWMxY2NiMDEwYTQ5MDM3Y2Y2NTAzOGRhZmFkNDYzZjcyMDIxZDA4ZDEyMzE0ZGQ=",
     "enableTranslation": true,
-    "testFrameworks": [],
     "jhiPrefix": "jhi",
-    "clientPackageManager": "npm",
-    "nativeLanguage": "en",
+    "jhipsterVersion": "5.3.1",
+    "jwtSecretKey": "ZTk4MjZjYjg5ODE0NTJlODFiNTlmOTJmZWNkNmY0MTFhYTQ3M2IxYzFkNTMyYmI3MTg0MWNlNDdkYjFlZTAwNzQ2NTBjZGJlZjkyMjYzODhjNWMxY2NiMDEwYTQ5MDM3Y2Y2NTAzOGRhZmFkNDYzZjcyMDIxZDA4ZDEyMzE0ZGQ=",
     "languages": [
       "en",
       "nl"
     ],
+    "messageBroker": false,
+    "nativeLanguage": "en",
+    "packageFolder": "com/xebialabs/invoice",
+    "packageName": "com.xebialabs.invoice",
+    "prodDatabaseType": "mysql",
+    "promptValues": {
+      "nativeLanguage": "en",
+      "packageName": "com.xebialabs.invoice"
+    },
+    "searchEngine": false,
+    "serverPort": "8081",
+    "serviceDiscoveryType": "eureka",
     "skipClient": true,
-    "skipUserManagement": true
+    "skipUserManagement": true,
+    "testFrameworks": [],
+    "websocket": false
   }
 }
