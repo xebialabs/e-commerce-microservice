@@ -2,7 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: jhipster-zipkin
-  namespace: default
+  namespace: xl-demo
 spec:
   replicas: 1
   template:
@@ -29,7 +29,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: jhipster-zipkin
-  namespace: default
+  namespace: xl-demo
   labels:
     app: jhipster-zipkin
 spec:

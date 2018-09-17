@@ -2,7 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: invoice-mysql
-  namespace: default
+  namespace: xl-demo
 spec:
   replicas: 1
   template:
@@ -38,7 +38,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: invoice-mysql
-  namespace: default
+  namespace: xl-demo
 spec:
   selector:
     app: invoice-mysql
