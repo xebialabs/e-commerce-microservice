@@ -59,7 +59,7 @@ spec:
       terminationGracePeriodSeconds: 10
       containers:
       - name: jhipster-registry
-        image: jhipster/jhipster-registry:v4.0.1
+        image: jhipster/jhipster-registry:v4.0.2
         ports:
         - containerPort: 8761
         env:
