@@ -34,7 +34,7 @@ spec:
   ports:
   - port: 8761
     name: http
-  clusterIP: None
+  type: LoadBalancer
   selector:
     app: jhipster-registry
 ---

@@ -1,0 +1,21 @@
+apiVersion: xl-deploy/v1beta1
+kind: Applications
+spec:
+- name: ecommerce
+  type: core.Directory
+  children:
+    - name: e-commerce-registry
+      type: udm.Application
+      children:
+      - name: '1.0'
+        type: udm.DeploymentPackage
+        deployables:
+        - name: application-config
+          type: k8s.ResourcesFile
+          file: !file kubernetes/registry/application-configmap.yml
+        - name: jhipster-registry
+          type: k8s.ResourcesFile
+          file: !file kubernetes/registry/jhipster-registry.yml
+
+
+
