@@ -45,7 +45,7 @@ metadata:
   namespace: xl-demo
 spec:
   serviceName: jhipster-registry
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: jhipster-registry
