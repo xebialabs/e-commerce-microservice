@@ -14,7 +14,7 @@ import { IInvoice } from 'app/shared/model/invoice/invoice.model';
 import { convertDateTimeFromServer } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
 
-export interface IInvoiceUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: number }> {}
+export interface IInvoiceUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export interface IInvoiceUpdateState {
   isNew: boolean;

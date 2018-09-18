@@ -10,7 +10,7 @@ buildscript {
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${spring_boot_version}"
         classpath "io.spring.gradle:propdeps-plugin:0.0.10.RELEASE"
-        classpath "gradle.plugin.com.gorylenko.gradle-git-properties:gradle-git-properties:1.5.1"
+        classpath "gradle.plugin.com.gorylenko.gradle-git-properties:gradle-git-properties:1.5.2"
         //jhipster-needle-gradle-buildscript-dependency - JHipster will add additional gradle build script plugins here
     }
 }
@@ -20,7 +20,7 @@ plugins {
     id "net.ltgt.apt-eclipse" version "0.18"
     id "net.ltgt.apt-idea" version "0.18"
     id "net.ltgt.apt" version "0.18"
-    id "io.spring.dependency-management" version "1.0.5.RELEASE"
+    id "io.spring.dependency-management" version "1.0.6.RELEASE"
     //jhipster-needle-gradle-plugins - JHipster will add additional gradle plugins here
 }
 
@@ -166,8 +166,8 @@ dependencies {
     compile "org.springframework.cloud:spring-cloud-starter-netflix-ribbon"
     compile "org.springframework.cloud:spring-cloud-starter-netflix-hystrix"
     compile "org.springframework.retry:spring-retry"
-    compile "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client"
-    compile "org.springframework.cloud:spring-cloud-starter-config"
+    compile "org.springframework.cloud:spring-cloud-starter-consul-discovery"
+    compile "org.springframework.cloud:spring-cloud-starter-consul-config"
     compile "org.springframework.cloud:spring-cloud-starter-openfeign"
     compile "org.springframework.cloud:spring-cloud-spring-service-connector"
     compile "org.springframework.security:spring-security-config"

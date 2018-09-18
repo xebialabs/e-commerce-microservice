@@ -21,10 +21,13 @@ import net.logstash.logback.stacktrace.ShortenedThrowableConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.consul.ConditionalOnConsulEnabled;
+import org.springframework.cloud.consul.serviceregistry.ConsulRegistration;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@ConditionalOnConsulEnabled
 @RefreshScope
 public class LoggingConfiguration {
 
@@ -40,14 +43,17 @@ public class LoggingConfiguration {
 
     private final String serverPort;
 
+    private final ConsulRegistration consulRegistration;
+
     private final String version;
 
     private final JHipsterProperties jHipsterProperties;
 
     public LoggingConfiguration(@Value("${spring.application.name}") String appName, @Value("${server.port}") String serverPort,
-         @Value("${info.project.version:}") String version, JHipsterProperties jHipsterProperties) {
+         ConsulRegistration consulRegistration, @Value("${info.project.version:}") String version, JHipsterProperties jHipsterProperties) {
         this.appName = appName;
         this.serverPort = serverPort;
+        this.consulRegistration = consulRegistration;
         this.version = version;
         this.jHipsterProperties = jHipsterProperties;
         if (jHipsterProperties.getLogging().getLogstash().isEnabled()) {
@@ -72,6 +78,9 @@ public class LoggingConfiguration {
         logstashAppender.setName(LOGSTASH_APPENDER_NAME);
         logstashAppender.setContext(context);
         String optionalFields = "";
+        if (consulRegistration != null) {
+            optionalFields = "\"instance_id\":\"" + consulRegistration.getInstanceId() + "\",";
+        }
         String customFields = "{\"app_name\":\"" + appName + "\",\"app_port\":\"" + serverPort + "\"," +
             optionalFields + "\"version\":\"" + version + "\"}";
 

@@ -25,5 +25,5 @@ task buildDocker(type: DockerBuildImage, dependsOn: 'copyDockerFiles') {
     description = "Package application as Docker image"
     group = "Docker"
     inputDir = project.file("${project.buildDir}/docker")
-    tags = ["ecommerce-store:latest".toString(), "ecommerce-store:${project.version}".toString()]
+    tags = ["store:latest".toString(), "store:${project.version}".toString()]
 }

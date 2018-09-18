@@ -13,12 +13,6 @@
 # http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 # ===================================================================
 
-eureka:
-    client:
-        enabled: false
-    instance:
-        appname: notification
-        instanceId: notification:${spring.application.instance-id:${random.value}}
 
 spring:
     application:

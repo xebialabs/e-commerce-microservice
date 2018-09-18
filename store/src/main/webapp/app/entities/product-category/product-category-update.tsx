@@ -14,7 +14,7 @@ import { IProductCategory } from 'app/shared/model/product-category.model';
 import { convertDateTimeFromServer } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
 
-export interface IProductCategoryUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: number }> {}
+export interface IProductCategoryUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export interface IProductCategoryUpdateState {
   isNew: boolean;

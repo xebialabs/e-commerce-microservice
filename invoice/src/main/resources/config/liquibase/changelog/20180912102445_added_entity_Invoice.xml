@@ -18,7 +18,7 @@
         Added the entity Invoice.
     -->
     <changeSet id="20180912102445-1" author="jhipster">
-        <createTable tableName="invoice">
+        <createTable tableName="invoice" remarks="Entities for Invoice microservice">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>

@@ -14,32 +14,6 @@
 # http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 # ===================================================================
 
-eureka:
-    client:
-        enabled: true
-        healthcheck:
-            enabled: true
-        fetch-registry: true
-        register-with-eureka: true
-        instance-info-replication-interval-seconds: 10
-        registry-fetch-interval-seconds: 10
-    instance:
-        appname: store
-        instanceId: store:${spring.application.instance-id:${random.value}}
-        lease-renewal-interval-in-seconds: 5
-        lease-expiration-duration-in-seconds: 10
-        status-page-url-path: ${management.endpoints.web.base-path}/info
-        health-check-url-path: ${management.endpoints.web.base-path}/health
-        metadata-map:
-            zone: primary # This is needed for the load balancer
-            profile: ${spring.profiles.active}
-            version: ${info.project.version:}
-            git-version: ${git.commit.id.describe:}
-            git-commit: ${git.commit.id.abbrev:}
-            git-branch: ${git.branch:}
-ribbon:
-    eureka:
-        enabled: true
 # See http://cloud.spring.io/spring-cloud-netflix/spring-cloud-netflix.html
 zuul: # those values must be configured depending on the application specific needs
     sensitive-headers: Cookie,Set-Cookie #see https://github.com/spring-cloud/spring-cloud-netflix/issues/3126
@@ -48,6 +22,7 @@ zuul: # those values must be configured depending on the application specific ne
         max-per-route-connections: 100
     semaphore:
         max-semaphores: 500
+    ignoredServices: 'consul,store' # Prevent Consul and the "store" app itself from having a Zuul route automatically created for them
 
 # See https://github.com/Netflix/Hystrix/wiki/Configuration
 hystrix:
@@ -63,7 +38,7 @@ management:
         web:
             base-path: /management
             exposure:
-                include: ["configprops", "env", "health", "info", "threaddump", "logfile"]
+                include: ["configprops", "env", "health", "info", "threaddump", "logfile" ]
     endpoint:
         health:
             show-details: when_authorized
@@ -79,6 +54,14 @@ management:
 spring:
     application:
         name: store
+    cloud:
+        consul:
+            discovery:
+                healthCheckPath: /management/health
+                instanceId: ${spring.application.name}:${spring.application.instance-id:${random.value}}
+            config:
+                watch:
+                    enabled: false
     jpa:
         open-in-view: false
         hibernate:

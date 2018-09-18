@@ -15,6 +15,7 @@
             "refreshScope": "Microservice Refresh Scope",
             "configServer": "Microservice Config Server",
             "hystrix": "Hystrix",
+            "consul": "Consul",
             "diskSpace": "Disk space",
             "mail": "Email",
             "db": "Database"

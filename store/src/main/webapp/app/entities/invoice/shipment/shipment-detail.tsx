@@ -12,7 +12,7 @@ import { IShipment } from 'app/shared/model/invoice/shipment.model';
 // tslint:disable-next-line:no-unused-variable
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 
-export interface IShipmentDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: number }> {}
+export interface IShipmentDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export class ShipmentDetail extends React.Component<IShipmentDetailProps> {
   componentDidMount() {

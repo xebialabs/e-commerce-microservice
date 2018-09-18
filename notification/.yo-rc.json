@@ -12,7 +12,7 @@
     "enableSwaggerCodegen": false,
     "enableTranslation": true,
     "jhiPrefix": "jhi",
-    "jhipsterVersion": "5.3.1",
+    "jhipsterVersion": "5.3.4",
     "jwtSecretKey": "NTdlMTRhNzU4YTQ5MDQ0NDczMjJiZjVkM2UwNWI3N2VkZWNiMWI5YzlhZWQyYzlhZGI1Yzk3MDZkZDA2MGIwOWJjNmQxMTYwOWZkM2Y0MzgwYjc4YzIxOWFmNWU1NDBiOTUzMzZkNTNmYmNlMTkzY2RlNjA2Y2JjZWNlMzUwNTc=",
     "languages": [
       "en",
@@ -29,10 +29,15 @@
     },
     "searchEngine": false,
     "serverPort": "8082",
-    "serviceDiscoveryType": "eureka",
+    "serviceDiscoveryType": "consul",
     "skipClient": true,
     "skipUserManagement": true,
     "testFrameworks": [],
-    "websocket": false
-  }
+    "websocket": false,
+    "skipServer": false,
+    "useSass": false
+  },
+  "entities": [
+    "Notification"
+  ]
 }

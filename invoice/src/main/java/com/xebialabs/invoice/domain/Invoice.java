@@ -1,6 +1,7 @@
 package com.xebialabs.invoice.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModel;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -19,8 +20,9 @@ import com.xebialabs.invoice.domain.enumeration.InvoiceStatus;
 import com.xebialabs.invoice.domain.enumeration.PaymentMethod;
 
 /**
- * A Invoice.
+ * Entities for Invoice microservice
  */
+@ApiModel(description = "Entities for Invoice microservice")
 @Entity
 @Table(name = "invoice")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)

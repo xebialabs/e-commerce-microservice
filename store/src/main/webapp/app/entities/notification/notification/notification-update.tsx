@@ -14,7 +14,7 @@ import { INotification } from 'app/shared/model/notification/notification.model'
 import { convertDateTimeFromServer } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
 
-export interface INotificationUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: number }> {}
+export interface INotificationUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export interface INotificationUpdateState {
   isNew: boolean;
@@ -151,7 +151,7 @@ export class NotificationUpdate extends React.Component<INotificationUpdateProps
                   </Label>
                   <AvField
                     id="notification-userId"
-                    type="number"
+                    type="string"
                     className="form-control"
                     name="userId"
                     validate={{
@@ -166,7 +166,7 @@ export class NotificationUpdate extends React.Component<INotificationUpdateProps
                   </Label>
                   <AvField
                     id="notification-productId"
-                    type="number"
+                    type="string"
                     className="form-control"
                     name="productId"
                     validate={{

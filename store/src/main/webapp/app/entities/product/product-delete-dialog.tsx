@@ -9,7 +9,7 @@ import { IProduct } from 'app/shared/model/product.model';
 import { IRootState } from 'app/shared/reducers';
 import { getEntity, deleteEntity } from './product.reducer';
 
-export interface IProductDeleteDialogProps extends StateProps, DispatchProps, RouteComponentProps<{ id: number }> {}
+export interface IProductDeleteDialogProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export class ProductDeleteDialog extends React.Component<IProductDeleteDialogProps> {
   componentDidMount() {

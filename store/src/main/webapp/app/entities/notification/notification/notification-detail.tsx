@@ -12,7 +12,7 @@ import { INotification } from 'app/shared/model/notification/notification.model'
 // tslint:disable-next-line:no-unused-variable
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 
-export interface INotificationDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: number }> {}
+export interface INotificationDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export class NotificationDetail extends React.Component<INotificationDetailProps> {
   componentDidMount() {

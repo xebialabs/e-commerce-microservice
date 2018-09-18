@@ -13,7 +13,7 @@
     "enableSwaggerCodegen": false,
     "enableTranslation": true,
     "jhiPrefix": "jhi",
-    "jhipsterVersion": "5.3.1",
+    "jhipsterVersion": "5.3.4",
     "jwtSecretKey": "MTU0MzNkYjY0N2Y5Y2U5Y2IxOGE1YjZiYTVjMGQ1YjVhOWI5ZTY5NjA0ZjgwYTkzMWVkYmJiNTY1ZjljNmEwNjFiNmU5Y2Q3ZTMxMTkzOGI3MTFiZjhkZmM1OTRhNmZlNDNjODI2MzQxMDAxNDkyZDA1MjliOTEyZThhZjZjZjM=",
     "languages": [
       "en",
@@ -30,11 +30,24 @@
     },
     "searchEngine": false,
     "serverPort": "8080",
-    "serviceDiscoveryType": "eureka",
+    "serviceDiscoveryType": "consul",
     "testFrameworks": [
       "protractor"
     ],
     "useSass": true,
-    "websocket": false
-  }
+    "websocket": false,
+    "skipClient": false,
+    "skipServer": false,
+    "skipUserManagement": false
+  },
+  "entities": [
+    "Product",
+    "ProductCategory",
+    "Customer",
+    "ProductOrder",
+    "OrderItem",
+    "Invoice",
+    "Shipment",
+    "Notification"
+  ]
 }

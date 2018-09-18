@@ -90,5 +90,7 @@
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,
     "clientRootFolder": "",
-    "applications": "*"
+    "applications": [
+        "store"
+    ]
 }

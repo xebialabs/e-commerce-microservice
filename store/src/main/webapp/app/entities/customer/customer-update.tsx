@@ -16,18 +16,18 @@ import { ICustomer } from 'app/shared/model/customer.model';
 import { convertDateTimeFromServer } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
 
-export interface ICustomerUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: number }> {}
+export interface ICustomerUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export interface ICustomerUpdateState {
   isNew: boolean;
-  userId: number;
+  userId: string;
 }
 
 export class CustomerUpdate extends React.Component<ICustomerUpdateProps, ICustomerUpdateState> {
   constructor(props) {
     super(props);
     this.state = {
-      userId: 0,
+      userId: '0',
       isNew: !this.props.match.params || !this.props.match.params.id
     };
   }

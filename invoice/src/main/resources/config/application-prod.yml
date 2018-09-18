@@ -19,19 +19,18 @@ logging:
         com.xebialabs.invoice: INFO
         io.github.jhipster: INFO
 
-eureka:
-    instance:
-        prefer-ip-address: true
-    client:
-        service-url:
-            defaultZone: http://admin:${jhipster.registry.password}@localhost:8761/eureka/
-
 spring:
     devtools:
         restart:
             enabled: false
         livereload:
             enabled: false
+    cloud:
+        consul:
+            discovery:
+               prefer-ip-address: true
+            host: localhost
+            port: 8500
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
         url: jdbc:mysql://localhost:3306/invoice?useUnicode=true&characterEncoding=utf8&useSSL=false

@@ -19,13 +19,6 @@ logging:
         io.github.jhipster: DEBUG
         com.xebialabs.invoice: DEBUG
 
-eureka:
-    instance:
-        prefer-ip-address: true
-    client:
-        service-url:
-            defaultZone: http://admin:${jhipster.registry.password}@localhost:8761/eureka/
-
 spring:
     profiles:
         active: dev
@@ -40,6 +33,12 @@ spring:
             enabled: false # we use Webpack dev server + BrowserSync for livereload
     jackson:
         serialization.indent_output: true
+    cloud:
+        consul:
+            discovery:
+               prefer-ip-address: true
+            host: localhost
+            port: 8500
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
         url: jdbc:h2:file:./build/h2db/db/invoice;DB_CLOSE_DELAY=-1

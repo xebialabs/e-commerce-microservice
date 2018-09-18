@@ -16,18 +16,18 @@ import { IProductOrder } from 'app/shared/model/product-order.model';
 import { convertDateTimeFromServer } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
 
-export interface IProductOrderUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: number }> {}
+export interface IProductOrderUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export interface IProductOrderUpdateState {
   isNew: boolean;
-  customerId: number;
+  customerId: string;
 }
 
 export class ProductOrderUpdate extends React.Component<IProductOrderUpdateProps, IProductOrderUpdateState> {
   constructor(props) {
     super(props);
     this.state = {
-      customerId: 0,
+      customerId: '0',
       isNew: !this.props.match.params || !this.props.match.params.id
     };
   }
@@ -146,7 +146,7 @@ export class ProductOrderUpdate extends React.Component<IProductOrderUpdateProps
                   <Label id="invoiceIdLabel" for="invoiceId">
                     <Translate contentKey="storeApp.productOrder.invoiceId">Invoice Id</Translate>
                   </Label>
-                  <AvField id="product-order-invoiceId" type="number" className="form-control" name="invoiceId" />
+                  <AvField id="product-order-invoiceId" type="string" className="form-control" name="invoiceId" />
                 </AvGroup>
                 <AvGroup>
                   <Label for="customer.email">

@@ -10,6 +10,7 @@ application {
     buildTool gradle,
     clientFramework react,
     useSass true,
+    languages [en, nl]
     testFrameworks [protractor]
   }
   entities *
@@ -25,6 +26,7 @@ application {
     prodDatabaseType mysql,
     buildTool gradle,
     serverPort 8081,
+    languages [en, nl]
     skipUserManagement true
   }
   entities Invoice, Shipment
@@ -44,6 +46,7 @@ application {
     enableHibernateCache false,
     buildTool gradle,
     serverPort 8082,
+    languages [en, nl]
     skipUserManagement true
   }
   entities Notification
