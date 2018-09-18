@@ -4,60 +4,60 @@ spec:
 - name: ecommerce
   type: core.Directory
   children:
-    - name: ecommerce-ecs-fargate-cluster
+    - name: consul-ecommerce-ecs-fargate-cluster
       type: udm.Application
       children:
       - name: '1.0'
         type: udm.DeploymentPackage
         deployables:
 # ECS cluster (no instances, FARGATE only)
-        - name: ecommerce-ecs-cluster
+        - name: consul-ecommerce-ecs-cluster
           type: aws.ecs.ClusterSpec
-          clusterName: '{{username}}-ecommerce-ecs-cluster'
+          clusterName: '{{username}}-consul-ecommerce-ecs-cluster'
           region: '{{region}}'
           
 # Networking
-        - name: ecommerce-ecs-vpc
+        - name: consul-ecommerce-ecs-vpc
           type: aws.vpc.VPCSpec
-          vpcName: '{{username}}-ecommerce-ecs-vpc'
+          vpcName: '{{username}}-consul-ecommerce-ecs-vpc'
           region: '{{region}}'
           cidrBlock: 10.0.0.0/16
           createInternetGateway: true
-          internetGatewayName: '{{username}}-ecommerce-ecs-igw'
-        - name: ecommerce-ecs-subnet-ipv4-az-1a
+          internetGatewayName: '{{username}}-consul-ecommerce-ecs-igw'
+        - name: consul-ecommerce-ecs-subnet-ipv4-az-1a
           type: aws.vpc.SubnetSpec
-          subnetName: '{{username}}-ecommerce-ecs-subnet-ipv4-az-1a'
+          subnetName: '{{username}}-consul-ecommerce-ecs-subnet-ipv4-az-1a'
           region: '{{region}}'
           availabilityZone: '{{region}}a'
-          vpc: 'Name:{{username}}-ecommerce-ecs-vpc'
+          vpc: 'Name:{{username}}-consul-ecommerce-ecs-vpc'
           cidrBlock: 10.0.0.0/24
-        - name: ecommerce-ecs-subnet-ipv4-az-1b
+        - name: consul-ecommerce-ecs-subnet-ipv4-az-1b
           type: aws.vpc.SubnetSpec
-          subnetName: '{{username}}-ecommerce-ecs-subnet-ipv4-az-1b'
+          subnetName: '{{username}}-consul-ecommerce-ecs-subnet-ipv4-az-1b'
           region: '{{region}}'
           availabilityZone: '{{region}}b'
-          vpc: 'Name:{{username}}-ecommerce-ecs-vpc'
+          vpc: 'Name:{{username}}-consul-ecommerce-ecs-vpc'
           cidrBlock: 10.0.1.0/24
-        - name: ecommerce-ecs-route-table
+        - name: consul-ecommerce-ecs-route-table
           type: aws.vpc.RouteTableSpec
-          routeTableName: '{{username}}-ecommerce-ecs-route-table'
+          routeTableName: '{{username}}-consul-ecommerce-ecs-route-table'
           region: '{{region}}'
-          vpc: 'Name:{{username}}-ecommerce-ecs-vpc'
+          vpc: 'Name:{{username}}-consul-ecommerce-ecs-vpc'
           is_main: true
           subnets:
-          - 'Name:{{username}}-ecommerce-ecs-subnet-ipv4-az-1a'
-          - 'Name:{{username}}-ecommerce-ecs-subnet-ipv4-az-1b'
+          - 'Name:{{username}}-consul-ecommerce-ecs-subnet-ipv4-az-1a'
+          - 'Name:{{username}}-consul-ecommerce-ecs-subnet-ipv4-az-1b'
           routes:
           - name: route1
             type: aws.vpc.RouteSpec
             ipv4Address: 0.0.0.0/0
-            gatewayId: 'Name:{{username}}-ecommerce-ecs-igw'
-        - name: ecommerce-ecs-security-group
+            gatewayId: 'Name:{{username}}-consul-ecommerce-ecs-igw'
+        - name: consul-ecommerce-ecs-security-group
           type: aws.vpc.SecurityGroupSpec
-          securityGroupName: '{{username}}-ecommerce-ecs-security-group'
+          securityGroupName: '{{username}}-consul-ecommerce-ecs-security-group'
           description: Created by XL Deploy
           region: '{{region}}'
-          vpc: 'Name:{{username}}-ecommerce-ecs-vpc'
+          vpc: 'Name:{{username}}-consul-ecommerce-ecs-vpc'
           inboundRules:
           - name: inbound
             type: aws.vpc.SecurityGroupInboundRuleSpec
