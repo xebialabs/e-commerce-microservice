@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: store
-  namespace: default
+  namespace: xl-demo
 spec:
   replicas: 1
   selector:
@@ -34,21 +34,16 @@ spec:
                 done
       containers:
       - name: store-app
-        image: xebialabsunsupported/ecommerce-store
+        image: xebialabsunsupported/consul-ecommerce-store
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: prod
-        - name: SPRING_CLOUD_CONFIG_URI
-          value: http://admin:${jhipster.registry.password}@jhipster-registry.default.svc.cluster.local:8761/config
-        - name: JHIPSTER_REGISTRY_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: registry-secret
-              key: registry-admin-password
-        - name: EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE
-          value: http://admin:${jhipster.registry.password}@jhipster-registry.default.svc.cluster.local:8761/eureka/
+        - name: SPRING_CLOUD_CONSUL_HOST
+          value: consul.xl-demo.svc.cluster.local
+        - name: SPRING_CLOUD_CONSUL_PORT
+          value: "8500"
         - name: SPRING_DATASOURCE_URL
-          value: jdbc:mysql://store-mysql.default.svc.cluster.local:3306/store?useUnicode=true&characterEncoding=utf8&useSSL=false
+          value: jdbc:mysql://store-mysql.xl-demo.svc.cluster.local:3306/store?useUnicode=true&characterEncoding=utf8&useSSL=false
         - name: JHIPSTER_METRICS_LOGS_ENABLED
           value: 'true'
         - name: JHIPSTER_LOGGING_LOGSTASH_ENABLED

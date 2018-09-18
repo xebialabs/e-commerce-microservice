@@ -5,12 +5,12 @@
 You will need to push your image to a registry. If you have not done so, use the following commands to tag and push the images:
 
 ```
-$ docker image tag ecommerce-invoice xebialabsunsupported/ecommerce-invoice
-$ docker push xebialabsunsupported/ecommerce-invoice
-$ docker image tag ecommerce-notification xebialabsunsupported/ecommerce-notification
-$ docker push xebialabsunsupported/ecommerce-notification
-$ docker image tag ecommerce-store xebialabsunsupported/ecommerce-store
-$ docker push xebialabsunsupported/ecommerce-store
+$ docker image tag invoice xebialabsunsupported/invoice
+$ docker push xebialabsunsupported/invoice
+$ docker image tag notification xebialabsunsupported/notification
+$ docker push xebialabsunsupported/notification
+$ docker image tag store xebialabsunsupported/store
+$ docker push xebialabsunsupported/store
 ```
 
 ## Deployment
@@ -27,7 +27,7 @@ You can deploy all your apps by running the below bash command:
 Use these commands to find your application's IP addresses:
 
 ```
-$ kubectl get svc store
+$ kubectl get svc store -n xl-demo
 ```
 
 ## Scaling your deployments
@@ -35,7 +35,7 @@ $ kubectl get svc store
 You can scale your apps using
 
 ```
-$ kubectl scale deployment <app-name> --replicas <replica-count>
+$ kubectl scale deployment <app-name> --replicas <replica-count> -n xl-demo
 ```
 
 ## zero-downtime deployments
@@ -43,7 +43,7 @@ $ kubectl scale deployment <app-name> --replicas <replica-count>
 The default way to update a running app in kubernetes, is to deploy a new image tag to your docker registry and then deploy it using
 
 ```
-$ kubectl set image deployment/<app-name>-app <app-name>=<new-image> 
+$ kubectl set image deployment/<app-name>-app <app-name>=<new-image>  -n xl-demo
 ```
 
 Using livenessProbes and readinessProbe allows you to tell kubernetes about the state of your apps, in order to ensure availablity of your services. You will need minimum 2 replicas for every app deployment, you want to have zero-downtime deployed. This is because the rolling upgrade strategy first kills a running replica in order to place a new. Running only one replica, will cause a short downtime during upgrades.
@@ -54,32 +54,13 @@ Using livenessProbes and readinessProbe allows you to tell kubernetes about the 
 
 Your application logs can be found in JHipster console (powered by Kibana). You can find its service details by
 ```
-$ kubectl get svc jhipster-console
+$ kubectl get svc jhipster-console -n xl-demo
 ```
 
 * If you have chosen *Ingress*, then you should be able to access Kibana using the given ingress domain.
 * If you have chosen *NodePort*, then point your browser to an IP of any of your nodes and use the node port described in the output.
 * If you have chosen *LoadBalancer*, then use the IaaS provided LB IP
 
-## JHipster registry
-
-The registry is deployed using a headless service in kubernetes, so the primary service has no IP address, and cannot get a node port. You can create a secondary service for any type, using:
-
-```
-$ kubectl expose service jhipster-registry --type=NodePort --name=exposed-registry
-```
-
-and explore the details using
-
-```
-$ kubectl get svc exposed-registry
-```
-
-For scaling the JHipster registry, use
-
-```
-$ kubectl scale statefulset jhipster-registry --replicas 3
-```
 
 
 ## Troubleshooting

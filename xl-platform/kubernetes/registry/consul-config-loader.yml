@@ -1,0 +1,30 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: consul-config-loader
+  namespace: xl-demo
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: consul-config-loader
+    spec:
+      containers:
+      - name: consul-config-loader
+        image: jhipster/consul-config-loader:v0.3.0
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: INIT_SLEEP_SECONDS
+          value: "5"
+        - name: CONSUL_URL
+          value: consul.xl-demo.svc.cluster.local
+        - name: CONSUL_PORT
+          value: "8500"
+        volumeMounts:
+        - name: config-volume
+          mountPath: /config
+      volumes:
+      - name: config-volume
+        configMap:
+          name: application-config

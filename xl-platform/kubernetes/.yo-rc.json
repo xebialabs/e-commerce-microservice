@@ -3,15 +3,15 @@
     "appsFolders": [
       "invoice",
       "notification",
-      "online-store"
+      "store"
     ],
-    "directoryPath": "../",
+    "directoryPath": "../../",
     "clusteredDbApps": [],
-    "serviceDiscoveryType": "eureka",
+    "serviceDiscoveryType": "consul",
     "jwtSecretKey": "NWJhN2MyYmEzYWY5ZmE4NmE1ODVkOTFmNzFkOTBmMDE0ZGEyOGZkZDgyZDhkMmIwNGYzZDU0YTY5OGU2OGY1YjcwZmJjYzIyZGMzOTlmNDA5NjdlODI5N2NiYmJjM2ZhMzNkYQ==",
     "dockerRepositoryName": "xebialabsunsupported",
     "dockerPushCommand": "docker push",
-    "kubernetesNamespace": "default",
+    "kubernetesNamespace": "xl-demo",
     "kubernetesServiceType": "LoadBalancer",
     "monitoring": "elk",
     "istio": "no",
