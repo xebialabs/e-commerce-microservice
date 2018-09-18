@@ -10,9 +10,9 @@ spec:
       - name: '1.0'
         type: udm.DeploymentPackage
         deployables:
-        - name: ecommerce-registry
+        - name: jhipster-registry
           type: aws.ecs.ServiceSpec
-          serviceName: ecommerce-registry
+          serviceName: jhipster-registry
           desiredCount: 1
           launchType: FARGATE
           networkMode: awsvpc
@@ -26,8 +26,8 @@ spec:
           securityGroups:
           - 'Name:{{username}}-ecommerce-ecs-security-group'
           containerDefinitions:
-          - name: ecommerce-registry
-            containerName: ecommerce-registry
+          - name: jhipster-registry
+            containerName: jhipster-registry
             type: aws.ecs.ContainerDefinitionSpec
             image: jhipster/jhipster-registry:v4.0.2
             cpu: 1024
@@ -37,8 +37,8 @@ spec:
               type: aws.ecs.PortSpec
               containerPort: 8761
             environment:
-              SPRING_PROFILES_ACTIVE: dev
-              SPRING_SECURITY_USER_PASSWORD: admin
+              SPRING_PROFILES_ACTIVE: prod
+              SPRING_SECURITY_USER_PASSWORD: admin # need to see how to secure secrets 
               JHIPSTER_REGISTRY_PASSWORD: admin
               JHIPSTER_SECURITY_AUTHENTICATION_JWT_SECRET: bXktc2VjcmV0LXRva2VuLXRvLWNoYW5nZS1pbi1wcm9kdWN0aW9uLWFuZC10by1rZWVwLWluLWEtc2VjdXJlLXBsYWNl
               SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_TYPE: native
@@ -52,10 +52,10 @@ spec:
               EUREKA_SERVER_PEER_NODE_CONNECT_TIMEOUT_MS: 2000
               EUREKA_CLIENT_FETCH_REGISTRY: true
               EUREKA_CLIENT_REGISTER_WITH_EUREKA: true
-              JHIPSTER_LOGGING_LOGSTASH_ENABLED: true
-              JHIPSTER_LOGGING_LOGSTASH_HOST: jhipster-logstash
-              JHIPSTER_METRICS_LOGS_ENABLED: true
-              JHIPSTER_METRICS_LOGS_REPORTFREQUENCY: 60
+              # JHIPSTER_LOGGING_LOGSTASH_ENABLED: true
+              # JHIPSTER_LOGGING_LOGSTASH_HOST: jhipster-logstash
+              # JHIPSTER_METRICS_LOGS_ENABLED: true
+              # JHIPSTER_METRICS_LOGS_REPORTFREQUENCY: 60
             logConfiguration:
             - name: cloudwatch-log-registry
               type: aws.ecs.LogConfigurationSpec
@@ -64,6 +64,7 @@ spec:
                 awslogs-group: "/ecs/ecommerce"
                 awslogs-region: "{{region}}"
                 awslogs-stream-prefix: "ecs"
+
         - name: ecommerce-store-app
           type: aws.ecs.ServiceSpec
           serviceName: ecommerce-store-app
@@ -100,11 +101,19 @@ spec:
                 awslogs-stream-prefix: "ecs"
             environment:
               SPRING_PROFILES_ACTIVE: prod,swagger
-              EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka
-              SPRING_CLOUD_CONFIG_URI: http://admin:$${jhipster.registry.password}@jhipster-registry:8761/config
-              SPRING_DATASOURCE_URL: jdbc:mysql://store-mysql:3306/store?useUnicode=true&characterEncoding=utf8&useSSL=false
-              JHIPSTER_SLEEP: 30
               JHIPSTER_REGISTRY_PASSWORD: admin
+              SPRING_CLOUD_CONFIG_URI: http://admin:${jhipster.registry.password}@jhipster-registry:8761/config
+              EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://admin:${jhipster.registry.password}@jhipster-registry:8761/eureka
+              SPRING_DATASOURCE_URL: jdbc:mysql://ecommerce-store-mysql:3306/store?useUnicode=true&characterEncoding=utf8&useSSL=false
+              JHIPSTER_METRICS_LOGS_ENABLED: true
+              # JHIPSTER_LOGGING_LOGSTASH_ENABLED: true
+              # JHIPSTER_LOGGING_LOGSTASH_HOST: jhipster-logstash
+              # SPRING_ZIPKIN_ENABLED: true
+              # SPRING_ZIPKIN_BASE_URL: http://jhipster-zipkin
+              # SPRING_SLEUTH_PROPAGATION_KEYS: x-request-id,x-ot-span-context
+              JAVA_OPTS:  -Xmx256m -Xms256m
+              # JHIPSTER_SLEEP: 30
+
         - name: ecommerce-store-db
           type: aws.ecs.ServiceSpec
           serviceName: ecommerce-store-db
@@ -135,11 +144,17 @@ spec:
                 awslogs-group: "/ecs/ecommerce"
                 awslogs-region: "{{region}}"
                 awslogs-stream-prefix: "ecs"
+            command: 
+            - mysqld
+            - --lower_case_table_names=1 
+            - --skip-ssl 
+            - --character_set_server=utf8mb4 
+            - --explicit_defaults_for_timestamp
             environment:
               MYSQL_USER: root
               MYSQL_ALLOW_EMPTY_PASSWORD: yes
               MYSQL_DATABASE: store
-            #command: mysqld --lower_case_table_names=1 --skip-ssl --character_set_server=utf8mb4 --explicit_defaults_for_timestamp
+
         - name: ecommerce-invoice-app
           type: aws.ecs.ServiceSpec
           serviceName: ecommerce-invoice-app
@@ -162,10 +177,6 @@ spec:
             image: xebialabsunsupported/ecommerce-invoice
             cpu: 512
             softMemoryLimit: 768
-            # portMappings:
-            # - name: port-mapping-8080
-            #   type: aws.ecs.PortSpec
-            #   containerPort: 8080
             logConfiguration:
             - name: cloudwatch-log-registry
               type: aws.ecs.LogConfigurationSpec
@@ -176,11 +187,18 @@ spec:
                 awslogs-stream-prefix: "ecs"
             environment:
               SPRING_PROFILES_ACTIVE: prod,swagger
-              EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka
-              SPRING_CLOUD_CONFIG_URI: http://admin:$${jhipster.registry.password}@jhipster-registry:8761/config
-              SPRING_DATASOURCE_URL: jdbc:mysql://invoice-mysql:3306/invoice?useUnicode=true&characterEncoding=utf8&useSSL=false
-              JHIPSTER_SLEEP: 30
               JHIPSTER_REGISTRY_PASSWORD: admin
+              SPRING_CLOUD_CONFIG_URI: http://admin:${jhipster.registry.password}@jhipster-registry:8761/config
+              EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://admin:${jhipster.registry.password}@jhipster-registry:8761/eureka
+              SPRING_DATASOURCE_URL: jdbc:mysql://ecommerce-invoice-mysql:3306/invoice?useUnicode=true&characterEncoding=utf8&useSSL=false
+              JHIPSTER_METRICS_LOGS_ENABLED: true
+              # JHIPSTER_LOGGING_LOGSTASH_ENABLED: true
+              # JHIPSTER_LOGGING_LOGSTASH_HOST: jhipster-logstash
+              # SPRING_ZIPKIN_ENABLED: true
+              # SPRING_ZIPKIN_BASE_URL: http://jhipster-zipkin
+              # SPRING_SLEUTH_PROPAGATION_KEYS: x-request-id,x-ot-span-context
+              JAVA_OPTS:  -Xmx256m -Xms256m
+              # JHIPSTER_SLEEP: 30
         - name: ecommerce-invoice-db
           type: aws.ecs.ServiceSpec
           serviceName: ecommerce-invoice-db
@@ -211,11 +229,17 @@ spec:
                 awslogs-group: "/ecs/ecommerce"
                 awslogs-region: "{{region}}"
                 awslogs-stream-prefix: "ecs"
+            command: 
+            - mysqld 
+            - --lower_case_table_names=1 
+            - --skip-ssl 
+            - --character_set_server=utf8mb4 
+            - --explicit_defaults_for_timestamp
             environment:
               MYSQL_USER: root
               MYSQL_ALLOW_EMPTY_PASSWORD: yes
               MYSQL_DATABASE: invoice
-            #command: mysqld --lower_case_table_names=1 --skip-ssl --character_set_server=utf8mb4 --explicit_defaults_for_timestamp
+
         - name: ecommerce-notification-app
           type: aws.ecs.ServiceSpec
           serviceName: ecommerce-notification-app
@@ -248,12 +272,20 @@ spec:
                 awslogs-stream-prefix: "ecs"
             environment:
               SPRING_PROFILES_ACTIVE: prod,swagger
-              EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka
-              SPRING_CLOUD_CONFIG_URI: http://admin:$${jhipster.registry.password}@jhipster-registry:8761/config
-              SPRING_DATA_MONGODB_URI: mongodb://notification-mongodb:27017
-              SPRING_DATA_MONGODB_DATABASE: notification
-              JHIPSTER_SLEEP: 30
               JHIPSTER_REGISTRY_PASSWORD: admin
+              SPRING_CLOUD_CONFIG_URI: http://admin:${jhipster.registry.password}@jhipster-registry:8761/config
+              EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://admin:${jhipster.registry.password}@jhipster-registry:8761/eureka
+              SPRING_DATA_MONGODB_URI: mongodb://ecommerce-notification-mongodb:27017
+              SPRING_DATA_MONGODB_DATABASE: notification
+              JHIPSTER_METRICS_LOGS_ENABLED: true
+              # JHIPSTER_LOGGING_LOGSTASH_ENABLED: true
+              # JHIPSTER_LOGGING_LOGSTASH_HOST: jhipster-logstash
+              # SPRING_ZIPKIN_ENABLED: true
+              # SPRING_ZIPKIN_BASE_URL: http://jhipster-zipkin
+              # SPRING_SLEUTH_PROPAGATION_KEYS: x-request-id,x-ot-span-context
+              JAVA_OPTS:  -Xmx256m -Xms256m
+              # JHIPSTER_SLEEP: 30
+
         - name: ecommerce-notification-db
           type: aws.ecs.ServiceSpec
           serviceName: ecommerce-notification-db
