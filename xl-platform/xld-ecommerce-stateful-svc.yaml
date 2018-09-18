@@ -1,0 +1,33 @@
+apiVersion: xl-deploy/v1beta1
+kind: Applications
+spec:
+- name: ecommerce
+  type: core.Directory
+  children:
+    - name: e-commerce-invoice-mysql
+      type: udm.Application
+      children:
+      - name: '1.0'
+        type: udm.DeploymentPackage
+        deployables:
+        - name: invoice-mysql
+          type: k8s.ResourcesFile
+          file: !file kubernetes/invoice/invoice-mysql.yml
+    - name: e-commerce-store-mysql
+      type: udm.Application
+      children:
+      - name: '1.0'
+        type: udm.DeploymentPackage
+        deployables:
+        - name: store-mysql
+          type: k8s.ResourcesFile
+          file: !file kubernetes/store/store-mysql.yml
+    - name: e-commerce-notification-mongodb
+      type: udm.Application
+      children:
+      - name: '1.0'
+        type: udm.DeploymentPackage
+        deployables:
+        - name: notification-mongodb
+          type: k8s.ResourcesFile
+          file: !file kubernetes/notification/notification-mongodb.yml
