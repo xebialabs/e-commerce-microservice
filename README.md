@@ -1,12 +1,14 @@
 # A microservice e-commerce application demo
 
+There is a version of this app with JHipster Registry as registry instead of Consul in the [master branch](https://github.com/xebialabs/e-commerce-microservice/tree/master)
+
 The stack is based on JHipster microservice architecture. Below are the componenets
 
 [![Architecture][arch-image]]
 
-## Online-store app:
+## Store app:
 
-This is the Gateway to the mircoservices. Refer [this](https://github.com/xebialabs/e-commerce-microservice/online-store/README.md)
+This is the Gateway to the mircoservices. Refer [this](https://github.com/xebialabs/e-commerce-microservice/store/README.md)
 
 ## Invoice app:
 
@@ -23,7 +25,11 @@ The complete docker compose setup for the stack. Refer [this](https://github.com
 
 ## Kubernetes files:
 
-The complete Kubernetes setup for the stack. Refer [this](https://github.com/xebialabs/e-commerce-microservice/kubernetes/README.md)
+The complete Kubernetes setup for the stack. Refer [this](https://github.com/xebialabs/e-commerce-microservice/xl-platform/kubernetes/README.md)
+
+## Xl Platform files:
+
+The complete XL-Platform setup for the stack. Refer [this](https://github.com/xebialabs/e-commerce-microservice/xl-platform/)
 
 
 [arch-image]: https://raw.githubusercontent.com/xebialabs/e-commerce-microservice/master/arch.png
