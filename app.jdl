@@ -2,7 +2,7 @@ application {
   config {
     baseName store,
     applicationType gateway,
-    packageName com.jhipster.demo.store,
+    packageName com.xebialabs.store,
     serviceDiscoveryType eureka,
     authenticationType jwt,
     prodDatabaseType mysql,
@@ -19,7 +19,7 @@ application {
   config {
     baseName invoice,
     applicationType microservice,
-    packageName com.jhipster.demo.invoice,
+    packageName com.xebialabs.invoice,
     serviceDiscoveryType eureka,
     authenticationType jwt,
     prodDatabaseType mysql,
@@ -34,7 +34,7 @@ application {
   config {
     baseName notification,
     applicationType microservice,
-    packageName com.jhipster.demo.notification,
+    packageName com.xebialabs.notification,
     serviceDiscoveryType eureka,
     authenticationType jwt,
     databaseType mongodb,
