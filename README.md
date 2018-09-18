@@ -25,5 +25,6 @@ The complete docker compose setup for the stack. Refer [this](https://github.com
 
 The complete Kubernetes setup for the stack. Refer [this](https://github.com/xebialabs/e-commerce-microservice/kubernetes/README.md)
 
-
+## XLD files
+XLD as-code yaml files that import the whole setup into an XLD instance. Mircorservices have dependencies on each other. Deploying store service will deploy also all other services.
 [arch-image]: https://raw.githubusercontent.com/xebialabs/e-commerce-microservice/master/arch.png
