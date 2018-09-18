@@ -1,7 +1,7 @@
 #common configuration shared between all applications
 configserver:
     name: Docker JHipster Registry
-    status: Connected to the JHipster Registry running in Docker
+    status: Connected to Consul running in Docker
 
 jhipster:
     security:
@@ -17,7 +17,3 @@ jhipster:
             enabled: true
             report-frequency: 60 # in seconds
 
-eureka:
-    client:
-        service-url:
-            defaultZone: http://admin:${jhipster.registry.password}@jhipster-registry:8761/eureka/

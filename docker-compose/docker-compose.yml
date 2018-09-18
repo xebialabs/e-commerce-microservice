@@ -1,14 +1,13 @@
 version: '2'
 services:
     invoice-app:
-        image: ecommerce-invoice
+        image: invoice
         environment:
             - SPRING_PROFILES_ACTIVE=prod,swagger
-            - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka
-            - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/config
+            - SPRING_CLOUD_CONSUL_HOST=consul
+            - SPRING_CLOUD_CONSUL_PORT=8500
             - SPRING_DATASOURCE_URL=jdbc:mysql://invoice-mysql:3306/invoice?useUnicode=true&characterEncoding=utf8&useSSL=false
-            - JHIPSTER_SLEEP=30
-            - JHIPSTER_REGISTRY_PASSWORD=admin
+            - JHIPSTER_SLEEP=10
     invoice-mysql:
         image: mysql:5.7.20
         environment:
@@ -19,27 +18,25 @@ services:
             --character_set_server=utf8mb4 --explicit_defaults_for_timestamp
     
     notification-app:
-        image: ecommerce-notification
+        image: notification
         environment:
             - SPRING_PROFILES_ACTIVE=prod,swagger
-            - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka
-            - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/config
+            - SPRING_CLOUD_CONSUL_HOST=consul
+            - SPRING_CLOUD_CONSUL_PORT=8500
             - SPRING_DATA_MONGODB_URI=mongodb://notification-mongodb:27017
             - SPRING_DATA_MONGODB_DATABASE=notification
-            - JHIPSTER_SLEEP=30
-            - JHIPSTER_REGISTRY_PASSWORD=admin
+            - JHIPSTER_SLEEP=10
     notification-mongodb:
         image: mongo:3.6.3
     
     store-app:
-        image: ecommerce-store
+        image: store
         environment:
             - SPRING_PROFILES_ACTIVE=prod,swagger
-            - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka
-            - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/config
+            - SPRING_CLOUD_CONSUL_HOST=consul
+            - SPRING_CLOUD_CONSUL_PORT=8500
             - SPRING_DATASOURCE_URL=jdbc:mysql://store-mysql:3306/store?useUnicode=true&characterEncoding=utf8&useSSL=false
-            - JHIPSTER_SLEEP=30
-            - JHIPSTER_REGISTRY_PASSWORD=admin
+            - JHIPSTER_SLEEP=10
         ports:
             - 8080:8080
     store-mysql:
@@ -51,10 +48,14 @@ services:
         command:             mysqld --lower_case_table_names=1 --skip-ssl
             --character_set_server=utf8mb4 --explicit_defaults_for_timestamp
     
-    jhipster-registry:
+    consul:
         extends:
-            file: jhipster-registry.yml
-            service: jhipster-registry
+            file: consul.yml
+            service: consul
+    consul-config-loader:
+        extends:
+            file: consul.yml
+            service: consul-config-loader
 
     jhipster-elasticsearch:
         extends:
