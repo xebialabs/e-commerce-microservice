@@ -34,7 +34,7 @@ spec:
                 done
       containers:
       - name: notification-app
-        image: xebialabsunsupported/notification
+        image: xebialabsunsupported/consul-ecommerce-notification
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: prod

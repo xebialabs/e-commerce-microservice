@@ -5,12 +5,12 @@
 You will need to push your image to a registry. If you have not done so, use the following commands to tag and push the images:
 
 ```
-$ docker image tag invoice xebialabsunsupported/invoice
-$ docker push xebialabsunsupported/invoice
-$ docker image tag notification xebialabsunsupported/notification
+$ docker image tag consul-ecommerce-invoice xebialabsunsupported/consul-ecommerce-invoice
+$ docker push xebialabsunsupported/consul-ecommerce-invoice
+$ docker image tag consul-ecommerce-notification xebialabsunsupported/consul-ecommerce-notification
 $ docker push xebialabsunsupported/notification
-$ docker image tag store xebialabsunsupported/store
-$ docker push xebialabsunsupported/store
+$ docker image tag consul-ecommerce-store xebialabsunsupported/consul-ecommerce-store
+$ docker push xebialabsunsupported/consul-ecommerce-store
 ```
 
 ## Deployment

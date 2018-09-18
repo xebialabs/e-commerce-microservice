@@ -1,7 +1,7 @@
 version: '2'
 services:
     invoice-app:
-        image: invoice
+        image: consul-ecommerce-invoice
         environment:
             - SPRING_PROFILES_ACTIVE=prod,swagger
             - SPRING_CLOUD_CONSUL_HOST=consul
@@ -18,7 +18,7 @@ services:
             --character_set_server=utf8mb4 --explicit_defaults_for_timestamp
     
     notification-app:
-        image: notification
+        image: consul-ecommerce-notification
         environment:
             - SPRING_PROFILES_ACTIVE=prod,swagger
             - SPRING_CLOUD_CONSUL_HOST=consul
@@ -30,7 +30,7 @@ services:
         image: mongo:3.6.3
     
     store-app:
-        image: store
+        image: consul-ecommerce-store
         environment:
             - SPRING_PROFILES_ACTIVE=prod,swagger
             - SPRING_CLOUD_CONSUL_HOST=consul
