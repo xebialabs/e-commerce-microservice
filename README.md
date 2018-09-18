@@ -6,9 +6,9 @@ The stack is based on JHipster microservice architecture. Below are the componen
 
 [![Architecture][arch-image]]
 
-## Online-store app:
+## Store app:
 
-This is the Gateway to the mircoservices. Refer [this](https://github.com/xebialabs/e-commerce-microservice/online-store/README.md)
+This is the Gateway to the mircoservices. Refer [this](https://github.com/xebialabs/e-commerce-microservice/store/README.md)
 
 ## Invoice app:
 
