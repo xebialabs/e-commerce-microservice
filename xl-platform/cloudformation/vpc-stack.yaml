@@ -1,0 +1,70 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Parameters:
+  AvailabilityZones:
+    Description: 'List of Availability Zones to use for the subnets in the VPC. Note:
+      The logical order is preserved.'
+    Type: List<AWS::EC2::AvailabilityZone::Name>
+    Default: 'eu-west-1a, eu-west-1b'
+
+Resources:
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsSupport: 'false'
+      EnableDnsHostnames: 'false'
+      InstanceTenancy: default
+      Tags:
+      - Key: Name
+        Value: ecommerce-eks-vpc
+
+  subnetA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: VPC
+      CidrBlock: 10.0.0.0/24
+      AvailabilityZone:
+        Fn::Select:
+        - '0'
+        - Ref: AvailabilityZones
+      Tags:
+      - Key: Name
+        Value: ecommerce-eks-vpc-a
+
+  subnetB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: VPC
+      CidrBlock: 10.0.1.0/24
+      AvailabilityZone:
+        Fn::Select:
+        - '1'
+        - Ref: AvailabilityZones
+      Tags:
+      - Key: Name
+        Value: ecommerce-eks-vpc-b
+
+Outputs:
+  VPCID:
+    Value:
+      Ref: VPC
+    Description: VPC ID
+    Export:
+      Name:
+        Fn::Sub: "${AWS::StackName}-VPCID"
+  subnetAID:
+    Description: SubnetA ID
+    Value:
+      Ref: subnetA
+    Export:
+      Name:
+        Fn::Sub: "${AWS::StackName}-subnetAID"
+  subnetBID:
+    Description: SubnetB ID
+    Value:
+      Ref: subnetB
+    Export:
+      Name:
+        Fn::Sub: "${AWS::StackName}-subnetBID"
