@@ -10,11 +10,17 @@ Parameters:
     Default: 'eu-west-1a, eu-west-1b'
 
 Resources:
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+      - Key: Name
+        Value: 'eks-ecommerce'
   VPC:
     Type: AWS::EC2::VPC
     Properties:
       CidrBlock: 10.0.0.0/16
-      EnableDnsSupport: 'false'
+      EnableDnsSupport: 'true'
       EnableDnsHostnames: 'false'
       InstanceTenancy: default
       Tags:
@@ -48,6 +54,42 @@ Resources:
       Tags:
       - Key: Name
         Value: ecommerce-eks-vpc-b
+  subnetARouteTable:
+      Condition: PrivateSubnetsCondition
+      Type: AWS::EC2::RouteTable
+      Properties:
+        VpcId:
+          Ref: VPC
+        Tags:
+        - Key: Name
+          Value: Private subnet 1A
+        - Key: Network
+          Value: Private
+    subnetARoute:
+      Condition: PrivateSubnetsCondition
+      Type: AWS::EC2::Route
+      Properties:
+        RouteTableId:
+          Ref: PrivateSubnet1ARouteTable
+        DestinationCidrBlock: 0.0.0.0/0
+        InstanceId:
+          Fn::If:
+          - NATInstanceCondition
+          - Ref: NATInstance1
+          - Ref: AWS::NoValue
+        NatGatewayId:
+          Fn::If:
+          - NATGatewayCondition
+          - Ref: NATGateway1
+          - Ref: AWS::NoValue
+    subnetARouteTableAssociation:
+      Condition: PrivateSubnetsCondition
+      Type: AWS::EC2::SubnetRouteTableAssociation
+      Properties:
+        SubnetId:
+          Ref: PrivateSubnet1A
+        RouteTableId:
+          Ref: PrivateSubnet1ARouteTable
 
 Outputs:
   VPCID:

@@ -1,6 +1,6 @@
 ---
 AWSTemplateFormatVersion: '2010-09-09'
-Description: 'Amazon EKS - Workers'
+Description: 'Amazon EKS Master for E-commerce Microservices Application'
 
 Parameters:
 
@@ -195,10 +195,10 @@ Resources:
     DependsOn: NodeSecurityGroup
     Properties:
       Description: Allow pods running extension API servers on port 443 to receive communication from cluster control plane
-      GroupId:
+      GroupId: !Ref NodeSecurityGroup
+      SourceSecurityGroupId:
         Fn::ImportValue:
           !Sub "${ClusterStack}-ClusterControlPlaneSecurityGroup"
-      SourceSecurityGroupId: !Ref ClusterControlPlaneSecurityGroup
       IpProtocol: tcp
       FromPort: 443
       ToPort: 443
