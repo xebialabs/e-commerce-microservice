@@ -1,6 +1,6 @@
 ---
 AWSTemplateFormatVersion: '2010-09-09'
-Description: 'Amazon EKS - VPC'
+Description: 'Amazon EKS - VPC for E-commerce Microservices Application'
 
 Parameters:
   AvailabilityZones:
@@ -26,7 +26,13 @@ Resources:
       Tags:
       - Key: Name
         Value: ecommerce-eks-vpc
-
+  AttachGateway:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId:
+        Ref: VPC
+      InternetGatewayId:
+        Ref: InternetGateway
   subnetA:
     Type: AWS::EC2::Subnet
     Properties:
@@ -40,7 +46,6 @@ Resources:
       Tags:
       - Key: Name
         Value: ecommerce-eks-vpc-a
-
   subnetB:
     Type: AWS::EC2::Subnet
     Properties:
@@ -55,41 +60,55 @@ Resources:
       - Key: Name
         Value: ecommerce-eks-vpc-b
   subnetARouteTable:
-      Condition: PrivateSubnetsCondition
       Type: AWS::EC2::RouteTable
       Properties:
         VpcId:
           Ref: VPC
         Tags:
         - Key: Name
-          Value: Private subnet 1A
+          Value: Private subnet A
         - Key: Network
           Value: Private
-    subnetARoute:
-      Condition: PrivateSubnetsCondition
-      Type: AWS::EC2::Route
+  subnetARoute:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: subnetARouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: InternetGateway
+  subnetARouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId:
+        Ref: subnetA
+      RouteTableId:
+        Ref: subnetARouteTable
+  subnetBRouteTable:
+      Type: AWS::EC2::RouteTable
       Properties:
-        RouteTableId:
-          Ref: PrivateSubnet1ARouteTable
-        DestinationCidrBlock: 0.0.0.0/0
-        InstanceId:
-          Fn::If:
-          - NATInstanceCondition
-          - Ref: NATInstance1
-          - Ref: AWS::NoValue
-        NatGatewayId:
-          Fn::If:
-          - NATGatewayCondition
-          - Ref: NATGateway1
-          - Ref: AWS::NoValue
-    subnetARouteTableAssociation:
-      Condition: PrivateSubnetsCondition
-      Type: AWS::EC2::SubnetRouteTableAssociation
-      Properties:
-        SubnetId:
-          Ref: PrivateSubnet1A
-        RouteTableId:
-          Ref: PrivateSubnet1ARouteTable
+        VpcId:
+          Ref: VPC
+        Tags:
+        - Key: Name
+          Value: Private subnet B
+        - Key: Network
+          Value: Private
+  subnetBRoute:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: subnetBRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: InternetGateway
+  subnetBRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId:
+        Ref: subnetB
+      RouteTableId:
+        Ref: subnetBRouteTable
 
 Outputs:
   VPCID:

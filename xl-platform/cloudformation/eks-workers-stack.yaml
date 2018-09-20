@@ -13,6 +13,11 @@ Parameters:
     Description: VPC Stack Name
     Default: "vpc-stack"
 
+  UserStack:
+    Type: String
+    Description: User Stack Name
+    Default: "eks-user-stack"
+
   ClusterStack:
     Type: String
     Description: Cluster Stack Name
@@ -260,7 +265,9 @@ Resources:
       IamInstanceProfile: !Ref NodeInstanceProfile
       ImageId: !Ref NodeImageId
       InstanceType: !Ref NodeInstanceType
-      KeyName: !Ref KeyName
+      KeyName:
+      - Fn::ImportValue:
+          !Sub "${UserStack}-keypair"
       SecurityGroups:
       - !Ref NodeSecurityGroup
       BlockDeviceMappings:
