@@ -1,6 +1,16 @@
 ---
 AWSTemplateFormatVersion: '2010-09-09'
 Description: 'Amazon EKS - Master for E-commerce Microservices Application'
+Metadata:
+  XLD::Infrastructure:
+    - id: "cloud"
+      type: "core.Directory"
+    - id: "cloud/EKS-Cluster"
+      type: "k8s.Master"
+      apiServerURL: "{ClusterEndpoint}"
+      caCert: "dump"
+      skipTLS: "true"
+      token: "dump"
 
 Parameters:
 
@@ -74,6 +84,13 @@ Outputs:
     Export:
       Name:
         Fn::Sub: "${AWS::StackName}-ClusterEndpoint"
+#Will not work because AWS has a limit of 1024 on outputs
+#  ClusterCA:
+#    Value: !GetAtt Cluster.CertificateAuthorityData
+#    Description: Cluster Certificate Authority Data
+#    Export:
+#      Name:
+#        Fn::Sub: "${AWS::StackName}-ClusterCA"
 
   ClusterControlPlaneSecurityGroup:
     Value: !Ref ClusterControlPlaneSecurityGroup
@@ -81,3 +98,4 @@ Outputs:
     Export:
       Name:
         Fn::Sub: "${AWS::StackName}-ClusterControlPlaneSecurityGroup"
+
