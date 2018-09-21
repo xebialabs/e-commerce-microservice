@@ -7,7 +7,7 @@ Parameters:
   VPCStack:
     Type: String
     Description: VPC Stack Name
-    Default: "vpc-stack"
+    Default: "eks-vpc"
 
 Resources:
 

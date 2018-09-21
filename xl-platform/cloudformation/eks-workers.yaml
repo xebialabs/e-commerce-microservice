@@ -11,17 +11,17 @@ Parameters:
   VPCStack:
     Type: String
     Description: VPC Stack Name
-    Default: "vpc-stack"
+    Default: "eks-vpc"
 
   UserStack:
     Type: String
     Description: User Stack Name
-    Default: "eks-user-stack"
+    Default: "eks-user"
 
   ClusterStack:
     Type: String
     Description: Cluster Stack Name
-    Default: "eks-master-stack"
+    Default: "eks-master"
 
   NodeImageId:
     Type: AWS::EC2::Image::Id
