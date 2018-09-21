@@ -1,18 +1,25 @@
 ---
 AWSTemplateFormatVersion: '2010-09-09'
-Description: CloudFormation Secret Provider
+Description: "Amazon EKS - KeyPair and User"
+
 Parameters:
+
   S3BucketPrefix:
     Type: String
     Default: 'binxio-public'
   CFNCustomProviderZipFileName:
     Type: String
     Default: 'lambdas/cfn-secret-provider-0.12.2.zip'
+  Username:
+    Type: String
+    Default: 'eks-ecommerce'
+
 Resources:
+
   EksUser:
     Type: AWS::IAM::User
     Properties:
-      UserName: 'eks-ecommerce'
+      UserName: !Sub '${Username}'
   LambdaPolicy:
     Type: AWS::IAM::Policy
     DependsOn:
@@ -101,8 +108,8 @@ Resources:
 
 Outputs:
   KeyPairName:
-    Value: !Ref 'EksUser'
-    Description: KeyPair for EKS Worker nodes
+    Value: !Sub '${Username}'
+    Description: KeyPair name for EKS Worker nodes
     Export:
       Name: !Sub '${AWS::StackName}-keypair'
   PublicKey:

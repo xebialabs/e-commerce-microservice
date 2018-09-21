@@ -1,12 +1,8 @@
 ---
 AWSTemplateFormatVersion: '2010-09-09'
-Description: 'Amazon EKS Master for E-commerce Microservices Application'
+Description: 'Amazon EKS - Workers for E-commerce Microservices Application'
 
 Parameters:
-
-  KeyName:
-    Description: The EC2 Key Pair to allow SSH access to the instances
-    Type: AWS::EC2::KeyPair::KeyName
 
   VPCStack:
     Type: String
@@ -266,7 +262,7 @@ Resources:
       ImageId: !Ref NodeImageId
       InstanceType: !Ref NodeInstanceType
       KeyName:
-      - Fn::ImportValue:
+        Fn::ImportValue:
           !Sub "${UserStack}-keypair"
       SecurityGroups:
       - !Ref NodeSecurityGroup
