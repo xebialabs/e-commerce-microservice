@@ -10,6 +10,13 @@ const Footer = props => (
       <Col md="12">
         <p>
           <Translate contentKey="footer">Your footer</Translate>
+          <a href="https://www.xebialabs.com/" target="_blank" rel="noopener noreferrer">
+            XebiaLabs
+          </a>
+          <Translate contentKey="footer2">Your footer</Translate>
+          <a href="https://www.jhipster.tech/" target="_blank" rel="noopener noreferrer">
+            JHipster
+          </a>
         </p>
       </Col>
     </Row>
