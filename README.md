@@ -4,7 +4,7 @@ There is a version of this app with Consul as registry instead of JHipster Regis
 
 The stack is based on JHipster microservice architecture. Below are the componenets
 
-[![Architecture][arch-image]]
+![Architecture][arch-image]
 
 ## Store app:
 
@@ -33,4 +33,6 @@ The complete XL-Platform setup for the stack. Refer [this](https://github.com/xe
 
 ## XLD files
 XLD as-code yaml files that import the whole setup into an XLD instance. Mircorservices have dependencies on each other. Deploying store service will deploy also all other services.
+
+
 [arch-image]: https://raw.githubusercontent.com/xebialabs/e-commerce-microservice/master/arch.png
