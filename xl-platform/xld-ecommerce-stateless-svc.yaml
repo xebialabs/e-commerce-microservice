@@ -4,85 +4,88 @@ spec:
 - name: ecommerce
   type: core.Directory
   children:
-    - name: xl-demo-namespace
-      type: udm.Application
+    - name: k8s
+      type: core.Directory
       children:
-      - name: '1.0'
-        type: udm.DeploymentPackage
-        deployables:
-        - name: xl-demo
-          type: k8s.NamespaceSpec
-          namespaceName: 'xl-demo'
-    - name: e-commerce-registry
-      type: udm.Application
-      children:
-      - name: '1.0'
-        type: udm.DeploymentPackage
-        applicationDependencies:
-          xl-demo-namespace: '1.0'
-        undeployDependencies: true
-        orchestrator:
-        - sequential-by-dependency
-        deployables:
-        - name: application-config
-          type: k8s.ResourcesFile
-          file: !file kubernetes/registry/application-configmap.yml
-        - name: jhipster-registry
-          type: k8s.ResourcesFile
-          file: !file kubernetes/registry/jhipster-registry.yml
-    - name: e-commerce-invoice
-      type: udm.Application
-      children:
-      - name: '1.0'
-        type: udm.DeploymentPackage
-        applicationDependencies:
-          e-commerce-invoice-mysql: '1.0'
-          e-commerce-registry: '1.0'
-        undeployDependencies: true
-        orchestrator:
-        - sequential-by-dependency
-        deployables:
-        - name: invoice-deployment
-          type: k8s.ResourcesFile
-          file: !file kubernetes/invoice/invoice-deployment.yml
-        - name: invoice-svc
-          type: k8s.ResourcesFile
-          file: !file kubernetes/invoice/invoice-service.yml
-    - name: e-commerce-notification
-      type: udm.Application
-      children:
-      - name: '1.0'
-        type: udm.DeploymentPackage
-        applicationDependencies:
-          e-commerce-notification-mongodb: '1.0'
-          e-commerce-registry: '1.0'
-        undeployDependencies: true
-        orchestrator:
-        - sequential-by-dependency
-        deployables:
-        - name: invoice-notification
-          type: k8s.ResourcesFile
-          file: !file kubernetes/notification/notification-deployment.yml
-        - name: notification-svc
-          type: k8s.ResourcesFile
-          file: !file kubernetes/notification/notification-service.yml
-    - name: e-commerce-store
-      type: udm.Application
-      children:
-      - name: '1.0'
-        type: udm.DeploymentPackage
-        applicationDependencies:
-          e-commerce-store-mysql: '1.0'
-          e-commerce-registry: '1.0'
-          e-commerce-notification: '1.0'
-          e-commerce-invoice: '1.0'
-        undeployDependencies: true
-        orchestrator:
-        - sequential-by-dependency
-        deployables:
-        - name: store-deployment
-          type: k8s.ResourcesFile
-          file: !file kubernetes/store/store-deployment.yml
-        - name: store-svc
-          type: k8s.ResourcesFile
-          file: !file kubernetes/store/store-service.yml
+      - name: xl-demo-namespace
+        type: udm.Application
+        children:
+        - name: '1.0'
+          type: udm.DeploymentPackage
+          deployables:
+          - name: xl-demo
+            type: k8s.NamespaceSpec
+            namespaceName: 'xl-demo'
+      - name: e-commerce-registry
+        type: udm.Application
+        children:
+        - name: '1.0'
+          type: udm.DeploymentPackage
+          applicationDependencies:
+            xl-demo-namespace: '1.0'
+          undeployDependencies: true
+          orchestrator:
+          - sequential-by-dependency
+          deployables:
+          - name: application-config
+            type: k8s.ResourcesFile
+            file: !file kubernetes/registry/application-configmap.yml
+          - name: jhipster-registry
+            type: k8s.ResourcesFile
+            file: !file kubernetes/registry/jhipster-registry.yml
+      - name: e-commerce-invoice
+        type: udm.Application
+        children:
+        - name: '1.0'
+          type: udm.DeploymentPackage
+          applicationDependencies:
+            e-commerce-invoice-mysql: '1.0'
+            e-commerce-registry: '1.0'
+          undeployDependencies: true
+          orchestrator:
+          - sequential-by-dependency
+          deployables:
+          - name: invoice-deployment
+            type: k8s.ResourcesFile
+            file: !file kubernetes/invoice/invoice-deployment.yml
+          - name: invoice-svc
+            type: k8s.ResourcesFile
+            file: !file kubernetes/invoice/invoice-service.yml
+      - name: e-commerce-notification
+        type: udm.Application
+        children:
+        - name: '1.0'
+          type: udm.DeploymentPackage
+          applicationDependencies:
+            e-commerce-notification-mongodb: '1.0'
+            e-commerce-registry: '1.0'
+          undeployDependencies: true
+          orchestrator:
+          - sequential-by-dependency
+          deployables:
+          - name: invoice-notification
+            type: k8s.ResourcesFile
+            file: !file kubernetes/notification/notification-deployment.yml
+          - name: notification-svc
+            type: k8s.ResourcesFile
+            file: !file kubernetes/notification/notification-service.yml
+      - name: e-commerce-store
+        type: udm.Application
+        children:
+        - name: '1.0'
+          type: udm.DeploymentPackage
+          applicationDependencies:
+            e-commerce-store-mysql: '1.0'
+            e-commerce-registry: '1.0'
+            e-commerce-notification: '1.0'
+            e-commerce-invoice: '1.0'
+          undeployDependencies: true
+          orchestrator:
+          - sequential-by-dependency
+          deployables:
+          - name: store-deployment
+            type: k8s.ResourcesFile
+            file: !file kubernetes/store/store-deployment.yml
+          - name: store-svc
+            type: k8s.ResourcesFile
+            file: !file kubernetes/store/store-service.yml

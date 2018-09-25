@@ -3,9 +3,9 @@ AWSTemplateFormatVersion: '2010-09-09'
 Description: 'Amazon EKS - Master for E-commerce Microservices Application'
 Metadata:
   XLD::Infrastructure:
-    - id: "cloud"
-      type: "core.Directory"
-    - id: "cloud/EKS-Cluster"
+#    - id: "cloud"
+#      type: "core.Directory"
+    - id: "aws/eks-cluster"
       type: "k8s.Master"
       apiServerURL: "{ClusterEndpoint}"
       caCert: "dump"
