@@ -68,7 +68,7 @@ spec:
     - name: K8S
       type: core.Directory
       children:
-      - name: xll-demo-namespace
+      - name: xl-demo-namespace
         type: udm.Application
         children:
         - name: '1.0'
