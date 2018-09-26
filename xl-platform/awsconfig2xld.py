@@ -35,7 +35,7 @@ def aws_credentials_to_infrastructure(credentialsfile):
         'kind': 'Infrastructure',
         'spec': [
             {
-                'name': 'aws',
+                'name': 'AWS',
                 'type': 'aws.Cloud',
                 'accesskey': credentials['default']['aws_access_key_id'],
                 'accessSecret': credentials['default']['aws_secret_access_key']
@@ -54,7 +54,7 @@ def aws_config_to_environment(configfile, infrastructure):
         'kind': 'Environments',
         'spec': [
             {
-                'name': 'AWS Dictionary',
+                'name': 'AWS-DICT',
                 'type': 'udm.Dictionary',
                 'entries': {
                     'region': config['default']['region'],
@@ -68,7 +68,7 @@ def aws_config_to_environment(configfile, infrastructure):
                     '~Infrastructure/' + infrastructure['spec'][0]['name']
                 ],
                 'dictionaries': [
-                    '~Environments/AWS Dictionary'
+                    '~Environments/AWS-DICT'
                 ]
             }
         ]

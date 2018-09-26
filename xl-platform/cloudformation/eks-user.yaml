@@ -1,9 +1,7 @@
 ---
 AWSTemplateFormatVersion: '2010-09-09'
 Description: "Amazon EKS - KeyPair and User"
-
 Parameters:
-
   S3BucketPrefix:
     Type: String
     Default: 'binxio-public'
@@ -107,6 +105,16 @@ Resources:
       ServiceToken: !Sub 'arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:binxio-cfn-secret-provider'
 
 Outputs:
+  Username:
+    Value: !Sub '${Username}'
+    Description: EKS Username
+    Export:
+      Name: !Sub '${AWS::StackName}-user'
+  UserARN:
+    Value: !GetAtt 'EksUser.Arn'
+    Description: EKS User ARN
+    Export:
+      Name: !Sub '${AWS::StackName}-user-arn'
   KeyPairName:
     Value: !Sub '${Username}'
     Description: KeyPair name for EKS Worker nodes

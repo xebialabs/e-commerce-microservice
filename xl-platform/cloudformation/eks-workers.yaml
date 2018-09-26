@@ -1,7 +1,33 @@
 ---
 AWSTemplateFormatVersion: '2010-09-09'
 Description: 'Amazon EKS - Workers for E-commerce Microservices Application'
-
+Metadata:
+  XLD::Infrastructure:
+    - id: "EKS"
+      type: "core.Directory"
+    - id: "EKS/EKS-CLUSTER"
+      type: "k8s.Master"
+      apiServerURL: "{ClusterEndpoint}"
+      caCert: "dump"
+      skipTLS: "true"
+      token: "dump"
+  XLD::Environments:
+     - id: "AWS-EKS-DICT"
+       type: "udm.Dictionary"
+       entries:
+        NODES_ROLE_ARN: "{NodeInstanceRole}"
+        EKS_USER: "{EksUser}"
+        EKS_USER_ARN: "{EksUserArn}"
+        CLUSTER_ENDPOINT: "{ClusterEndpoint}"
+        EC2PrivateDNSName: "{{EC2PrivateDNSName}}" ### Need to test
+     - id: "AWS"
+       type: "udm.Environment"
+       members:
+        - ci ref: "Infrastructure/EKS/EKS-CLUSTER"
+        - ci ref: "Infrastructure/AWS/EKS-CLOUDFORMATION"
+       dictionaries:
+        - ci ref: "Environments/AWS-EKS-DICT"
+        - ci ref: "Environments/AWS-DICT"
 Parameters:
 
   VPCStack:
@@ -287,3 +313,15 @@ Outputs:
   NodeInstanceRole:
     Description: The node instance role
     Value: !GetAtt NodeInstanceRole.Arn
+  EksUser:
+    Value:
+      Fn::ImportValue:
+        !Sub "${UserStack}-user"
+  EksUserArn:
+    Value:
+      Fn::ImportValue:
+        !Sub "${UserStack}-user-arn"
+  ClusterEndpoint:
+    Value:
+      Fn::ImportValue:
+        !Sub "${ClusterStack}-ClusterEndpoint"
