@@ -11,6 +11,9 @@ Metadata:
       caCert: "dump"
       skipTLS: "true"
       token: "dump"
+    - id: "EKS/EKS-CLUSTER/kube-system"
+      type: "k8s.Namespace"
+      namespaceName: "kube-system"
   XLD::Environments:
      - id: "AWS-EKS-DICT"
        type: "udm.Dictionary"
@@ -19,15 +22,20 @@ Metadata:
         EKS_USER: "{EksUser}"
         EKS_USER_ARN: "{EksUserArn}"
         CLUSTER_ENDPOINT: "{ClusterEndpoint}"
-        EC2PrivateDNSName: "{{EC2PrivateDNSName}}" ### Need to test
+        EC2PrivateDNSName: '{{{EC2PrivateDNSName}}}' ### Need to test
      - id: "AWS"
        type: "udm.Environment"
        members:
         - ci ref: "Infrastructure/EKS/EKS-CLUSTER"
         - ci ref: "Infrastructure/AWS/EKS-CLOUDFORMATION"
        dictionaries:
-        - ci ref: "Environments/AWS-EKS-DICT"
         - ci ref: "Environments/AWS-DICT"
+     - id: "AWS-PREREQUISITE"
+       type: "udm.Environment"
+       members:
+        - ci ref: "Infrastructure/EKS/EKS-CLUSTER/kube-system"
+       dictionaries:
+        - ci ref: "Environments/AWS-EKS-DICT"
 Parameters:
 
   VPCStack:
