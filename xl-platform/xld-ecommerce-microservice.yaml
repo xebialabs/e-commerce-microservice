@@ -1,7 +1,24 @@
+apiVersion: "xl-deploy/v1beta1"
+kind: "Infrastructure"
+spec:
+- name: "Infrastructure/AWS/EKS-CLOUDFORMATION"
+  type: "aws.cloudformation.Stack"
+  region: "eu-west-1"
+---
+apiVersion: "xl-deploy/v1beta1"
+kind: "Environments"
+spec:
+- name: "Environments/AWS"
+  type: "udm.Environment"
+  members:
+  - "Infrastructure/AWS/EKS-CLOUDFORMATION"
+  dictionaries:
+  - "Environments/AWS-DICT"
+---
 apiVersion: xl-deploy/v1beta1
 kind: Applications
 spec:
-- name: ECOMMERCE
+- name: E-COMMERCE
   type: core.Directory
   children:
 ### PROVISION EKS WITH CLOUDFORMATION TEMPLATES ###
@@ -11,7 +28,7 @@ spec:
       - name: e-commerce-cloudformation-eks-user
         type: udm.Application
         children:
-        - name: '1.0'
+        - name: '1.0.0'
           type: udm.DeploymentPackage
           deployables:
           - name: eks-user
@@ -20,7 +37,7 @@ spec:
       - name: e-commerce-cloudformation-eks-vpc
         type: udm.Application
         children:
-        - name: '1.0'
+        - name: '1.0.0'
           type: udm.DeploymentPackage
           deployables:
           - name: eks-vpc
@@ -29,13 +46,8 @@ spec:
       - name: e-commerce-cloudformation-eks-master
         type: udm.Application
         children:
-        - name: '1.0'
+        - name: '1.0.0'
           type: udm.DeploymentPackage
-          applicationDependencies:
-            e-commerce-cloudformation-eks-vpc: "[1.0,1.0]"
-          undeployDependencies: true
-          orchestrator:
-            - sequential-by-dependency
           deployables:
           - name: eks-master
             type: aws.cloudformation.Template
@@ -43,14 +55,8 @@ spec:
       - name: e-commerce-cloudformation-eks-workers
         type: udm.Application
         children:
-        - name: '1.0'
+        - name: '1.0.0'
           type: udm.DeploymentPackage
-          applicationDependencies:
-            e-commerce-cloudformation-eks-master: "[1.0,1.0]"
-            e-commerce-cloudformation-eks-user: "[1.0,1.0]"
-          undeployDependencies: true
-          orchestrator:
-            - sequential-by-dependency
           deployables:
           - name: eks-workers
             type: aws.cloudformation.Template
@@ -58,7 +64,7 @@ spec:
       - name: e-commerce-k8s-configmap
         type: udm.Application
         children:
-        - name: '1.0'
+        - name: '1.0.0'
           type: udm.DeploymentPackage
           deployables:
           - name: aws-auth
@@ -71,7 +77,7 @@ spec:
       - name: xl-demo-namespace
         type: udm.Application
         children:
-        - name: '1.0'
+        - name: '1.0.0'
           type: udm.DeploymentPackage
           deployables:
           - name: xl-demo
@@ -80,7 +86,7 @@ spec:
       - name: e-commerce-invoice-mysql
         type: udm.Application
         children:
-        - name: '1.0'
+        - name: '1.0.0'
           type: udm.DeploymentPackage
           deployables:
           - name: invoice-mysql
@@ -89,7 +95,7 @@ spec:
       - name: e-commerce-store-mysql
         type: udm.Application
         children:
-        - name: '1.0'
+        - name: '1.0.0'
           type: udm.DeploymentPackage
           deployables:
           - name: store-mysql
@@ -98,7 +104,7 @@ spec:
       - name: e-commerce-notification-mongodb
         type: udm.Application
         children:
-        - name: '1.0'
+        - name: '1.0.0'
           type: udm.DeploymentPackage
           deployables:
           - name: notification-mongodb
@@ -107,13 +113,8 @@ spec:
       - name: e-commerce-registry
         type: udm.Application
         children:
-        - name: '1.0'
+        - name: '1.0.0'
           type: udm.DeploymentPackage
-          applicationDependencies:
-            xl-demo-namespace: '1.0'
-          undeployDependencies: true
-          orchestrator:
-          - sequential-by-dependency
           deployables:
           - name: application-config
             type: k8s.ResourcesFile
@@ -124,14 +125,8 @@ spec:
       - name: e-commerce-invoice
         type: udm.Application
         children:
-        - name: '1.0'
+        - name: '1.0.0'
           type: udm.DeploymentPackage
-          applicationDependencies:
-            e-commerce-invoice-mysql: '1.0'
-            e-commerce-registry: '1.0'
-          undeployDependencies: true
-          orchestrator:
-          - sequential-by-dependency
           deployables:
           - name: invoice-deployment
             type: k8s.ResourcesFile
@@ -142,14 +137,8 @@ spec:
       - name: e-commerce-notification
         type: udm.Application
         children:
-        - name: '1.0'
+        - name: '1.0.0'
           type: udm.DeploymentPackage
-          applicationDependencies:
-            e-commerce-notification-mongodb: '1.0'
-            e-commerce-registry: '1.0'
-          undeployDependencies: true
-          orchestrator:
-          - sequential-by-dependency
           deployables:
           - name: invoice-notification
             type: k8s.ResourcesFile
@@ -160,16 +149,8 @@ spec:
       - name: e-commerce-store
         type: udm.Application
         children:
-        - name: '1.0'
+        - name: '1.0.0'
           type: udm.DeploymentPackage
-          applicationDependencies:
-            e-commerce-store-mysql: '1.0'
-            e-commerce-registry: '1.0'
-            e-commerce-notification: '1.0'
-            e-commerce-invoice: '1.0'
-          undeployDependencies: true
-          orchestrator:
-          - sequential-by-dependency
           deployables:
           - name: store-deployment
             type: k8s.ResourcesFile
