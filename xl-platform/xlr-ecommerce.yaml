@@ -1,0 +1,137 @@
+apiVersion: xl-release/v1beta1
+kind: Configurations
+spec:
+- name: XL Deploy
+  type: xldeploy.XLDeployServer
+  url: http://xl-deploy:4516
+  username: admin
+  password: admin
+
+---
+
+apiVersion: xl-release/v1beta1
+kind: Templates
+spec:
+- name: E-COMMERCE
+  type: xlrelease.Folder
+  children:
+  - name: e-commerce
+    type: xlrelease.Release
+    description: |
+      This XL Release template shows how to deploy an undeploy an application, based on microservices architecture, to AWS EES using XL Deploy.
+    tags:
+    - e-commerce
+    - EKS
+    phases:
+    - name: Provinsion Infrastructure
+      color: '#ff9e3b'
+      type: xlrelease.Phase
+      tasks:
+      - name: Ready to go?
+        type: xlrelease.GateTask
+        team: Release Admin
+      - name: Provision AWS VPC and IAM resources
+        type: xlrelease.ParallelGroup
+        tasks:
+        - name: Provision AWS IAM resources
+          type: xldeploy.Deploy
+          server: XL Deploy
+          deploymentPackage: E-COMMERCE/EKS-PROVISION/e-commerce-cloudformation-eks-user/1.0.0
+          deploymentEnvironment: Environments/AWS
+        - name: Provision AWS VPC
+          type: xldeploy.Deploy
+          server: XL Deploy
+          deploymentPackage: E-COMMERCE/EKS-PROVISION/e-commerce-cloudformation-eks-vpc/1.0.0
+          deploymentEnvironment: Environments/AWS
+      - name: Provision AWS EKS cluster
+        type: xlrelease.SequentialGroup
+        tasks:
+        - name: Provision EKS master node
+          type: xldeploy.Deploy
+          server: XL Deploy
+          deploymentPackage: E-COMMERCE/EKS-PROVISION/e-commerce-cloudformation-eks-master/1.0.0
+          deploymentEnvironment: Environments/AWS
+        - name: Provision EKS workers nodes
+          type: xldeploy.Deploy
+          server: XL Deploy
+          deploymentPackage: E-COMMERCE/EKS-PROVISION/e-commerce-cloudformation-eks-workers/1.0.0
+          deploymentEnvironment: Environments/AWS
+        - name: Provision EKS config map for workers
+          type: xldeploy.Deploy
+          server: XL Deploy
+          deploymentPackage: E-COMMERCE/EKS-PROVISION/e-commerce-k8s-configmap/1.0.0
+          deploymentEnvironment: Environments/AWS-PREREQUISITE
+    - name: Deploy e-commerce application
+      type: xlrelease.Phase
+      tasks:
+      - name: Deploy xl-demo namespace
+        type: xldeploy.Deploy
+        server: XL Deploy
+        deploymentPackage: E-COMMERCE/K8S/xl-demo-namespace/1.0.0
+        deploymentEnvironment: Environments/AWS
+      - name: Deploy stateful services
+        type: xlrelease.ParallelGroup
+        tasks:
+        - name: Deploy invoice mysql svc
+          type: xldeploy.Deploy
+          server: XL Deploy
+          deploymentPackage: E-COMMERCE/K8S/e-commerce-invoice-mysql/1.0.0
+          deploymentEnvironment: Environments/AWS
+        - name: Deploy store mysql svc
+          type: xldeploy.Deploy
+          server: XL Deploy
+          deploymentPackage: E-COMMERCE/EKS-PROVISION/e-commerce-store-mysql/1.0.0
+          deploymentEnvironment: Environments/AWS
+        - name: Deploy notification mongodb svc
+          type: xldeploy.Deploy
+          server: XL Deploy
+          deploymentPackage: E-COMMERCE/EKS-PROVISION/e-commerce-notification-mongodb/1.0.0
+          deploymentEnvironment: Environments/AWS
+      - name: Deploy stateless services
+        type: xlrelease.SequentialGroup
+        tasks:
+        - name: Deploy registry svc
+          type: xldeploy.Deploy
+          server: XL Deploy
+          deploymentPackage: E-COMMERCE/K8S/e-commerce-registry/1.0.0
+          deploymentEnvironment: Environments/AWS
+        - name: Deploy invoice svc
+          type: xldeploy.Deploy
+          server: XL Deploy
+          deploymentPackage: E-COMMERCE/EKS-PROVISION/e-commerce-invoice/1.0.0
+          deploymentEnvironment: Environments/AWS
+        - name: Deploy notification svc
+          type: xldeploy.Deploy
+          server: XL Deploy
+          deploymentPackage: E-COMMERCE/EKS-PROVISION/e-commerce-notification/1.0.0
+          deploymentEnvironment: Environments/AWS
+        - name: Deploy store svc
+          type: xldeploy.Deploy
+          server: XL Deploy
+          deploymentPackage: E-COMMERCE/EKS-PROVISION/e-commerce-store/1.0.0
+          deploymentEnvironment: Environments/AWS
+    - name: Test
+      type: xlrelease.Phase
+      tasks:
+      - name: Test REST-o-rant
+        type: xlrelease.Task
+        team: Release Admin
+        description: |
+          The REST-o-rant app is now live on ECS!
+          Check out the web site and complete this task when done.
+          Open the web site by running this command:
+          ```
+          ecs/open-rest-o-rant-web
+          ```
+    - name: Clean up
+      color: '#999999'
+      type: xlrelease.Phase
+      tasks:
+      - name: Undeploy REST-o-rant
+        type: xldeploy.Undeploy
+        server: XL Deploy
+        deployedApplication: Environments/AWS/rest-o-rant-ecs-service
+      - name: Deprovision ECS cluster
+        type: xldeploy.Undeploy
+        server: XL Deploy
+        deployedApplication: Environments/AWS/rest-o-rant-ecs-fargate-cluster
