@@ -6,12 +6,12 @@ metadata:
 data:
   mapRoles: |
     - rolearn: {{NODES_ROLE_ARN}}
-      username: system:node:{{ {{C2PrivateDNSName}} }}
+      username: system:node:{{ {{EC2PrivateDNSName}} }}
       groups:
         - system:bootstrappers
-        - system:nodesl
+        - system:node
   mapUsers: |
     - userarn: {{EKS_USER_ARN}}
       username: {{EKS_USER}}
       groups:
-        - system:masters    
+        - system:masters
