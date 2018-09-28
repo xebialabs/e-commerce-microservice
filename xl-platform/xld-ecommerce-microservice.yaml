@@ -12,8 +12,6 @@ spec:
   type: "udm.Environment"
   members:
   - "Infrastructure/AWS/EKS-CLOUDFORMATION"
-  dictionaries:
-  - "Environments/AWS-DICT"
 ---
 apiVersion: xl-deploy/v1beta1
 kind: Applications

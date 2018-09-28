@@ -87,4 +87,3 @@ Outputs:
     Export:
       Name:
         Fn::Sub: "${AWS::StackName}-ClusterControlPlaneSecurityGroup"
-

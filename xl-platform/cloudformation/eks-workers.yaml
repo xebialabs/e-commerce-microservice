@@ -8,9 +8,11 @@ Metadata:
     - id: "EKS/EKS-CLUSTER"
       type: "k8s.Master"
       apiServerURL: "{ClusterEndpoint}"
-      caCert: "dump"
       skipTLS: "true"
-      token: "dump"
+      isEKS: "true"
+      clusterName: "{ClusterName}"
+      accessKey: "dummy"
+      accessSecret: "dummy"
     - id: "EKS/EKS-CLUSTER/kube-system"
       type: "k8s.Namespace"
       namespaceName: "kube-system"
@@ -22,7 +24,6 @@ Metadata:
         EKS_USER: "{EksUser}"
         EKS_USER_ARN: "{EksUserArn}"
         CLUSTER_ENDPOINT: "{ClusterEndpoint}"
-        EC2PrivateDNSName: '{{{EC2PrivateDNSName}}}' ### Need to test
      - id: "AWS"
        type: "udm.Environment"
        members:
@@ -333,3 +334,7 @@ Outputs:
     Value:
       Fn::ImportValue:
         !Sub "${ClusterStack}-ClusterEndpoint"
+  ClusterName:
+    Value:
+      Fn::ImportValue:
+        !Sub "${ClusterStack}-ClusterName"
