@@ -32,6 +32,9 @@ spec:
           - name: eks-user
             type: aws.cloudformation.Template
             file: !file cloudformation/eks-user.yaml
+            capabilities:
+            - CAPABILITY_IAM
+            - CAPABILITY_NAMED_IAM
       - name: e-commerce-cloudformation-eks-vpc
         type: udm.Application
         children:
@@ -41,6 +44,9 @@ spec:
           - name: eks-vpc
             type: aws.cloudformation.Template
             file: !file cloudformation/eks-vpc.yaml
+            capabilities:
+            - CAPABILITY_IAM
+            - CAPABILITY_NAMED_IAM
       - name: e-commerce-cloudformation-eks-master
         type: udm.Application
         children:
@@ -50,6 +56,9 @@ spec:
           - name: eks-master
             type: aws.cloudformation.Template
             file: !file cloudformation/eks-master.yaml
+            capabilities:
+            - CAPABILITY_IAM
+            - CAPABILITY_NAMED_IAM
       - name: e-commerce-cloudformation-eks-workers
         type: udm.Application
         children:
@@ -59,6 +68,9 @@ spec:
           - name: eks-workers
             type: aws.cloudformation.Template
             file: !file cloudformation/eks-workers.yaml
+            capabilities:
+            - CAPABILITY_IAM
+            - CAPABILITY_NAMED_IAM
       - name: e-commerce-k8s-configmap
         type: udm.Application
         children:
@@ -68,6 +80,7 @@ spec:
           - name: aws-auth
             type: k8s.ResourcesFile
             file: !file aws-auth-cm.yaml
+            delimiters: "## ##"
 ### DEPLOYING APP TO K8S ###
     - name: K8S
       type: core.Directory
