@@ -29,8 +29,6 @@ Metadata:
        members:
         - ci ref: "Infrastructure/EKS/EKS-CLUSTER"
         - ci ref: "Infrastructure/AWS/EKS-CLOUDFORMATION"
-       dictionaries:
-        - ci ref: "Environments/AWS-DICT"
      - id: "AWS-PREREQUISITE"
        type: "udm.Environment"
        members:
