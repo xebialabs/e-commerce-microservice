@@ -2,9 +2,6 @@
 syntax: glob
 .gradle/
 
-# Gradle environment specific properties
-gradle.properties
-
 # Build output
 #src/downloads/
 build/
