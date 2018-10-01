@@ -1,3 +1,15 @@
+## Provision EKS with official AWS docs approach
+
+1. Create VPC, Subnet(s), Security Group, Route(s) and add them to RouteTable(s) or use existent ones.
+2. Create Amazon EKS service IAM role to apply to your cluster.
+3. Create Amazon EKS Cluster (kubernetes master) from Amazon EKS console.
+4. Download and install kubectl.
+5. Download and install aws-iam-authenticator.
+6. Configure kubectl to connect to EKS master using aws-iam-authenticator as a token generator.
+7. Launch worker nodes from CloudFormation template, providing custom parameters.
+8. Download and edit ConfigMap with required values.
+9. Deploy ConfigMap via kubectl so worker nodes can join EKS cluster.
+
 ## Provision EKS with CloudFormation
 
 aws cloudformation create-stack --stack-name eks-user --template-body file://eks-user.yaml --capabilities "CAPABILITY_NAMED_IAM"
@@ -29,10 +41,16 @@ data:
 
 ```
 
-**rolearn** is output on the **eks-workers stack**
+**rolearn** is output on the **eks-workers** cloudformation stack.
 
+## Provision EKS with XL Deploy
 
-EKS use case
+You may easily provision and deploy application(i.e. microservice application) through XL Deploy. Specify secrets file with your AWS IAM user credentials inside and upload template to XL Deploy:
+```
+xl apply --secret-file=secrets.file -f xld-ecommerce-microservice.yaml
+```
+
+## EKS use case (internal usage)
 1 - xl apply infra (aws.cloud and aws.aws.cloudformation.Stack, and env with aws.cloudformation.Stack in it)
 2 - xl apply eks stuff (all cloudformation stacks )
 3 - deploy the  eks stuf (will end up provisioning all needed infra and will create in xld the k8s.Master)
