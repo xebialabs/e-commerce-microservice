@@ -43,8 +43,6 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
     contentBase: './build/www',
     proxy: [{
       context: [
-        '/notification',
-        '/invoice',
         /* jhipster-needle-add-entity-to-webpack - JHipster will add entity api paths here */
         '/api',
         '/management',
@@ -53,22 +51,18 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
         '/h2-console',
         '/auth'
       ],
-      target: `http${options.tls ? 's' : ''}://127.0.0.1:8080`,
+      target: 'http://127.0.0.1:8080',
       secure: false,
-      changeOrigin: options.tls,
       headers: { host: 'localhost:9000' }
     }],
     watchOptions: {
       ignored: /node_modules/
     }
   },
-  stats: process.env.DISABLE_WEBPACK_LOGS ? 'none' : options.stats,
   plugins: [
-    process.env.DISABLE_WEBPACK_LOGS
-      ? null
-      : new SimpleProgressWebpackPlugin({
-          format: options.stats === 'minimal' ? 'compact' : 'expanded'
-        }),
+    new SimpleProgressWebpackPlugin({
+      format: options.stats === 'minimal' ? 'compact' : 'expanded'
+    }),
     new FriendlyErrorsWebpackPlugin(),
     new BrowserSyncPlugin({
       host: 'localhost',
@@ -88,5 +82,5 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
       title: 'JHipster',
       contentImage: path.join(__dirname, 'logo-jhipster.png')
     })
-  ].filter(Boolean)
+  ]
 });
