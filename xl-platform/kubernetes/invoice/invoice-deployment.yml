@@ -37,7 +37,7 @@ spec:
         image: xebialabsunsupported/ecommerce-invoice
         env:
         - name: SPRING_PROFILES_ACTIVE
-          value: prod
+          value: "prod,swagger"
         - name: SPRING_CLOUD_CONFIG_URI
           value: http://admin:${jhipster.registry.password}@jhipster-registry.xl-demo.svc.cluster.local:8761/config
         - name: JHIPSTER_REGISTRY_PASSWORD
