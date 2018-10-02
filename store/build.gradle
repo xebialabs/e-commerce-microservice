@@ -162,6 +162,7 @@ configurations {
 repositories {
     mavenLocal()
     mavenCentral()
+    jcenter()
     //jhipster-needle-gradle-repositories - JHipster will add additional repositories
 }
 
