@@ -61,6 +61,21 @@ spec:
           server: XL Deploy
           deploymentPackage: E-COMMERCE/EKS-PROVISION/e-commerce-k8s-configmap/1.0.0
           deploymentEnvironment: Environments/AWS-PREREQUISITE
+      - name: Update EKS cluster Infrastructure CI
+        type: xlrelease.ParallelGroup
+        tasks:
+        - name: Add accessKey to EKS cluster CI
+          type: xld.UpdateCIProperty
+          server: XL Deploy
+          ciID: Infrastructure/EKS/EKS-CLUSTER
+          ciProperty: accessKey
+          propertyValue: fromXLR
+        - name: Add accessSecret to EKS cluster CI
+          type: xld.UpdateCIProperty
+          server: XL Deploy
+          ciID: Infrastructure/EKS/EKS-CLUSTER
+          ciProperty: accessSecret
+          propertyValue: fromXLR
     - name: Deploy e-commerce application
       type: xlrelease.Phase
       tasks:
