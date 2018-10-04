@@ -4,6 +4,7 @@ spec:
 - name: XL Deploy
   type: xldeploy.XLDeployServer
   url: http://xl-deploy:4516
+  ### to be changed to secrets,plain text for now
   username: admin
   password: admin
 
@@ -22,6 +23,17 @@ spec:
     tags:
     - e-commerce
     - EKS
+    ### to be changed to secrets,plain text for now
+    scriptUsername: "admin"
+    scriptUserPassword: "admin"
+    variables:
+    - key: "control"
+      type: "xlrelease.MapStringStringVariable"
+      requiresValue: "false"
+      showOnReleaseStart: "false"
+      value:
+        namespace: "xl-demo"
+        serviceName: "store"
     phases:
     - name: Provinsion Infrastructure
       color: '#ff9e3b'
@@ -128,6 +140,30 @@ spec:
     - name: Test
       type: xlrelease.Phase
       tasks:
+      - name: Get Store service public URL
+        type: xlrelease.SequentialGroup
+        tasks:
+        - name: Get Store k8s service specs
+          type: xldeploy.Controltask
+          server: "XL Deploy"
+          numberOfContinueRetrials: 100
+          pollingInterval: 10
+          ciId: "Infrastructure/EKS/EKS-CLUSTER"
+          taskName: "describeService"
+          variableMapping:
+            pythonScript.xlDeployTaskId: "${taskId}"
+            pythonScript.parameters: "${control}"
+        - name: Get Store k8s service specs output
+          type: webhook.XmlWebhook
+          URL: "http://xl-deploy:4516/deployit/tasks/v2/export"
+          method: "GET"
+          ### to be changed to secrets,plain text for now
+          username: "admin"
+          password: "admin"
+          xPathExpression: "/list/task[@id=\"${taskId}\"]//log/text()"
+        - name: Get Store k8s service ip or hostname
+          type: xlrelease.ScriptTask
+          script: "import re\nm = re.search('hostname:(.*)\\nip:([0-9.]+|None)', releaseVariables['taskOutput'])\nipHostname = [m.group(1),m.group(2)]\nfor item in ipHostname:\n\tif \"None\" not in item:\n\t\treleaseVariables['lbHostnameOrIp'] = item"
       - name: Test REST-o-rant
         type: xlrelease.Task
         team: Release Admin
