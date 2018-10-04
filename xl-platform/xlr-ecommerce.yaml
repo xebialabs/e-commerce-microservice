@@ -3,7 +3,7 @@ kind: Configurations
 spec:
 - name: XL Deploy
   type: xldeploy.XLDeployServer
-  url: http://xl-deploy:4516
+  url: http://xld:4516
   ### to be changed to secrets,plain text for now
   username: admin
   password: admin
@@ -153,36 +153,87 @@ spec:
           variableMapping:
             pythonScript.xlDeployTaskId: "${taskId}"
             pythonScript.parameters: "${control}"
-        - name: Get Store k8s service specs output
+        - name: Parse Store k8s service
           type: webhook.XmlWebhook
-          URL: "http://xl-deploy:4516/deployit/tasks/v2/export"
+          URL: "http://xld:4516/deployit/tasks/v2/export"
           method: "GET"
           ### to be changed to secrets,plain text for now
           username: "admin"
           password: "admin"
           xPathExpression: "/list/task[@id=\"${taskId}\"]//log/text()"
+          variableMapping:
+            pythonScript.result: "${taskOutput}"
         - name: Get Store k8s service ip or hostname
           type: xlrelease.ScriptTask
           script: "import re\nm = re.search('hostname:(.*)\\nip:([0-9.]+|None)', releaseVariables['taskOutput'])\nipHostname = [m.group(1),m.group(2)]\nfor item in ipHostname:\n\tif \"None\" not in item:\n\t\treleaseVariables['lbHostnameOrIp'] = item"
-      - name: Test REST-o-rant
-        type: xlrelease.Task
-        team: Release Admin
-        description: |
-          The REST-o-rant app is now live on ECS!
-          Check out the web site and complete this task when done.
-          Open the web site by running this command:
-          ```
-          ecs/open-rest-o-rant-web
-          ```
-    - name: Clean up
-      color: '#999999'
+    - name: Undeploy Application
       type: xlrelease.Phase
       tasks:
-      - name: Undeploy REST-o-rant
+      - name: Undeploy stateless services
+        type: xlrelease.ParallelGroup
+        tasks:
+        - name: Undeploy registry svc
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/AWS/e-commerce-registry
+        - name: Undeploy invoice svc
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/AWS/e-commerce-invoice
+        - name: Undeploy notification svc
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/AWS/e-commerce-notification
+        - name: Undeploy store svc
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/AWS/e-commerce-store
+      - name: Undeploy stateful services
+        type: xlrelease.ParallelGroup
+        tasks:
+        - name: Undeploy invoice mysql svc
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/AWS/e-commerce-invoice-mysql
+        - name: Undeploy store mysql svc
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/AWS/e-commerce-store-mysql
+        - name: Undeploy notification mongodb svc
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/AWS/e-commerce-notification-mongodb
+      - name: Undeploy xl-demo namespace
         type: xldeploy.Undeploy
         server: XL Deploy
-        deployedApplication: Environments/AWS/rest-o-rant-ecs-service
-      - name: Deprovision ECS cluster
-        type: xldeploy.Undeploy
-        server: XL Deploy
-        deployedApplication: Environments/AWS/rest-o-rant-ecs-fargate-cluster
+        deployedApplication: Environments/AWS/xl-demo-namespace
+    - name: Deprovinsion Infrastructure
+      color: '#ff9e3b'
+      type: xlrelease.Phase
+      tasks:
+      - name: Deprovinsion AWS EKS cluster
+        type: xlrelease.SequentialGroup
+        tasks:
+        - name: Deprovinsion EKS workers nodes
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/AWS/e-commerce-cloudformation-eks-workers
+        - name: Deprovinsion EKS config map for workers
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/AWS-PREREQUISITE/e-commerce-k8s-configmap
+        - name: Deprovinsion EKS master node
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/AWS/e-commerce-cloudformation-eks-master
+      - name: Deprovinsion AWS VPC and IAM resources
+        type: xlrelease.ParallelGroup
+        tasks:
+        - name: Deprovinsion AWS IAM resources
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/AWS/e-commerce-cloudformation-eks-user
+        - name: Deprovinsion AWS VPC
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/AWS/e-commerce-cloudformation-eks-vpc
