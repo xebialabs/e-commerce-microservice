@@ -16,6 +16,13 @@ Metadata:
     - id: "EKS/EKS-CLUSTER/kube-system"
       type: "k8s.Namespace"
       namespaceName: "kube-system"
+    - id: "Infrastructure/AWS"
+      type: "aws.Cloud"
+      accesskey: "Dummy"
+      accessSecret: "Dummy"
+    - id: "Infrastructure/AWS/EKS-CLOUDFORMATION"
+      type: "aws.cloudformation.Stack"
+      region: "eu-west-1"
   XLD::Environments:
      - id: "AWS-EKS-DICT"
        type: "udm.Dictionary"

@@ -1,22 +1,3 @@
-apiVersion: "xl-deploy/v1beta1"
-kind: "Infrastructure"
-spec:
-- name: "Infrastructure/AWS"
-  type: "aws.Cloud"
-  accesskey: "Dummy"
-  accessSecret: "Dummy"
-- name: "Infrastructure/AWS/EKS-CLOUDFORMATION"
-  type: "aws.cloudformation.Stack"
-  region: "eu-west-1"
----
-apiVersion: "xl-deploy/v1beta1"
-kind: "Environments"
-spec:
-- name: "Environments/AWS"
-  type: "udm.Environment"
-  members:
-  - "Infrastructure/AWS/EKS-CLOUDFORMATION"
----
 apiVersion: xl-deploy/v1beta1
 kind: Applications
 spec:
