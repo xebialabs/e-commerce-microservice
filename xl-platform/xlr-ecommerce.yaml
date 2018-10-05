@@ -166,6 +166,20 @@ spec:
         - name: Get Store k8s service ip or hostname
           type: xlrelease.ScriptTask
           script: "import re\nm = re.search('hostname:(.*)\\nip:([0-9.]+|None)', releaseVariables['taskOutput'])\nipHostname = [m.group(1),m.group(2)]\nfor item in ipHostname:\n\tif \"None\" not in item:\n\t\treleaseVariables['lbHostnameOrIp'] = item"
+      - name: "Check e-commerce application status"
+        type: "xlrelease.ScriptTask"
+        script: "import urllib2\nimport json\n\ntoken_url = 'http://${lbHostnameOrIp}:8080/jhipster-registry/api/authenticate'\n\
+          instances_url = 'http://${lbHostnameOrIp}:8080/jhipster-registry/api/eureka/applications'\n\
+          values = {\"password\": \"admin\",\n          \"rememberMe\": \"false\"\
+          ,\n          \"username\": \"admin\" }\n\n\ndef make_req(url, body=None,\
+          \ token=None):\n\treq = urllib2.Request(url, json.dumps(body) if body else\
+          \ None, headers={'Content-type': 'application/json', 'Accept': 'application/json',\
+          \ 'Authorization': 'Bearer %s' % token})\n\topener = urllib2.build_opener()\n\
+          \tresponse = opener.open(req)\n\treturn json.loads(response.read())\n\n\
+          token = make_req(token_url, body=values)['id_token']\nresp = make_req(instances_url,\
+          \ token=token)\nif len(resp['applications']) == 4:\n\tprint \"All instances\
+          \ are registered\"\nelse:\n    print \"Not all instances are registered.Only\
+          \ {0} are registered\".format(len(resp['applications']))\n    exit(1)"
     - name: Undeploy Application
       type: xlrelease.Phase
       tasks:
