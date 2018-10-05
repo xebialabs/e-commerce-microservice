@@ -53,12 +53,12 @@ spec:
           type: xldeploy.Deploy
           server: XL Deploy
           deploymentPackage: E-COMMERCE/EKS-PROVISION/e-commerce-cloudformation-eks-user/1.0.0
-          deploymentEnvironment: Environments/AWS
+          deploymentEnvironment: Environments/AWS-CL
         - name: Provision AWS VPC
           type: xldeploy.Deploy
           server: XL Deploy
           deploymentPackage: E-COMMERCE/EKS-PROVISION/e-commerce-cloudformation-eks-vpc/1.0.0
-          deploymentEnvironment: Environments/AWS
+          deploymentEnvironment: Environments/AWS-CL
       - name: Provision AWS EKS cluster
         type: xlrelease.SequentialGroup
         tasks:
@@ -66,20 +66,12 @@ spec:
           type: xldeploy.Deploy
           server: XL Deploy
           deploymentPackage: E-COMMERCE/EKS-PROVISION/e-commerce-cloudformation-eks-master/1.0.0
-          deploymentEnvironment: Environments/AWS
+          deploymentEnvironment: Environments/AWS-CL
         - name: Provision EKS workers nodes
           type: xldeploy.Deploy
           server: XL Deploy
           deploymentPackage: E-COMMERCE/EKS-PROVISION/e-commerce-cloudformation-eks-workers/1.0.0
-          deploymentEnvironment: Environments/AWS
-        - name: Provision EKS config map for workers
-          type: xldeploy.Deploy
-          server: XL Deploy
-          deploymentPackage: E-COMMERCE/EKS-PROVISION/e-commerce-k8s-configmap/1.0.0
-          deploymentEnvironment: Environments/AWS-PREREQUISITE
-      - name: Update EKS cluster Infrastructure CI
-        type: xlrelease.ParallelGroup
-        tasks:
+          deploymentEnvironment: Environments/AWS-CL
         - name: Add accessKey to EKS cluster CI
           type: xld.UpdateCIProperty
           server: XL Deploy
@@ -92,6 +84,11 @@ spec:
           ciID: Infrastructure/EKS/EKS-CLUSTER
           ciProperty: accessSecret
           propertyValue: fromXLR
+        - name: Provision EKS config map for workers
+          type: xldeploy.Deploy
+          server: XL Deploy
+          deploymentPackage: E-COMMERCE/EKS-PROVISION/e-commerce-k8s-configmap/1.0.0
+          deploymentEnvironment: Environments/AWS-PREREQUISITE
     - name: Deploy e-commerce application
       type: xlrelease.Phase
       tasks:
@@ -99,7 +96,7 @@ spec:
         type: xldeploy.Deploy
         server: XL Deploy
         deploymentPackage: E-COMMERCE/K8S/xl-demo-namespace/1.0.0
-        deploymentEnvironment: Environments/AWS
+        deploymentEnvironment: Environments/AWS-EKS
       - name: Deploy stateful services
         type: xlrelease.ParallelGroup
         tasks:
@@ -107,17 +104,17 @@ spec:
           type: xldeploy.Deploy
           server: XL Deploy
           deploymentPackage: E-COMMERCE/K8S/e-commerce-invoice-mysql/1.0.0
-          deploymentEnvironment: Environments/AWS
+          deploymentEnvironment: Environments/AWS-EKS
         - name: Deploy store mysql svc
           type: xldeploy.Deploy
           server: XL Deploy
           deploymentPackage: E-COMMERCE/EKS-PROVISION/e-commerce-store-mysql/1.0.0
-          deploymentEnvironment: Environments/AWS
+          deploymentEnvironment: Environments/AWS-EKS
         - name: Deploy notification mongodb svc
           type: xldeploy.Deploy
           server: XL Deploy
           deploymentPackage: E-COMMERCE/EKS-PROVISION/e-commerce-notification-mongodb/1.0.0
-          deploymentEnvironment: Environments/AWS
+          deploymentEnvironment: Environments/AWS-EKS
       - name: Deploy stateless services
         type: xlrelease.SequentialGroup
         tasks:
@@ -125,22 +122,22 @@ spec:
           type: xldeploy.Deploy
           server: XL Deploy
           deploymentPackage: E-COMMERCE/K8S/e-commerce-registry/1.0.0
-          deploymentEnvironment: Environments/AWS
+          deploymentEnvironment: Environments/AWS-EKS
         - name: Deploy invoice svc
           type: xldeploy.Deploy
           server: XL Deploy
           deploymentPackage: E-COMMERCE/EKS-PROVISION/e-commerce-invoice/1.0.0
-          deploymentEnvironment: Environments/AWS
+          deploymentEnvironment: Environments/AWS-EKS
         - name: Deploy notification svc
           type: xldeploy.Deploy
           server: XL Deploy
           deploymentPackage: E-COMMERCE/EKS-PROVISION/e-commerce-notification/1.0.0
-          deploymentEnvironment: Environments/AWS
+          deploymentEnvironment: Environments/AWS-EKS
         - name: Deploy store svc
           type: xldeploy.Deploy
           server: XL Deploy
           deploymentPackage: E-COMMERCE/EKS-PROVISION/e-commerce-store/1.0.0
-          deploymentEnvironment: Environments/AWS
+          deploymentEnvironment: Environments/AWS-EKS
     - name: Test
       type: xlrelease.Phase
       tasks:
@@ -193,38 +190,38 @@ spec:
         - name: Undeploy registry svc
           type: xldeploy.Undeploy
           server: XL Deploy
-          deployedApplication: Environments/AWS/e-commerce-registry
+          deployedApplication: Environments/AWS-EKS/e-commerce-registry
         - name: Undeploy invoice svc
           type: xldeploy.Undeploy
           server: XL Deploy
-          deployedApplication: Environments/AWS/e-commerce-invoice
+          deployedApplication: Environments/AWS-EKS/e-commerce-invoice
         - name: Undeploy notification svc
           type: xldeploy.Undeploy
           server: XL Deploy
-          deployedApplication: Environments/AWS/e-commerce-notification
+          deployedApplication: Environments/AWS-EKS/e-commerce-notification
         - name: Undeploy store svc
           type: xldeploy.Undeploy
           server: XL Deploy
-          deployedApplication: Environments/AWS/e-commerce-store
+          deployedApplication: Environments/AWS-EKS/e-commerce-store
       - name: Undeploy stateful services
         type: xlrelease.ParallelGroup
         tasks:
         - name: Undeploy invoice mysql svc
           type: xldeploy.Undeploy
           server: XL Deploy
-          deployedApplication: Environments/AWS/e-commerce-invoice-mysql
+          deployedApplication: Environments/AWS-EKS/e-commerce-invoice-mysql
         - name: Undeploy store mysql svc
           type: xldeploy.Undeploy
           server: XL Deploy
-          deployedApplication: Environments/AWS/e-commerce-store-mysql
+          deployedApplication: Environments/AWS-EKS/e-commerce-store-mysql
         - name: Undeploy notification mongodb svc
           type: xldeploy.Undeploy
           server: XL Deploy
-          deployedApplication: Environments/AWS/e-commerce-notification-mongodb
+          deployedApplication: Environments/AWS-EKS/e-commerce-notification-mongodb
       - name: Undeploy xl-demo namespace
         type: xldeploy.Undeploy
         server: XL Deploy
-        deployedApplication: Environments/AWS/xl-demo-namespace
+        deployedApplication: Environments/AWS-EKS/xl-demo-namespace
     - name: Deprovinsion Infrastructure
       color: '#ff9e3b'
       type: xlrelease.Phase
@@ -232,26 +229,26 @@ spec:
       - name: Deprovinsion AWS EKS cluster
         type: xlrelease.SequentialGroup
         tasks:
-        - name: Deprovinsion EKS workers nodes
-          type: xldeploy.Undeploy
-          server: XL Deploy
-          deployedApplication: Environments/AWS/e-commerce-cloudformation-eks-workers
         - name: Deprovinsion EKS config map for workers
           type: xldeploy.Undeploy
           server: XL Deploy
           deployedApplication: Environments/AWS-PREREQUISITE/e-commerce-k8s-configmap
+        - name: Deprovinsion EKS workers nodes
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/AWS-CL/e-commerce-cloudformation-eks-workers
         - name: Deprovinsion EKS master node
           type: xldeploy.Undeploy
           server: XL Deploy
-          deployedApplication: Environments/AWS/e-commerce-cloudformation-eks-master
+          deployedApplication: Environments/AWS-CL/e-commerce-cloudformation-eks-master
       - name: Deprovinsion AWS VPC and IAM resources
         type: xlrelease.ParallelGroup
         tasks:
         - name: Deprovinsion AWS IAM resources
           type: xldeploy.Undeploy
           server: XL Deploy
-          deployedApplication: Environments/AWS/e-commerce-cloudformation-eks-user
+          deployedApplication: Environments/AWS-CL/e-commerce-cloudformation-eks-user
         - name: Deprovinsion AWS VPC
           type: xldeploy.Undeploy
           server: XL Deploy
-          deployedApplication: Environments/AWS/e-commerce-cloudformation-eks-vpc
+          deployedApplication: Environments/AWS-CL/e-commerce-cloudformation-eks-vpc
