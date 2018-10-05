@@ -19,7 +19,7 @@ spec:
   - name: e-commerce
     type: xlrelease.Release
     description: |
-      This XL Release template shows how to deploy an undeploy an application, based on microservices architecture, to AWS EES using XL Deploy.
+      This XL Release template shows how to deploy an undeploy an application, based on microservices architecture, to AWS EKS using XL Deploy.
     tags:
     - e-commerce
     - EKS
@@ -40,14 +40,24 @@ spec:
       showOnReleaseStart: "false"
     - key: "accessKey"
       type: "xlrelease.StringVariable"
-      requiresValue: "false"
-      showOnReleaseStart: "false"
-      value: "dummy"
+      requiresValue: "true"
+      showOnReleaseStart: "true"
     - key: "accessSecret"
       type: "xlrelease.StringVariable"
-      requiresValue: "false"
-      showOnReleaseStart: "false"
-      value: "dummy"
+      requiresValue: "true"
+      showOnReleaseStart: "true"
+    - key: "store-admin-username"
+      type: "xlrelease.StringVariable"
+      requiresValue: "true"
+      showOnReleaseStart: "true"
+    - key: "store-admin-password"
+      type: "xlrelease.StringVariable"
+      requiresValue: "true"
+      showOnReleaseStart: "true"
+    - key: "xld-admin-password"
+      type: "xlrelease.PasswordStringVariable"
+      requiresValue: "true"
+      showOnReleaseStart: "true"
     phases:
     - name: Provinsion Infrastructure
       color: '#ff9e3b'
@@ -56,6 +66,21 @@ spec:
       - name: Ready to go?
         type: xlrelease.GateTask
         team: Release Admin
+      - name: Update AWS cloud with correct access key and secret
+        type: xlrelease.SequentialGroup
+        tasks:
+        - name: Add accessKey to AWS cloud CI
+          type: xld.UpdateCIProperty
+          server: XL Deploy
+          ciID: Infrastructure/AWS
+          ciProperty: accesskey
+          propertyValue: ${accessKey}
+        - name: Add accessSecret to AWS cloud CI
+          type: xld.UpdateCIProperty
+          server: XL Deploy
+          ciID: Infrastructure/AWS
+          ciProperty: accessSecret
+          propertyValue: ${accessSecret}
       - name: Provision AWS VPC and IAM resources
         type: xlrelease.ParallelGroup
         tasks:
@@ -118,12 +143,12 @@ spec:
         - name: Deploy store mysql svc
           type: xldeploy.Deploy
           server: XL Deploy
-          deploymentPackage: E-COMMERCE/EKS-PROVISION/e-commerce-store-mysql/1.0.0
+          deploymentPackage: E-COMMERCE/K8S/e-commerce-store-mysql/1.0.0
           deploymentEnvironment: Environments/AWS-EKS
         - name: Deploy notification mongodb svc
           type: xldeploy.Deploy
           server: XL Deploy
-          deploymentPackage: E-COMMERCE/EKS-PROVISION/e-commerce-notification-mongodb/1.0.0
+          deploymentPackage: E-COMMERCE/K8S/e-commerce-notification-mongodb/1.0.0
           deploymentEnvironment: Environments/AWS-EKS
       - name: Deploy stateless services
         type: xlrelease.SequentialGroup
@@ -136,17 +161,17 @@ spec:
         - name: Deploy invoice svc
           type: xldeploy.Deploy
           server: XL Deploy
-          deploymentPackage: E-COMMERCE/EKS-PROVISION/e-commerce-invoice/1.0.0
+          deploymentPackage: E-COMMERCE/K8S/e-commerce-invoice/1.0.0
           deploymentEnvironment: Environments/AWS-EKS
         - name: Deploy notification svc
           type: xldeploy.Deploy
           server: XL Deploy
-          deploymentPackage: E-COMMERCE/EKS-PROVISION/e-commerce-notification/1.0.0
+          deploymentPackage: E-COMMERCE/K8S/e-commerce-notification/1.0.0
           deploymentEnvironment: Environments/AWS-EKS
         - name: Deploy store svc
           type: xldeploy.Deploy
           server: XL Deploy
-          deploymentPackage: E-COMMERCE/EKS-PROVISION/e-commerce-store/1.0.0
+          deploymentPackage: E-COMMERCE/K8S/e-commerce-store/1.0.0
           deploymentEnvironment: Environments/AWS-EKS
     - name: Test
       type: xlrelease.Phase
@@ -168,12 +193,11 @@ spec:
           type: webhook.XmlWebhook
           URL: "http://xld:4516/deployit/tasks/v2/export"
           method: "GET"
-          ### to be changed to secrets,plain text for now
           username: "admin"
-          password: "admin"
           xPathExpression: "/list/task[@id=\"${taskId}\"]//log/text()"
           variableMapping:
             pythonScript.result: "${taskOutput}"
+            pythonScript.password: "${xld-admin-password}"
         - name: Get Store k8s service ip or hostname
           type: xlrelease.ScriptTask
           script: "import re\nm = re.search('hostname:(.*)\\nip:([0-9.]+|None)', releaseVariables['taskOutput'])\nipHostname = [m.group(1),m.group(2)]\nfor item in ipHostname:\n\tif \"None\" not in item:\n\t\treleaseVariables['lbHostnameOrIp'] = item"
@@ -181,8 +205,8 @@ spec:
         type: "xlrelease.ScriptTask"
         script: "import urllib2\nimport json\n\ntoken_url = 'http://${lbHostnameOrIp}:8080/jhipster-registry/api/authenticate'\n\
           instances_url = 'http://${lbHostnameOrIp}:8080/jhipster-registry/api/eureka/applications'\n\
-          values = {\"password\": \"admin\",\n          \"rememberMe\": \"false\"\
-          ,\n          \"username\": \"admin\" }\n\n\ndef make_req(url, body=None,\
+          values = {\"password\": \"${store-admin-password}\",\n          \"rememberMe\": \"false\"\
+          ,\n          \"username\": \"${store-admin-username}\" }\n\n\ndef make_req(url, body=None,\
           \ token=None):\n\treq = urllib2.Request(url, json.dumps(body) if body else\
           \ None, headers={'Content-type': 'application/json', 'Accept': 'application/json',\
           \ 'Authorization': 'Bearer %s' % token})\n\topener = urllib2.build_opener()\n\
