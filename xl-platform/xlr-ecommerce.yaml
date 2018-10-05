@@ -34,6 +34,10 @@ spec:
       value:
         namespace: "xl-demo"
         serviceName: "store"
+    - key: "lbHostnameOrIp"
+      type: "xlrelease.StringVariable"
+      requiresValue: "false"
+      showOnReleaseStart: "false"
     phases:
     - name: Provinsion Infrastructure
       color: '#ff9e3b'
