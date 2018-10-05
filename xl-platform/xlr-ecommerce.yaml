@@ -38,6 +38,16 @@ spec:
       type: "xlrelease.StringVariable"
       requiresValue: "false"
       showOnReleaseStart: "false"
+    - key: "accessKey"
+      type: "xlrelease.StringVariable"
+      requiresValue: "false"
+      showOnReleaseStart: "false"
+      value: "dummy"
+    - key: "accessSecret"
+      type: "xlrelease.StringVariable"
+      requiresValue: "false"
+      showOnReleaseStart: "false"
+      value: "dummy"
     phases:
     - name: Provinsion Infrastructure
       color: '#ff9e3b'
@@ -77,13 +87,13 @@ spec:
           server: XL Deploy
           ciID: Infrastructure/EKS/EKS-CLUSTER
           ciProperty: accessKey
-          propertyValue: fromXLR
+          propertyValue: ${accessKey}
         - name: Add accessSecret to EKS cluster CI
           type: xld.UpdateCIProperty
           server: XL Deploy
           ciID: Infrastructure/EKS/EKS-CLUSTER
           ciProperty: accessSecret
-          propertyValue: fromXLR
+          propertyValue: ${accessSecret}
         - name: Provision EKS config map for workers
           type: xldeploy.Deploy
           server: XL Deploy
