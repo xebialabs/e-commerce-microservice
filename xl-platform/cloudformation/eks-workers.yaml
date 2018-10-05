@@ -16,13 +16,6 @@ Metadata:
     - id: "EKS/EKS-CLUSTER/kube-system"
       type: "k8s.Namespace"
       namespaceName: "kube-system"
-    - id: "Infrastructure/AWS"
-      type: "aws.Cloud"
-      accesskey: "Dummy"
-      accessSecret: "Dummy"
-    - id: "Infrastructure/AWS/EKS-CLOUDFORMATION"
-      type: "aws.cloudformation.Stack"
-      region: "eu-west-1"
   XLD::Environments:
      - id: "AWS-EKS-DICT"
        type: "udm.Dictionary"
@@ -31,11 +24,10 @@ Metadata:
         EKS_USER: "{EksUser}"
         EKS_USER_ARN: "{EksUserArn}"
         CLUSTER_ENDPOINT: "{ClusterEndpoint}"
-     - id: "AWS"
+     - id: "AWS-EKS"
        type: "udm.Environment"
        members:
         - ci ref: "Infrastructure/EKS/EKS-CLUSTER"
-        - ci ref: "Infrastructure/AWS/EKS-CLOUDFORMATION"
      - id: "AWS-PREREQUISITE"
        type: "udm.Environment"
        members:
