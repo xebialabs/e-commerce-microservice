@@ -38,11 +38,11 @@ spec:
       type: "xlrelease.StringVariable"
       requiresValue: "false"
       showOnReleaseStart: "false"
-    - key: "accessKey"
+    - key: "AWSaccessKey"
       type: "xlrelease.StringVariable"
       requiresValue: "true"
       showOnReleaseStart: "true"
-    - key: "accessSecret"
+    - key: "AWSaccessSecret"
       type: "xlrelease.StringVariable"
       requiresValue: "true"
       showOnReleaseStart: "true"
@@ -74,13 +74,13 @@ spec:
           server: XL Deploy
           ciID: Infrastructure/AWS
           ciProperty: accesskey
-          propertyValue: ${accessKey}
+          propertyValue: ${AWSaccessKey}
         - name: Add accessSecret to AWS cloud CI
           type: xld.UpdateCIProperty
           server: XL Deploy
           ciID: Infrastructure/AWS
           ciProperty: accessSecret
-          propertyValue: ${accessSecret}
+          propertyValue: ${AWSaccessSecret}
       - name: Provision AWS VPC and IAM resources
         type: xlrelease.ParallelGroup
         tasks:
@@ -112,13 +112,13 @@ spec:
           server: XL Deploy
           ciID: Infrastructure/EKS/EKS-CLUSTER
           ciProperty: accessKey
-          propertyValue: ${accessKey}
+          propertyValue: ${AWSaccessKey}
         - name: Add accessSecret to EKS cluster CI
           type: xld.UpdateCIProperty
           server: XL Deploy
           ciID: Infrastructure/EKS/EKS-CLUSTER
           ciProperty: accessSecret
-          propertyValue: ${accessSecret}
+          propertyValue: ${AWSaccessSecret}
         - name: Provision EKS config map for workers
           type: xldeploy.Deploy
           server: XL Deploy
