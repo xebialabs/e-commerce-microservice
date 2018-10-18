@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notification
+  namespace: xl-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notification
+      version: "v1"
+  template:
+    metadata:
+      labels:
+        app: notification
+        version: "v1"
+    spec:
+      initContainers:
+        - name: init-ds
+          image: busybox
+          command:
+            - '/bin/sh'
+            - '-c'
+            - |
+                while true
+                do
+                  rt=$(nc -z -w 1 notification-mongodb 27017)
+                  if [ $? -eq 0 ]; then
+                    echo "DB is UP"
+                    break
+                  fi
+                  echo "DB is not yet reachable;sleep for 10s before retry"
+                  sleep 10
+                done
+      containers:
+      - name: notification-app
+        image: xebialabsunsupported/notification
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: prod
+        - name: SPRING_CLOUD_CONSUL_HOST
+          value: consul.xl-demo.svc.cluster.local
+        - name: SPRING_CLOUD_CONSUL_PORT
+          value: "8500"
+        - name: SPRING_DATA_MONGODB_DATABASE
+          value: notification
+        - name: SPRING_DATA_MONGODB_URI
+          value: "mongodb://notification-mongodb-0.notification-mongodb.xl-demo:27017"
+        - name: SPRING_SLEUTH_PROPAGATION_KEYS
+          value: "x-request-id,x-ot-span-context"
+        - name: JAVA_OPTS
+          value: " -Xmx256m -Xms256m"
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "500m"
+          limits:
+            memory: "512Mi"
+            cpu: "1"
+        ports:
+        - name: http
+          containerPort: 8082
+        readinessProbe:
+          httpGet:
+            path: /management/health
+            port: http
+          initialDelaySeconds: 20
+          periodSeconds: 15
+          failureThreshold: 6
+        livenessProbe:
+          httpGet:
+            path: /management/health
+            port: http
+          initialDelaySeconds: 120

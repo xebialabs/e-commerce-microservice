@@ -1,0 +1,20 @@
+{
+  "generator-jhipster": {
+    "appsFolders": [
+      "invoice",
+      "notification",
+      "store"
+    ],
+    "directoryPath": "../",
+    "clusteredDbApps": [],
+    "serviceDiscoveryType": "consul",
+    "jwtSecretKey": "OTE0MDk5ZmQ0MDUzNDAzMTdjOTg5NzFhMWJmNTczNGY5ZGJjMzMzMGM2ZDg3MGU4YzM3NTUwOGUwZjcxODdjN2IwNzE2YTljYzBjNTU5YjE0YWFiYjFhNTMxNjU1Y2Y1OTEyMw==",
+    "dockerRepositoryName": "xebialabsunsupported",
+    "dockerPushCommand": "docker push",
+    "kubernetesNamespace": "xl-demo",
+    "kubernetesServiceType": "LoadBalancer",
+    "monitoring": "no",
+    "istio": "no",
+    "istioRoute": false
+  }
+}
