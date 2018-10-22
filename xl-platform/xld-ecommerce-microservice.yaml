@@ -1,0 +1,175 @@
+apiVersion: "xl-deploy/v1beta1"
+kind: "Infrastructure"
+spec:
+- name: "Infrastructure/AWS"
+  type: "aws.Cloud"
+  accesskey: "Dummy"
+  accessSecret: "Dummy"
+- name: "Infrastructure/AWS/EKS-CLOUDFORMATION"
+  type: "aws.cloudformation.Stack"
+  region: "eu-west-1"
+---
+apiVersion: "xl-deploy/v1beta1"
+kind: "Environments"
+spec:
+- name: "Environments/AWS-CL"
+  type: "udm.Environment"
+  members:
+  - "Infrastructure/AWS/EKS-CLOUDFORMATION"
+---
+apiVersion: xl-deploy/v1beta1
+kind: Applications
+spec:
+- name: E-COMMERCE
+  type: core.Directory
+  children:
+### PROVISION EKS WITH CLOUDFORMATION TEMPLATES ###
+    - name: EKS-PROVISION
+      type: core.Directory
+      children:
+      - name: e-commerce-cloudformation-eks-user
+        type: udm.Application
+        children:
+        - name: '1.0.0'
+          type: udm.DeploymentPackage
+          deployables:
+          - name: eks-user
+            type: aws.cloudformation.Template
+            file: !file cloudformation/eks-user.yaml
+            capabilities:
+            - CAPABILITY_IAM
+            - CAPABILITY_NAMED_IAM
+      - name: e-commerce-cloudformation-eks-vpc
+        type: udm.Application
+        children:
+        - name: '1.0.0'
+          type: udm.DeploymentPackage
+          deployables:
+          - name: eks-vpc
+            type: aws.cloudformation.Template
+            file: !file cloudformation/eks-vpc.yaml
+            capabilities:
+            - CAPABILITY_IAM
+            - CAPABILITY_NAMED_IAM
+      - name: e-commerce-cloudformation-eks-master
+        type: udm.Application
+        children:
+        - name: '1.0.0'
+          type: udm.DeploymentPackage
+          deployables:
+          - name: eks-master
+            type: aws.cloudformation.Template
+            file: !file cloudformation/eks-master.yaml
+            capabilities:
+            - CAPABILITY_IAM
+            - CAPABILITY_NAMED_IAM
+      - name: e-commerce-cloudformation-eks-workers
+        type: udm.Application
+        children:
+        - name: '1.0.0'
+          type: udm.DeploymentPackage
+          deployables:
+          - name: eks-workers
+            type: aws.cloudformation.Template
+            file: !file cloudformation/eks-workers.yaml
+            capabilities:
+            - CAPABILITY_IAM
+            - CAPABILITY_NAMED_IAM
+      - name: e-commerce-k8s-configmap
+        type: udm.Application
+        children:
+        - name: '1.0.0'
+          type: udm.DeploymentPackage
+          deployables:
+          - name: aws-auth
+            type: k8s.ResourcesFile
+            file: !file aws-auth-cm.yaml
+            delimiters: "## ##"
+### DEPLOYING APP TO K8S ###
+    - name: K8S
+      type: core.Directory
+      children:
+      - name: xl-demo-namespace
+        type: udm.Application
+        children:
+        - name: '1.0.0'
+          type: udm.DeploymentPackage
+          deployables:
+          - name: xl-demo
+            type: k8s.NamespaceSpec
+            namespaceName: 'xl-demo'
+      - name: e-commerce-invoice-mysql
+        type: udm.Application
+        children:
+        - name: '1.0.0'
+          type: udm.DeploymentPackage
+          deployables:
+          - name: invoice-mysql
+            type: k8s.ResourcesFile
+            file: !file kubernetes/invoice/invoice-mysql.yml
+      - name: e-commerce-store-mysql
+        type: udm.Application
+        children:
+        - name: '1.0.0'
+          type: udm.DeploymentPackage
+          deployables:
+          - name: store-mysql
+            type: k8s.ResourcesFile
+            file: !file kubernetes/store/store-mysql.yml
+      - name: e-commerce-notification-mongodb
+        type: udm.Application
+        children:
+        - name: '1.0.0'
+          type: udm.DeploymentPackage
+          deployables:
+          - name: notification-mongodb
+            type: k8s.ResourcesFile
+            file: !file kubernetes/notification/notification-mongodb.yml
+      - name: e-commerce-registry
+        type: udm.Application
+        children:
+        - name: '1.0.0'
+          type: udm.DeploymentPackage
+          deployables:
+          - name: application-config
+            type: k8s.ResourcesFile
+            file: !file kubernetes/registry/application-configmap.yml
+          - name: jhipster-registry
+            type: k8s.ResourcesFile
+            file: !file kubernetes/registry/jhipster-registry.yml
+      - name: e-commerce-invoice
+        type: udm.Application
+        children:
+        - name: '1.0.0'
+          type: udm.DeploymentPackage
+          deployables:
+          - name: invoice-deployment
+            type: k8s.ResourcesFile
+            file: !file kubernetes/invoice/invoice-deployment.yml
+          - name: invoice-svc
+            type: k8s.ResourcesFile
+            file: !file kubernetes/invoice/invoice-service.yml
+      - name: e-commerce-notification
+        type: udm.Application
+        children:
+        - name: '1.0.0'
+          type: udm.DeploymentPackage
+          deployables:
+          - name: invoice-notification
+            type: k8s.ResourcesFile
+            file: !file kubernetes/notification/notification-deployment.yml
+          - name: notification-svc
+            type: k8s.ResourcesFile
+            file: !file kubernetes/notification/notification-service.yml
+      - name: e-commerce-store
+        type: udm.Application
+        children:
+        - name: '1.0.0'
+          type: udm.DeploymentPackage
+          deployables:
+          - name: store-deployment
+            type: k8s.ResourcesFile
+            file: !file kubernetes/store/store-deployment.yml
+          - name: store-svc
+            type: k8s.ResourcesFile
+            file: !file kubernetes/store/store-service.yml

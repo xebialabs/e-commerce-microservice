@@ -5,6 +5,9 @@ metadata:
   namespace: xl-demo
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: invoice-mysql
   template:
     metadata:
       labels:

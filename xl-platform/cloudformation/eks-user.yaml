@@ -1,0 +1,128 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: "Amazon EKS - KeyPair and User"
+Parameters:
+  S3BucketPrefix:
+    Type: String
+    Default: 'binxio-public'
+  CFNCustomProviderZipFileName:
+    Type: String
+    Default: 'lambdas/cfn-secret-provider-0.12.2.zip'
+  Username:
+    Type: String
+    Default: 'eks-ecommerce'
+
+Resources:
+
+  EksUser:
+    Type: AWS::IAM::User
+    Properties:
+      UserName: !Sub '${Username}'
+  LambdaPolicy:
+    Type: AWS::IAM::Policy
+    DependsOn:
+      - LambdaRole
+    Properties:
+      PolicyName: CFNCustomSecretProviderPolicy
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - iam:CreateAccessKey
+              - iam:DeleteAccessKey
+              - iam:UpdateAccessKey
+              - ssm:PutParameter
+              - ssm:GetParameter
+              - ssm:DeleteParameter
+              - ec2:ImportKeyPair
+              - ec2:DeleteKeyPair
+              - secretsmanager:DeleteSecret
+              - secretsmanager:CreateSecret
+              - secretsmanager:UpdateSecret
+            Resource:
+              - '*'
+          - Effect: Allow
+            Action:
+              - kms:Encrypt
+            Resource:
+              - '*'
+          - Action:
+              - logs:*
+            Resource: arn:aws:logs:*:*:*
+            Effect: Allow
+      Roles:
+        - !Ref 'LambdaRole'
+  LambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Action:
+              - sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+  CFNSecretProvider:
+    Type: AWS::Lambda::Function
+    DependsOn:
+      - LambdaRole
+    Properties:
+      Description: CloudFormation Custom:Secret implementation
+      Code:
+        S3Bucket: !Sub '${S3BucketPrefix}-${AWS::Region}'
+        S3Key: !Ref 'CFNCustomProviderZipFileName'
+      FunctionName: 'binxio-cfn-secret-provider'
+      Handler: secrets.handler
+      MemorySize: 128
+      Timeout: 30
+      Role: !GetAtt 'LambdaRole.Arn'
+      Runtime: python3.6
+
+  PrivateKey:
+    Type: Custom::RSAKey
+    DependsOn:
+      - LambdaPolicy
+      - CFNSecretProvider
+    Properties:
+      Name: !Sub '/${AWS::StackName}/demo/private-key'
+      Version: v1
+      NoEcho: False
+      ServiceToken: !Sub 'arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:binxio-cfn-secret-provider'
+
+  KeyPair:
+    Type: Custom::KeyPair
+    DependsOn:
+      - LambdaPolicy
+      - CFNSecretProvider
+      - PrivateKey
+    Properties:
+      Name: !Ref EksUser
+      NoEcho: False
+      PublicKeyMaterial: !GetAtt 'PrivateKey.PublicKey'
+      ServiceToken: !Sub 'arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:binxio-cfn-secret-provider'
+
+Outputs:
+  Username:
+    Value: !Sub '${Username}'
+    Description: EKS Username
+    Export:
+      Name: !Sub '${AWS::StackName}-user'
+  UserARN:
+    Value: !GetAtt 'EksUser.Arn'
+    Description: EKS User ARN
+    Export:
+      Name: !Sub '${AWS::StackName}-user-arn'
+  KeyPairName:
+    Value: !Sub '${Username}'
+    Description: KeyPair name for EKS Worker nodes
+    Export:
+      Name: !Sub '${AWS::StackName}-keypair'
+  PublicKey:
+    Value: !GetAtt 'PrivateKey.PublicKey'
+    Description: the public key, safe to expose
+  PrivateKeyArn:
+    Value: !GetAtt 'PrivateKey.Arn'
+    Description: ARN of the private key in the Parameter Store

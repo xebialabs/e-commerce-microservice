@@ -1,3 +1,4 @@
+
 package com.xebialabs.store.gateway.responserewriting;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,11 +10,11 @@ import org.springframework.cloud.netflix.zuul.filters.ZuulProperties;
 import org.springframework.cloud.netflix.zuul.filters.post.SendResponseFilter;
 import springfox.documentation.swagger2.web.Swagger2Controller;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 /**
  * Zuul filter to rewrite micro-services Swagger URL Base Path.
@@ -50,12 +51,18 @@ public class SwaggerBasePathRewritingFilter extends SendResponseFilter {
     public Object run() {
         RequestContext context = RequestContext.getCurrentContext();
 
-        if (!context.getResponseGZipped()) {
-            context.getResponse().setCharacterEncoding("UTF-8");
-        }
+        context.getResponse().setCharacterEncoding("UTF-8");
 
         String rewrittenResponse = rewriteBasePath(context);
-        context.setResponseBody(rewrittenResponse);
+        if (context.getResponseGZipped()) {
+            try {
+                context.setResponseDataStream(new ByteArrayInputStream(gzipData(rewrittenResponse)));
+            } catch (IOException e) {
+                log.error("Swagger-docs filter error", e);
+            }
+        } else {
+            context.setResponseBody(rewrittenResponse);
+        }
         return null;
     }
 
@@ -80,5 +87,14 @@ public class SwaggerBasePathRewritingFilter extends SendResponseFilter {
             log.error("Swagger-docs filter error", e);
         }
         return null;
+    }
+
+    public static byte[] gzipData(String content) throws IOException {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        PrintWriter gzip = new PrintWriter(new GZIPOutputStream(bos));
+        gzip.print(content);
+        gzip.flush();
+        gzip.close();
+        return bos.toByteArray();
     }
 }
