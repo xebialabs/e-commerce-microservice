@@ -1,0 +1,305 @@
+apiVersion: xl-release/v1beta1
+kind: Configurations
+spec:
+- name: XL Deploy
+  type: xldeploy.XLDeployServer
+  url: http://xld:4516
+  ### to be changed to secrets,plain text for now
+  username: admin
+  password: admin
+
+---
+
+apiVersion: xl-release/v1beta1
+kind: Templates
+spec:
+- name: E-COMMERCE
+  type: xlrelease.Folder
+  children:
+  - name: e-commerce
+    type: xlrelease.Release
+    description: |
+      This XL Release template shows how to deploy and undeploy an application, based on microservices architecture, to AWS EKS using XL Deploy.
+    tags:
+    - e-commerce
+    - EKS
+    ### to be changed to secrets,plain text for now
+    scriptUsername: "admin"
+    scriptUserPassword: "admin"
+    variables:
+    - key: "control"
+      type: "xlrelease.MapStringStringVariable"
+      requiresValue: "false"
+      showOnReleaseStart: "false"
+      value:
+        namespace: "xl-demo"
+        serviceName: "store"
+    - key: "lbHostnameOrIp"
+      type: "xlrelease.StringVariable"
+      requiresValue: "false"
+      showOnReleaseStart: "false"
+    - key: "AWSaccessKey"
+      type: "xlrelease.StringVariable"
+      requiresValue: "true"
+      showOnReleaseStart: "true"
+    - key: "AWSaccessSecret"
+      type: "xlrelease.StringVariable"
+      requiresValue: "true"
+      showOnReleaseStart: "true"
+    - key: "store-admin-username"
+      type: "xlrelease.StringVariable"
+      requiresValue: "true"
+      showOnReleaseStart: "true"
+    - key: "store-admin-password"
+      type: "xlrelease.StringVariable"
+      requiresValue: "true"
+      showOnReleaseStart: "true"
+    - key: "xld-admin-password"
+      type: "xlrelease.PasswordStringVariable"
+      requiresValue: "true"
+      showOnReleaseStart: "true"
+    phases:
+    - name: Provision Infrastructure
+      color: '#ff9e3b'
+      type: xlrelease.Phase
+      tasks:
+      - name: Update AWS cloud with correct access key and secret
+        type: xlrelease.SequentialGroup
+        tasks:
+        - name: Add accessKey to AWS cloud CI
+          type: xld.UpdateCIProperty
+          server: XL Deploy
+          ciID: Infrastructure/AWS
+          ciProperty: accesskey
+          propertyValue: ${AWSaccessKey}
+        - name: Add accessSecret to AWS cloud CI
+          type: xld.UpdateCIProperty
+          server: XL Deploy
+          ciID: Infrastructure/AWS
+          ciProperty: accessSecret
+          propertyValue: ${AWSaccessSecret}
+      - name: Provision AWS VPC and IAM resources
+        type: xlrelease.ParallelGroup
+        tasks:
+        - name: Provision AWS IAM resources
+          type: xldeploy.Deploy
+          server: XL Deploy
+          deploymentPackage: E-COMMERCE/EKS-PROVISION/e-commerce-cloudformation-eks-user/1.0.0
+          deploymentEnvironment: Environments/AWS-CL
+        - name: Provision AWS VPC
+          type: xldeploy.Deploy
+          server: XL Deploy
+          deploymentPackage: E-COMMERCE/EKS-PROVISION/e-commerce-cloudformation-eks-vpc/1.0.0
+          deploymentEnvironment: Environments/AWS-CL
+      - name: Provision AWS EKS cluster
+        type: xlrelease.SequentialGroup
+        tasks:
+        - name: Provision EKS master node
+          type: xldeploy.Deploy
+          server: XL Deploy
+          deploymentPackage: E-COMMERCE/EKS-PROVISION/e-commerce-cloudformation-eks-master/1.0.0
+          deploymentEnvironment: Environments/AWS-CL
+        - name: Provision EKS workers nodes
+          type: xldeploy.Deploy
+          server: XL Deploy
+          deploymentPackage: E-COMMERCE/EKS-PROVISION/e-commerce-cloudformation-eks-workers/1.0.0
+          deploymentEnvironment: Environments/AWS-CL
+        - name: Add accessKey to EKS cluster CI
+          type: xld.UpdateCIProperty
+          server: XL Deploy
+          ciID: Infrastructure/EKS/EKS-CLUSTER
+          ciProperty: accessKey
+          propertyValue: ${AWSaccessKey}
+        - name: Add accessSecret to EKS cluster CI
+          type: xld.UpdateCIProperty
+          server: XL Deploy
+          ciID: Infrastructure/EKS/EKS-CLUSTER
+          ciProperty: accessSecret
+          propertyValue: ${AWSaccessSecret}
+        - name: Provision EKS config map for workers
+          type: xldeploy.Deploy
+          server: XL Deploy
+          deploymentPackage: E-COMMERCE/EKS-PROVISION/e-commerce-k8s-configmap/1.0.0
+          deploymentEnvironment: Environments/AWS-PREREQUISITE
+    - name: Deploy e-commerce application
+      type: xlrelease.Phase
+      tasks:
+      - name: Deploy xl-demo namespace
+        type: xldeploy.Deploy
+        server: XL Deploy
+        deploymentPackage: E-COMMERCE/K8S/xl-demo-namespace/1.0.0
+        deploymentEnvironment: Environments/AWS-EKS
+      - name: Deploy stateful services
+        type: xlrelease.ParallelGroup
+        tasks:
+        - name: Deploy invoice mysql svc
+          type: xldeploy.Deploy
+          server: XL Deploy
+          deploymentPackage: E-COMMERCE/K8S/e-commerce-invoice-mysql/1.0.0
+          deploymentEnvironment: Environments/AWS-EKS
+        - name: Deploy store mysql svc
+          type: xldeploy.Deploy
+          server: XL Deploy
+          deploymentPackage: E-COMMERCE/K8S/e-commerce-store-mysql/1.0.0
+          deploymentEnvironment: Environments/AWS-EKS
+        - name: Deploy notification mongodb svc
+          type: xldeploy.Deploy
+          server: XL Deploy
+          deploymentPackage: E-COMMERCE/K8S/e-commerce-notification-mongodb/1.0.0
+          deploymentEnvironment: Environments/AWS-EKS
+      - name: Deploy stateless services
+        type: xlrelease.SequentialGroup
+        tasks:
+        - name: Deploy registry svc
+          type: xldeploy.Deploy
+          server: XL Deploy
+          deploymentPackage: E-COMMERCE/K8S/e-commerce-registry/1.0.0
+          deploymentEnvironment: Environments/AWS-EKS
+        - name: Deploy invoice svc
+          type: xldeploy.Deploy
+          server: XL Deploy
+          deploymentPackage: E-COMMERCE/K8S/e-commerce-invoice/1.0.0
+          deploymentEnvironment: Environments/AWS-EKS
+        - name: Deploy notification svc
+          type: xldeploy.Deploy
+          server: XL Deploy
+          deploymentPackage: E-COMMERCE/K8S/e-commerce-notification/1.0.0
+          deploymentEnvironment: Environments/AWS-EKS
+        - name: Deploy store svc
+          type: xldeploy.Deploy
+          server: XL Deploy
+          deploymentPackage: E-COMMERCE/K8S/e-commerce-store/1.0.0
+          deploymentEnvironment: Environments/AWS-EKS
+    - name: Test
+      type: xlrelease.Phase
+      tasks:
+      - name: Get Store service public URL
+        type: xlrelease.SequentialGroup
+        tasks:
+        - name: Get Store k8s service specs
+          type: xldeploy.Controltask
+          server: "XL Deploy"
+          numberOfContinueRetrials: 100
+          pollingInterval: 10
+          ciId: "Infrastructure/EKS/EKS-CLUSTER"
+          taskName: "describeService"
+          variableMapping:
+            pythonScript.xlDeployTaskId: "${taskId}"
+            pythonScript.parameters: "${control}"
+        - name: Parse Store k8s service
+          type: webhook.XmlWebhook
+          URL: "http://xld:4516/deployit/tasks/v2/export"
+          method: "GET"
+          username: "admin"
+          xPathExpression: "/list/task[@id=\"${taskId}\"]//log/text()"
+          variableMapping:
+            pythonScript.result: "${taskOutput}"
+            pythonScript.password: "${xld-admin-password}"
+        - name: Get Store k8s service ip or hostname
+          type: xlrelease.ScriptTask
+          script: |
+            import re
+            m = re.search('hostname:(.*)\nip:([0-9.]+|None)', releaseVariables['taskOutput'])
+            ipHostname = [m.group(1),m.group(2)]
+            for item in ipHostname:
+                if "None" not in item:
+                    releaseVariables['lbHostnameOrIp'] = item
+          # end of script
+      - name: "Check e-commerce application status"
+        type: "xlrelease.ScriptTask"
+        script: |
+          import urllib2
+          import json
+
+          token_url = 'http://${lbHostnameOrIp}:8080/jhipster-registry/api/authenticate'
+          instances_url = 'http://${lbHostnameOrIp}:8080/jhipster-registry/api/eureka/applications'
+          values = {"password": "${store-admin-password}",
+                    "rememberMe": "false",
+                    "username": "${store-admin-username}" }
+
+
+          def make_req(url, body=None, token=None):
+              req = urllib2.Request(url, json.dumps(body) if body else None, headers={'Content-type': 'application/json', 'Accept': 'application/json', 'Authorization': 'Bearer %s' % token})
+              opener = urllib2.build_opener()
+              response = opener.open(req)
+              return json.loads(response.read())
+
+          token = make_req(token_url, body=values)['id_token']
+          resp = make_req(instances_url, token=token)
+          if len(resp['applications']) == 4:
+              print "All instances are registered"
+          else:
+              print "Not all instances are registered. Only {0} are registered".format(len(resp['applications']))
+              exit(1)
+        # end of script
+    - name: Undeploy Application
+      type: xlrelease.Phase
+      tasks:
+      - name: Undeploy stateless services
+        type: xlrelease.ParallelGroup
+        tasks:
+        - name: Undeploy registry svc
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/AWS-EKS/e-commerce-registry
+        - name: Undeploy invoice svc
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/AWS-EKS/e-commerce-invoice
+        - name: Undeploy notification svc
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/AWS-EKS/e-commerce-notification
+        - name: Undeploy store svc
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/AWS-EKS/e-commerce-store
+      - name: Undeploy stateful services
+        type: xlrelease.ParallelGroup
+        tasks:
+        - name: Undeploy invoice mysql svc
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/AWS-EKS/e-commerce-invoice-mysql
+        - name: Undeploy store mysql svc
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/AWS-EKS/e-commerce-store-mysql
+        - name: Undeploy notification mongodb svc
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/AWS-EKS/e-commerce-notification-mongodb
+      - name: Undeploy xl-demo namespace
+        type: xldeploy.Undeploy
+        server: XL Deploy
+        deployedApplication: Environments/AWS-EKS/xl-demo-namespace
+    - name: Deprovision Infrastructure
+      color: '#ff9e3b'
+      type: xlrelease.Phase
+      tasks:
+      - name: Deprovision AWS EKS cluster
+        type: xlrelease.SequentialGroup
+        tasks:
+        - name: Deprovision EKS config map for workers
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/AWS-PREREQUISITE/e-commerce-k8s-configmap
+        - name: Deprovision EKS workers nodes
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/AWS-CL/e-commerce-cloudformation-eks-workers
+        - name: Deprovision EKS master node
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/AWS-CL/e-commerce-cloudformation-eks-master
+      - name: Deprovision AWS VPC and IAM resources
+        type: xlrelease.ParallelGroup
+        tasks:
+        - name: Deprovision AWS IAM resources
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/AWS-CL/e-commerce-cloudformation-eks-user
+        - name: Deprovision AWS VPC
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/AWS-CL/e-commerce-cloudformation-eks-vpc
