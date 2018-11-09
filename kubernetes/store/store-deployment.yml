@@ -34,7 +34,7 @@ spec:
                 done
       containers:
       - name: store-app
-        image: xebialabsunsupported/ecommerce-store
+        image: xebialabsunsupported/ecommerce-store:8.5.0
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: "prod,swagger"
