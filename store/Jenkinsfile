@@ -10,8 +10,8 @@ node {
     }
 
     stage('clean') {
-        sh "chmod +x ./gradlew"
-        sh "./gradlew clean --no-daemon"
+        sh "cd store && chmod +x ./gradlew"
+        sh "cd store && ./gradlew clean --no-daemon"
     }
 
     stage('npm install') {
