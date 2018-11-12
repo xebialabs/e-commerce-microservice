@@ -15,12 +15,12 @@ node {
     }
 
     stage('npm install') {
-        sh "cd store && ./gradlew npmInstall -PnodeInstall --no-daemon"
+        sh "cd store && ./gradlew npmInstall -PnodeInstall --no-daemon --ignore-scripts"
     }
 
     stage('backend tests') {
         try {
-            sh "cd store && ./gradlew test -PnodeInstall --no-daemon"
+            sh "cd store && ./gradlew test -PnodeInstall --no-daemon --ignore-scripts"
         } catch(err) {
             throw err
         } finally {
@@ -30,7 +30,7 @@ node {
 
     stage('frontend tests') {
         try {
-            sh "cd store && ./gradlew npm_test -PnodeInstall --no-daemon"
+            sh "cd store && ./gradlew npm_test -PnodeInstall --no-daemon --ignore-scripts"
         } catch(err) {
             throw err
         } finally {
@@ -39,7 +39,7 @@ node {
     }
 
     stage('packaging') {
-        sh "cd store && ./gradlew bootWar -x test -Pprod -PnodeInstall --no-daemon"
+        sh "cd store && ./gradlew bootWar -x test -Pprod -PnodeInstall --no-daemon --ignore-scripts"
         archiveArtifacts artifacts: '**/build/libs/*.war', fingerprint: true
     }
 
