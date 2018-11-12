@@ -15,12 +15,12 @@ node {
     }
 
     stage('npm install') {
-        sh "./gradlew npmInstall -PnodeInstall --no-daemon"
+        sh "cd store && ./gradlew npmInstall -PnodeInstall --no-daemon"
     }
 
     stage('backend tests') {
         try {
-            sh "./gradlew test -PnodeInstall --no-daemon"
+            sh "cd store && ./gradlew test -PnodeInstall --no-daemon"
         } catch(err) {
             throw err
         } finally {
@@ -30,7 +30,7 @@ node {
 
     stage('frontend tests') {
         try {
-            sh "./gradlew npm_test -PnodeInstall --no-daemon"
+            sh "cd store && ./gradlew npm_test -PnodeInstall --no-daemon"
         } catch(err) {
             throw err
         } finally {
@@ -39,21 +39,21 @@ node {
     }
 
     stage('packaging') {
-        sh "./gradlew bootWar -x test -Pprod -PnodeInstall --no-daemon"
+        sh "cd store && ./gradlew bootWar -x test -Pprod -PnodeInstall --no-daemon"
         archiveArtifacts artifacts: '**/build/libs/*.war', fingerprint: true
     }
 
     stage('quality analysis') {
         withSonarQubeEnv('sonar') {
-            sh "./gradlew sonarqube --no-daemon"
+            sh "cd store && ./gradlew sonarqube --no-daemon"
         }
     }
 
     def dockerImage
     stage('build docker') {
-        sh "cp -R src/main/docker build/"
-        sh "cp build/libs/*.war build/docker/"
-        dockerImage = docker.build('xebialabsunsupported/store', 'build/docker')
+        sh "cp -R store/src/main/docker store/build/"
+        sh "cp store/build/libs/*.war store/build/docker/"
+        dockerImage = docker.build('xebialabsunsupported/store', 'store/build/docker')
     }
 
     stage('publish docker') {
