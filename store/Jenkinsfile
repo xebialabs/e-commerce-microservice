@@ -18,6 +18,26 @@ node {
         sh "cd store && ./gradlew npmInstall -PnodeInstall --no-daemon"
     }
 
+    //stage('backend tests') {
+    //    try {
+    //        sh "cd store && ./gradlew test -PnodeInstall --no-daemon"
+    //    } catch(err) {
+    //        throw err
+    //    } finally {
+    //        junit '**/build/**/TEST-*.xml'
+    //    }
+    //}
+    //
+    //stage('frontend tests') {
+    //    try {
+    //        sh "cd store && ./gradlew npm_test -PnodeInstall --no-daemon"
+    //    } catch(err) {
+    //        throw err
+    //    } finally {
+    //        junit '**/build/test-results/jest/TESTS-*.xml'
+    //    }
+    //}
+
     stage('packaging') {
         sh "cd store && ./gradlew bootWar -x test -Pprod -PnodeInstall --no-daemon"
         archiveArtifacts artifacts: '**/build/libs/*.war', fingerprint: true
@@ -32,8 +52,9 @@ node {
     }
 
     stage('publish docker') {
-        docker.withRegistry('https://registry.hub.docker.com', 'docker-login') {
+        docker.withRegistry('https://index.docker.io/v1/', 'docker-login') {
             dockerImage.push 'latest'
         }
     }
 }
+
