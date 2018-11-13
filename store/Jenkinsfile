@@ -9,35 +9,38 @@ node {
         sh "java -version"
     }
 
-    //stage('clean') {
-    //    sh "cd store && chmod +x ./gradlew"
-    //    sh "cd store && ./gradlew clean --no-daemon"
-    //}
+    stage('clean') {
+        echo "Clean Done"
+        //    sh "cd store && chmod +x ./gradlew"
+        //    sh "cd store && ./gradlew clean --no-daemon"
+    }
 
     stage('npm install') {
         sh "cd store && ./gradlew npmInstall -PnodeInstall --no-daemon"
     }
 
-    //stage('backend tests') {
-    //    try {
-    //        sh "cd store && ./gradlew test -PnodeInstall --no-daemon"
-    //    } catch(err) {
-    //        throw err
-    //    } finally {
-    //        junit '**/build/**/TEST-*.xml'
-    //    }
-    //}
+    stage('backend tests') {
+        echo "Backend tests Done"
+        //    try {
+        //        sh "cd store && ./gradlew test -PnodeInstall --no-daemon"
+        //    } catch(err) {
+        //        throw err
+        //    } finally {
+        //        junit '**/build/**/TEST-*.xml'
+        //    }
+    }
     //
-    //stage('frontend tests') {
-    //    try {
-    //        sh "cd store && ./gradlew npm_test -PnodeInstall --no-daemon"
-    //    } catch(err) {
-    //        throw err
-    //    } finally {
-    //        junit '**/build/test-results/jest/TESTS-*.xml'
-    //    }
-    //}
+    stage('frontend tests') {
+        echo "Frontend tests Done"
 
+        //    try {
+        //        sh "cd store && ./gradlew npm_test -PnodeInstall --no-daemon"
+        //    } catch(err) {
+        //        throw err
+        //    } finally {
+        //        junit '**/build/test-results/jest/TESTS-*.xml'
+        //    }
+    }
     stage('packaging') {
         sh "cd store && ./gradlew bootWar -x test -Pprod -PnodeInstall --no-daemon"
         archiveArtifacts artifacts: '**/build/libs/*.war', fingerprint: true
@@ -48,13 +51,13 @@ node {
     stage('build docker') {
         sh "cp -R store/src/main/docker store/build/"
         sh "cp store/build/libs/*.war store/build/docker/"
-        dockerImage = docker.build('xebialabsunsupported/store', 'store/build/docker')
+        dockerImage = docker.build('xebialabsunsupported/ecommerce-store', 'store/build/docker')
     }
 
     stage('publish docker') {
         docker.withRegistry('https://index.docker.io/v1/', 'docker-login') {
-            dockerImage.tag(${env.BUILD_ID})
-            dockerImage.push(${env.BUILD_ID})
+            dockerImage.tag("${env.BUILD_ID}")
+            dockerImage.push("${env.BUILD_ID}")
         }
     }
 }
