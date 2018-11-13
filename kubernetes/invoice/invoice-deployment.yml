@@ -35,6 +35,7 @@ spec:
       containers:
       - name: invoice-app
         image: xebialabsunsupported/ecommerce-invoice
+        imagePullPolicy: Always
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: "prod,swagger"

@@ -35,6 +35,7 @@ spec:
       containers:
       - name: store-app
         image: xebialabsunsupported/ecommerce-store:8.5.0
+        imagePullPolicy: Always
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: "prod,swagger"

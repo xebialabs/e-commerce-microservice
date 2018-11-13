@@ -35,6 +35,7 @@ spec:
       containers:
       - name: notification-app
         image: xebialabsunsupported/ecommerce-notification
+        imagePullPolicy: Always
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: "prod,swagger"
