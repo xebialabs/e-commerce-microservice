@@ -9,10 +9,10 @@ node {
         sh "java -version"
     }
 
-    stage('clean') {
-        sh "cd store && chmod +x ./gradlew"
-        sh "cd store && ./gradlew clean --no-daemon"
-    }
+    //stage('clean') {
+    //    sh "cd store && chmod +x ./gradlew"
+    //    sh "cd store && ./gradlew clean --no-daemon"
+    //}
 
     stage('npm install') {
         sh "cd store && ./gradlew npmInstall -PnodeInstall --no-daemon"
@@ -53,7 +53,8 @@ node {
 
     stage('publish docker') {
         docker.withRegistry('https://index.docker.io/v1/', 'docker-login') {
-            dockerImage.push 'latest'
+            dockerImage.tag(${env.BUILD_ID})
+            dockerImage.push(${env.BUILD_ID})
         }
     }
 }
