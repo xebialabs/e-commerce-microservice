@@ -71,7 +71,7 @@ node {
 
     stage ("push xld package") {
         sh "cd kubernetes && ./gradlew clean  sourcesForRelease -PimageTag=${env.BUILD_ID} --no-daemon"
-        sh "./xlw apply -f store/deployemnt.yaml"
+        sh "./xlw apply -f xld-kubernetes-apps.yaml"
     }
 }
 
