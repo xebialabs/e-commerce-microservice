@@ -4,5 +4,5 @@ metadata:
   imports:
     - xld-infra-env.yaml
     - xld-cloudformation-apps.yaml
-    - xld-kubernetes-apps.yaml
+    #- xld-kubernetes-apps.yaml
     - xlr-pipeline.yaml
