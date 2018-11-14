@@ -1,0 +1,9 @@
+AWSRegion = us-east-1
+AppName = malaka
+ClusterEndpoint = 
+ClusterName = malaka
+Namespace = xl-demo
+ProvisionCluster = true
+XLDServerURL = http://0.0.0.0:4516
+XLDUsername = admin
+XLRUsername = admin

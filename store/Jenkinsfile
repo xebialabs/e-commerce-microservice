@@ -1,6 +1,14 @@
 #!/usr/bin/env groovy
 
 node {
+
+    environment {
+        XL_VALUE_BUILD_ID = "${env.BUILD_ID}"
+
+        XL_DEPLOY_URL = "http://xl-deploy:4516"
+        XL_DEPLOY_CREDENTIALS = credentials("xld-credentials")
+    }
+
     stage('checkout') {
         checkout scm
     }
@@ -59,6 +67,11 @@ node {
             dockerImage.tag("${env.BUILD_ID}")
             dockerImage.push("${env.BUILD_ID}")
         }
+    }
+
+    stage ("push xld package") {
+        sh "cd kubernetes && ./gradlew clean  sourcesForRelease -PimageTag=${env.BUILD_ID} --no-daemon"
+        sh "./xlw apply -f store/deployemnt.yaml"
     }
 }
 

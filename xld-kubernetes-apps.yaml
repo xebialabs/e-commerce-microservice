@@ -1,0 +1,84 @@
+apiVersion: xl-deploy/v1beta1
+kind: Applications
+spec:
+- name: malaka
+  type: core.Directory
+  children:
+    - name: K8S
+      type: core.Directory
+      children:
+      - name: malaka-invoice-mysql
+        type: udm.Application
+        children:
+        - name: '1.0.0'
+          type: udm.DeploymentPackage
+          deployables:
+          - name: malaka-invoice-mysql
+            type: k8s.ResourcesFile
+            file: !file kubernetes/invoice/invoice-mysql.yml
+      - name: malaka-store-mysql
+        type: udm.Application
+        children:
+        - name: '1.0.0'
+          type: udm.DeploymentPackage
+          deployables:
+          - name: malaka-store-mysql
+            type: k8s.ResourcesFile
+            file: !file kubernetes/store/store-mysql.yml
+      - name: malaka-notification-mongodb
+        type: udm.Application
+        children:
+        - name: '1.0.0'
+          type: udm.DeploymentPackage
+          deployables:
+          - name: malaka-notification-mongodb
+            type: k8s.ResourcesFile
+            file: !file kubernetes/notification/notification-mongodb.yml
+      - name: malaka-registry
+        type: udm.Application
+        children:
+        - name: '1.0.0'
+          type: udm.DeploymentPackage
+          deployables:
+          - name: malaka-application-config
+            type: k8s.ResourcesFile
+            file: !file kubernetes/registry/application-configmap.yml
+          - name: malaka-jhipster-registry
+            type: k8s.ResourcesFile
+            file: !file kubernetes/registry/jhipster-registry.yml
+      - name: malaka-invoice
+        type: udm.Application
+        children:
+        - name: '1.0.0'
+          type: udm.DeploymentPackage
+          deployables:
+          - name: malaka-invoice-deployment
+            type: k8s.ResourcesFile
+            file: !file kubernetes/invoice/invoice-deployment.yml
+          - name: malaka-invoice-svc
+            type: k8s.ResourcesFile
+            file: !file kubernetes/invoice/invoice-service.yml
+      - name: malaka-notification
+        type: udm.Application
+        children:
+        - name: '1.0.0'
+          type: udm.DeploymentPackage
+          deployables:
+          - name: malaka-invoice-notification
+            type: k8s.ResourcesFile
+            file: !file kubernetes/notification/notification-deployment.yml
+          - name: malaka-notification-svc
+            type: k8s.ResourcesFile
+            file: !file kubernetes/notification/notification-service.yml
+      - name: malaka-store
+        type: udm.Application
+        children:
+        - name: !value BUILD_ID
+          type: udm.DeploymentPackage
+          deployables:
+          - name: malaka-store-deployment
+            type: k8s.ResourcesFile
+            file: !file kubernetes/build/store/store-deployment.yml
+          - name: malaka-store-svc
+            type: k8s.ResourcesFile
+            file: !file kubernetes/store/store-service.yml

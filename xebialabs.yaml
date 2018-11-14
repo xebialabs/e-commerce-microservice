@@ -1,0 +1,8 @@
+apiVersion: xl/v1
+kind: Import
+metadata:
+  imports:
+    - xld-infra-env.yaml
+    - xld-cloudformation-apps.yaml
+    - xld-kubernetes-apps.yaml
+    - xlr-pipeline.yaml
