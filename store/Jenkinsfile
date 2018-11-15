@@ -1,7 +1,6 @@
 #!/usr/bin/env groovy
-
-node {
-
+pipeline {
+    agent any
     environment {
         XL_VALUE_BUILD_ID = "${env.BUILD_ID}"
 
@@ -9,69 +8,88 @@ node {
         XL_DEPLOY_CREDENTIALS = credentials("xld-credentials")
     }
 
-    stage('checkout') {
-        checkout scm
-    }
-
-    stage('check java') {
-        sh "java -version"
-    }
-
-    stage('clean') {
-        echo "Clean Done"
-        //    sh "cd store && chmod +x ./gradlew"
-        //    sh "cd store && ./gradlew clean --no-daemon"
-    }
-
-    stage('npm install') {
-        sh "cd store && ./gradlew npmInstall -PnodeInstall --no-daemon"
-    }
-
-    stage('backend tests') {
-        echo "Backend tests Done"
-        //    try {
-        //        sh "cd store && ./gradlew test -PnodeInstall --no-daemon"
-        //    } catch(err) {
-        //        throw err
-        //    } finally {
-        //        junit '**/build/**/TEST-*.xml'
-        //    }
-    }
-    //
-    stage('frontend tests') {
-        echo "Frontend tests Done"
-
-        //    try {
-        //        sh "cd store && ./gradlew npm_test -PnodeInstall --no-daemon"
-        //    } catch(err) {
-        //        throw err
-        //    } finally {
-        //        junit '**/build/test-results/jest/TESTS-*.xml'
-        //    }
-    }
-    stage('packaging') {
-        sh "cd store && ./gradlew bootWar -x test -Pprod -PnodeInstall --no-daemon"
-        archiveArtifacts artifacts: '**/build/libs/*.war', fingerprint: true
-    }
-
-
-    def dockerImage
-    stage('build docker') {
-        sh "cp -R store/src/main/docker store/build/"
-        sh "cp store/build/libs/*.war store/build/docker/"
-        dockerImage = docker.build('xebialabsunsupported/ecommerce-store', 'store/build/docker')
-    }
-
-    stage('publish docker') {
-        docker.withRegistry('https://index.docker.io/v1/', 'docker-login') {
-            dockerImage.tag("${env.BUILD_ID}")
-            dockerImage.push("${env.BUILD_ID}")
+    stages {
+        stage ("checkout") {
+            steps {
+                checkout scm
+            }
         }
-    }
+        stage ("check java") {
+            steps {
+                sh "java -version"
+            }
+        }
+        stage ("clean") {
+            steps {
+                echo "Clean Done"
+                //    sh "cd store && chmod +x ./gradlew"
+                //    sh "cd store && ./gradlew clean --no-daemon"
+            }
+        }
+        stage ("npm install") {
+            steps {
+                sh "cd store && ./gradlew npmInstall -PnodeInstall --no-daemon"
+            }
+        }
+        stage ("backend tests") {
+            steps {
+                echo "Backend tests Done"
+                //    try {
+                //        sh "cd store && ./gradlew test -PnodeInstall --no-daemon"
+                //    } catch(err) {
+                //        throw err
+                //    } finally {
+                //        junit '**/build/**/TEST-*.xml'
+                //    }
+            }
+        }
+        stage ("frontend tests") {
+            steps {
+                echo "Frontend tests Done"
 
-    stage ("push xld package") {
-        sh "cd kubernetes && ./gradlew clean  sourcesForRelease -PimageTag=${env.BUILD_ID} --no-daemon"
-        sh "./xlw apply -f xld-kubernetes-apps.yaml"
+                //    try {
+                //        sh "cd store && ./gradlew npm_test -PnodeInstall --no-daemon"
+                //    } catch(err) {
+                //        throw err
+                //    } finally {
+                //        junit '**/build/test-results/jest/TESTS-*.xml'
+                //    }
+            }
+        }
+        stage ("packaging") {
+            steps {
+                sh "cd store && ./gradlew bootWar -x test -Pprod -PnodeInstall --no-daemon"
+                archiveArtifacts artifacts: '**/build/libs/*.war', fingerprint: true
+            }
+        }
+
+
+        stage ("build and publish docker") {
+            steps {
+                script {
+                    def dockerImage
+                    stage ("build docker") {
+                        sh "cp -R store/src/main/docker store/build/"
+                        sh "cp store/build/libs/*.war store/build/docker/"
+                        dockerImage = docker.build('xebialabsunsupported/ecommerce-store', 'store/build/docker')
+                    }
+                    stage ("publish docker") {
+                        docker.withRegistry('https://index.docker.io/v1/', 'docker-login') {
+                            dockerImage.tag("${env.BUILD_ID}")
+                            dockerImage.push("${env.BUILD_ID}")
+                        }
+                    }
+                }
+            }
+        }
+
+
+        stage ("push xld package") {
+            steps {
+                sh "cd kubernetes && ./gradlew clean  sourcesForRelease -PimageTag=${env.BUILD_ID} --no-daemon"
+                sh "./xlw apply -f xld-kubernetes-apps.yaml"
+            }
+        }
+
     }
 }
-
