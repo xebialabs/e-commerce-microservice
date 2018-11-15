@@ -1,7 +1,7 @@
 apiVersion: xl-deploy/v1beta1
 kind: Applications
 spec:
-- name: malaka
+- name: test-elton
   type: core.Directory
   children:
 
@@ -9,78 +9,78 @@ spec:
     - name: EKS-CLOUDFORMATION
       type: core.Directory
       children:
-      - name: malaka-cloudformation-eks-user
+      - name: test-elton-cloudformation-eks-user
         type: udm.Application
         children:
         - name: '1.0.0'
           type: udm.DeploymentPackage
           deployables:
-          - name: malaka-eks-user
+          - name: test-elton-eks-user
             type: aws.cloudformation.Template
             file: !file cloudformation/eks-user.yaml
             capabilities:
             - CAPABILITY_IAM
             - CAPABILITY_NAMED_IAM
             inputVariables:
-              ProjectName: malaka
-              UserStackName: malaka-eks-user
-      - name: malaka-cloudformation-eks-vpc
+              ProjectName: test-elton
+              UserStackName: test-elton-eks-user
+      - name: test-elton-cloudformation-eks-vpc
         type: udm.Application
         children:
         - name: '1.0.0'
           type: udm.DeploymentPackage
           deployables:
-          - name: malaka-eks-vpc
+          - name: test-elton-eks-vpc
             type: aws.cloudformation.Template
             file: !file cloudformation/eks-vpc.yaml
             capabilities:
             - CAPABILITY_IAM
             - CAPABILITY_NAMED_IAM
             inputVariables:
-              ProjectName: malaka
-              VPCStackName: malaka-eks-vpc
+              ProjectName: test-elton
+              VPCStackName: test-elton-eks-vpc
               AvailabilityZones: us-east-1a, us-east-1b
-      - name: malaka-cloudformation-eks-master
+      - name: test-elton-cloudformation-eks-master
         type: udm.Application
         children:
         - name: '1.0.0'
           type: udm.DeploymentPackage
           deployables:
-          - name: malaka-eks-master
+          - name: test-elton-eks-master
             type: aws.cloudformation.Template
             file: !file cloudformation/eks-master.yaml
             capabilities:
             - CAPABILITY_IAM
             - CAPABILITY_NAMED_IAM
             inputVariables:
-              ProjectName: malaka
-              VPCStackName: malaka-eks-vpc
-      - name: malaka-cloudformation-eks-workers
+              ProjectName: test-elton
+              VPCStackName: test-elton-eks-vpc
+      - name: test-elton-cloudformation-eks-workers
         type: udm.Application
         children:
         - name: '1.0.0'
           type: udm.DeploymentPackage
           deployables:
-          - name: malaka-eks-workers
+          - name: test-elton-eks-workers
             type: aws.cloudformation.Template
             file: !file cloudformation/eks-workers.yaml
             capabilities:
             - CAPABILITY_IAM
             - CAPABILITY_NAMED_IAM
             inputVariables:
-              ProjectName: malaka
-              VPCStackName: malaka-eks-vpc
-              UserStackName: malaka-eks-user
-              ClusterStackName: malaka-eks-master
-              ClusterName: malaka-master
-              NodeGroupName: malaka
-      - name: malaka-k8s-configmap
+              ProjectName: test-elton
+              VPCStackName: test-elton-eks-vpc
+              UserStackName: test-elton-eks-user
+              ClusterStackName: test-elton-eks-master
+              ClusterName: test-elton-master
+              NodeGroupName: test-elton
+      - name: test-elton-k8s-configmap
         type: udm.Application
         children:
         - name: '1.0.0'
           type: udm.DeploymentPackage
           deployables:
-          - name: malaka-aws-auth
+          - name: test-elton-aws-auth
             type: k8s.ResourcesFile
             file: !file kubernetes/aws-auth-cm.yaml
             delimiters: "## ##"
@@ -90,7 +90,7 @@ spec:
 
 # Provision K8s namespace
       children:
-      - name: malaka-namespace
+      - name: test-elton-namespace
         type: udm.Application
         children:
         - name: '1.0.0'

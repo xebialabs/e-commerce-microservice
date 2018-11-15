@@ -1,17 +1,17 @@
 apiVersion: xl-release/v1beta1
 kind: Templates
 spec:
-- name: malaka
+- name: test-elton
   type: xlrelease.Folder
   children:
-  - name: malaka
+  - name: test-elton
     type: xlrelease.Release
     description: |
       This XL Release template shows how to deploy and undeploy an application, based on microservices architecture, to AWS EKS using XL Deploy.
     tags:
     - AWS
     - EKS
-    - malaka
+    - test-elton
     scriptUsername: admin
     scriptUserPassword: !value XLRPassword
     variables:
@@ -66,63 +66,63 @@ spec:
         - name: Provision AWS IAM resources
           type: xldeploy.Deploy
           server: XL Deploy
-          deploymentPackage: malaka/EKS-CLOUDFORMATION/malaka-cloudformation-eks-user/1.0.0
-          deploymentEnvironment: Environments/malaka/aws-malaka-cloudformation
+          deploymentPackage: test-elton/EKS-CLOUDFORMATION/test-elton-cloudformation-eks-user/1.0.0
+          deploymentEnvironment: Environments/test-elton/aws-test-elton-cloudformation
         - name: Provision AWS VPC
           type: xldeploy.Deploy
           server: XL Deploy
-          deploymentPackage: malaka/EKS-CLOUDFORMATION/malaka-cloudformation-eks-vpc/1.0.0
-          deploymentEnvironment: Environments/malaka/aws-malaka-cloudformation
+          deploymentPackage: test-elton/EKS-CLOUDFORMATION/test-elton-cloudformation-eks-vpc/1.0.0
+          deploymentEnvironment: Environments/test-elton/aws-test-elton-cloudformation
       - name: Provision AWS EKS cluster
         type: xlrelease.SequentialGroup
         tasks:
         - name: Provision EKS master node
           type: xldeploy.Deploy
           server: XL Deploy
-          deploymentPackage: malaka/EKS-CLOUDFORMATION/malaka-cloudformation-eks-master/1.0.0
-          deploymentEnvironment: Environments/malaka/aws-malaka-cloudformation
+          deploymentPackage: test-elton/EKS-CLOUDFORMATION/test-elton-cloudformation-eks-master/1.0.0
+          deploymentEnvironment: Environments/test-elton/aws-test-elton-cloudformation
         - name: Provision EKS workers nodes
           type: xldeploy.Deploy
           server: XL Deploy
-          deploymentPackage: malaka/EKS-CLOUDFORMATION/malaka-cloudformation-eks-workers/1.0.0
-          deploymentEnvironment: Environments/malaka/aws-malaka-cloudformation
+          deploymentPackage: test-elton/EKS-CLOUDFORMATION/test-elton-cloudformation-eks-workers/1.0.0
+          deploymentEnvironment: Environments/test-elton/aws-test-elton-cloudformation
         - name: Add accessKey to EKS cluster CI
           type: xld.UpdateCIProperty
           server: XL Deploy
-          ciID: Infrastructure/malaka/eks-malaka/eks-cluster
+          ciID: Infrastructure/test-elton/eks-test-elton/eks-cluster
           ciProperty: accessKey
           propertyValue: ${AWSaccessKey}
         - name: Add accessSecret to EKS cluster CI
           type: xld.UpdateCIProperty
           server: XL Deploy
-          ciID: Infrastructure/malaka/eks-malaka/eks-cluster
+          ciID: Infrastructure/test-elton/eks-test-elton/eks-cluster
           ciProperty: accessSecret
           propertyValue: ${AWSaccessSecret}
         - name: Provision EKS config map for workers
           type: xldeploy.Deploy
           server: XL Deploy
-          deploymentPackage: malaka/EKS-CLOUDFORMATION/malaka-k8s-configmap/1.0.0
-          deploymentEnvironment: Environments/malaka/AWS-PREREQUISITE
+          deploymentPackage: test-elton/EKS-CLOUDFORMATION/test-elton-k8s-configmap/1.0.0
+          deploymentEnvironment: Environments/test-elton/AWS-PREREQUISITE
     
-    - name: Build malaka application
+    - name: Build test-elton application
       type: xlrelease.Phase
       tasks:
-      - name: Build malaka store docker image
+      - name: Build test-elton store docker image
         type: jenkins.Build
         jenkinsServer: jenkins
-        jobName: job/devops-as-code-eks-blueprint
+        jobName: devops-as-code-eks-blueprint
         owner: admin
         variableMapping:
           pythonScript.buildNumber: ${buildNumber}
-    - name: Deploy malaka application
+    - name: Deploy test-elton application
       type: xlrelease.Phase
       tasks:
       
       - name: Deploy xl-demo namespace
         type: xldeploy.Deploy
         server: XL Deploy
-        deploymentPackage: malaka/K8S/malaka-namespace/1.0.0
-        deploymentEnvironment: Environments/malaka/aws-eks-malaka
+        deploymentPackage: test-elton/K8S/test-elton-namespace/1.0.0
+        deploymentEnvironment: Environments/test-elton/aws-eks-test-elton
       
       - name: Deploy stateful services
         type: xlrelease.ParallelGroup
@@ -130,44 +130,44 @@ spec:
         - name: Deploy invoice mysql svc
           type: xldeploy.Deploy
           server: XL Deploy
-          deploymentPackage: malaka/K8S/malaka-invoice-mysql/1.0.0
-          deploymentEnvironment: Environments/malaka/aws-eks-malaka
+          deploymentPackage: test-elton/K8S/test-elton-invoice-mysql/1.0.0
+          deploymentEnvironment: Environments/test-elton/aws-eks-test-elton
         - name: Deploy store mysql svc
           type: xldeploy.Deploy
           server: XL Deploy
-          deploymentPackage: malaka/K8S/malaka-store-mysql/1.0.0
-          deploymentEnvironment: Environments/malaka/aws-eks-malaka
+          deploymentPackage: test-elton/K8S/test-elton-store-mysql/1.0.0
+          deploymentEnvironment: Environments/test-elton/aws-eks-test-elton
         - name: Deploy notification mongodb svc
           type: xldeploy.Deploy
           server: XL Deploy
-          deploymentPackage: malaka/K8S/malaka-notification-mongodb/1.0.0
-          deploymentEnvironment: Environments/malaka/aws-eks-malaka
+          deploymentPackage: test-elton/K8S/test-elton-notification-mongodb/1.0.0
+          deploymentEnvironment: Environments/test-elton/aws-eks-test-elton
       - name: Deploy stateless services
         type: xlrelease.SequentialGroup
         tasks:
         - name: Deploy registry svc
           type: xldeploy.Deploy
           server: XL Deploy
-          deploymentPackage: malaka/K8S/malaka-registry/1.0.0
-          deploymentEnvironment: Environments/malaka/aws-eks-malaka
+          deploymentPackage: test-elton/K8S/test-elton-registry/1.0.0
+          deploymentEnvironment: Environments/test-elton/aws-eks-test-elton
         - name: Deploy microservices
           type: xlrelease.ParallelGroup
           tasks:
           - name: Deploy invoice svc
             type: xldeploy.Deploy
             server: XL Deploy
-            deploymentPackage: malaka/K8S/malaka-invoice/1.0.0
-            deploymentEnvironment: Environments/malaka/aws-eks-malaka
+            deploymentPackage: test-elton/K8S/test-elton-invoice/1.0.0
+            deploymentEnvironment: Environments/test-elton/aws-eks-test-elton
           - name: Deploy notification svc
             type: xldeploy.Deploy
             server: XL Deploy
-            deploymentPackage: malaka/K8S/malaka-notification/1.0.0
-            deploymentEnvironment: Environments/malaka/aws-eks-malaka
+            deploymentPackage: test-elton/K8S/test-elton-notification/1.0.0
+            deploymentEnvironment: Environments/test-elton/aws-eks-test-elton
           - name: Deploy store svc
             type: xldeploy.Deploy
             server: XL Deploy
-            deploymentPackage: malaka/K8S/malaka-store/${buildNumber}
-            deploymentEnvironment: Environments/malaka/aws-eks-malaka
+            deploymentPackage: test-elton/K8S/test-elton-store/${buildNumber}
+            deploymentEnvironment: Environments/test-elton/aws-eks-test-elton
     - name: Test
       type: xlrelease.Phase
       tasks:
@@ -180,7 +180,7 @@ spec:
           numberOfContinueRetrials: 100
           pollingInterval: 10
           
-          ciId: Infrastructure/malaka/eks-malaka/eks-cluster
+          ciId: Infrastructure/test-elton/eks-test-elton/eks-cluster
           
           taskName: describeService
           variableMapping:
@@ -188,7 +188,7 @@ spec:
             pythonScript.parameters: ${control}
         - name: Parse Store k8s service
           type: webhook.XmlWebhook
-          URL: http://0.0.0.0:4516/deployit/tasks/v2/export
+          URL: http://xl-deploy:4516/deployit/tasks/v2/export
           method: GET
           username: admin
           xPathExpression: "/list/task[@id=\"${taskId}\"]//log/text()"
@@ -205,7 +205,7 @@ spec:
                 if "None" not in item:
                     releaseVariables['lbHostnameOrIp'] = item
           # end of script
-      - name: Check malaka application status
+      - name: Check test-elton application status
         type: xlrelease.ScriptTask
         script: |
           import urllib2
@@ -238,7 +238,7 @@ spec:
         type: xlrelease.GateTask
         team: Release Admin
         description: |
-          The malaka app is now live on EKS!
+          The test-elton app is now live on EKS!
           Check out the web site and complete this task when done.
 
           URL => http://${lbHostnameOrIp}:8080
@@ -251,40 +251,40 @@ spec:
         - name: Undeploy registry svc
           type: xldeploy.Undeploy
           server: XL Deploy
-          deployedApplication: Environments/malaka/aws-eks-malaka/malaka-registry
+          deployedApplication: Environments/test-elton/aws-eks-test-elton/test-elton-registry
         - name: Undeploy invoice svc
           type: xldeploy.Undeploy
           server: XL Deploy
-          deployedApplication: Environments/malaka/aws-eks-malaka/malaka-invoice
+          deployedApplication: Environments/test-elton/aws-eks-test-elton/test-elton-invoice
         - name: Undeploy notification svc
           type: xldeploy.Undeploy
           server: XL Deploy
-          deployedApplication: Environments/malaka/aws-eks-malaka/malaka-notification
+          deployedApplication: Environments/test-elton/aws-eks-test-elton/test-elton-notification
         - name: Undeploy store svc
           type: xldeploy.Undeploy
           server: XL Deploy
-          deployedApplication: Environments/malaka/aws-eks-malaka/malaka-store
+          deployedApplication: Environments/test-elton/aws-eks-test-elton/test-elton-store
       - name: Undeploy stateful services
         type: xlrelease.ParallelGroup
         tasks:
         - name: Undeploy invoice mysql svc
           type: xldeploy.Undeploy
           server: XL Deploy
-          deployedApplication: Environments/malaka/aws-eks-malaka/malaka-invoice-mysql
+          deployedApplication: Environments/test-elton/aws-eks-test-elton/test-elton-invoice-mysql
         - name: Undeploy store mysql svc
           type: xldeploy.Undeploy
           server: XL Deploy
-          deployedApplication: Environments/malaka/aws-eks-malaka/malaka-store-mysql
+          deployedApplication: Environments/test-elton/aws-eks-test-elton/test-elton-store-mysql
         - name: Undeploy notification mongodb svc
           type: xldeploy.Undeploy
           server: XL Deploy
-          deployedApplication: Environments/malaka/aws-eks-malaka/malaka-notification-mongodb
+          deployedApplication: Environments/test-elton/aws-eks-test-elton/test-elton-notification-mongodb
       
       # Un-provision namespace
       - name: Undeploy xl-demo namespace
         type: xldeploy.Undeploy
         server: XL Deploy
-        deployedApplication: Environments/malaka/aws-eks-malaka/malaka-namespace
+        deployedApplication: Environments/test-elton/aws-eks-test-elton/test-elton-namespace
       
     
     # De-provision Infra
@@ -298,23 +298,23 @@ spec:
         - name: Deprovision EKS config map for workers
           type: xldeploy.Undeploy
           server: XL Deploy
-          deployedApplication: Environments/malaka/AWS-PREREQUISITE/malaka-k8s-configmap
+          deployedApplication: Environments/test-elton/AWS-PREREQUISITE/test-elton-k8s-configmap
         - name: Deprovision EKS workers nodes
           type: xldeploy.Undeploy
           server: XL Deploy
-          deployedApplication: Environments/malaka/aws-malaka-cloudformation/malaka-cloudformation-eks-workers
+          deployedApplication: Environments/test-elton/aws-test-elton-cloudformation/test-elton-cloudformation-eks-workers
         - name: Deprovision EKS master node
           type: xldeploy.Undeploy
           server: XL Deploy
-          deployedApplication: Environments/malaka/aws-malaka-cloudformation/malaka-cloudformation-eks-master
+          deployedApplication: Environments/test-elton/aws-test-elton-cloudformation/test-elton-cloudformation-eks-master
       - name: Deprovision AWS VPC and IAM resources
         type: xlrelease.ParallelGroup
         tasks:
         - name: Deprovision AWS IAM resources
           type: xldeploy.Undeploy
           server: XL Deploy
-          deployedApplication: Environments/malaka/aws-malaka-cloudformation/malaka-cloudformation-eks-user
+          deployedApplication: Environments/test-elton/aws-test-elton-cloudformation/test-elton-cloudformation-eks-user
         - name: Deprovision AWS VPC
           type: xldeploy.Undeploy
           server: XL Deploy
-          deployedApplication: Environments/malaka/aws-malaka-cloudformation/malaka-cloudformation-eks-vpc
+          deployedApplication: Environments/test-elton/aws-test-elton-cloudformation/test-elton-cloudformation-eks-vpc

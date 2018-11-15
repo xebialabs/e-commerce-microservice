@@ -2,10 +2,10 @@
 apiVersion: xl-deploy/v1beta1
 kind: Infrastructure
 spec:
-- name: malaka
+- name: test-elton
   type: core.Directory
   children:
-  - name: aws-malaka
+  - name: aws-test-elton
     type: aws.Cloud
     accesskey: !value AWSAccessKey
     accessSecret: !value AWSAccessSecret
@@ -17,10 +17,10 @@ spec:
 apiVersion: xl-deploy/v1beta1
 kind: Environments
 spec:
-- name: malaka
+- name: test-elton
   type: core.Directory
   children:
-  - name: aws-malaka-cloudformation
+  - name: aws-test-elton-cloudformation
     type: udm.Environment
     members:
-    - Infrastructure/malaka/aws-malaka/eks-cloudformation
+    - Infrastructure/test-elton/aws-test-elton/eks-cloudformation

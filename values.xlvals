@@ -1,9 +1,9 @@
 AWSRegion = us-east-1
-AppName = malaka
+AppName = test-elton
 ClusterEndpoint = 
-ClusterName = malaka
+ClusterName = test-elton
 Namespace = xl-demo
 ProvisionCluster = true
-XLDServerURL = http://0.0.0.0:4516
+XLDServerURL = http://xl-deploy:4516
 XLDUsername = admin
 XLRUsername = admin
