@@ -1,84 +1,84 @@
 apiVersion: xl-deploy/v1beta1
 kind: Applications
 spec:
-- name: malaka
+- name: test-elton
   type: core.Directory
   children:
     - name: K8S
       type: core.Directory
       children:
-      - name: malaka-invoice-mysql
+      - name: test-elton-invoice-mysql
         type: udm.Application
         children:
         - name: '1.0.0'
           type: udm.DeploymentPackage
           deployables:
-          - name: malaka-invoice-mysql
+          - name: test-elton-invoice-mysql
             type: k8s.ResourcesFile
             file: !file kubernetes/invoice/invoice-mysql.yml
-      - name: malaka-store-mysql
+      - name: test-elton-store-mysql
         type: udm.Application
         children:
         - name: '1.0.0'
           type: udm.DeploymentPackage
           deployables:
-          - name: malaka-store-mysql
+          - name: test-elton-store-mysql
             type: k8s.ResourcesFile
             file: !file kubernetes/store/store-mysql.yml
-      - name: malaka-notification-mongodb
+      - name: test-elton-notification-mongodb
         type: udm.Application
         children:
         - name: '1.0.0'
           type: udm.DeploymentPackage
           deployables:
-          - name: malaka-notification-mongodb
+          - name: test-elton-notification-mongodb
             type: k8s.ResourcesFile
             file: !file kubernetes/notification/notification-mongodb.yml
-      - name: malaka-registry
+      - name: test-elton-registry
         type: udm.Application
         children:
         - name: '1.0.0'
           type: udm.DeploymentPackage
           deployables:
-          - name: malaka-application-config
+          - name: test-elton-application-config
             type: k8s.ResourcesFile
             file: !file kubernetes/registry/application-configmap.yml
-          - name: malaka-jhipster-registry
+          - name: test-elton-jhipster-registry
             type: k8s.ResourcesFile
             file: !file kubernetes/registry/jhipster-registry.yml
-      - name: malaka-invoice
+      - name: test-elton-invoice
         type: udm.Application
         children:
         - name: '1.0.0'
           type: udm.DeploymentPackage
           deployables:
-          - name: malaka-invoice-deployment
+          - name: test-elton-invoice-deployment
             type: k8s.ResourcesFile
             file: !file kubernetes/invoice/invoice-deployment.yml
-          - name: malaka-invoice-svc
+          - name: test-elton-invoice-svc
             type: k8s.ResourcesFile
             file: !file kubernetes/invoice/invoice-service.yml
-      - name: malaka-notification
+      - name: test-elton-notification
         type: udm.Application
         children:
         - name: '1.0.0'
           type: udm.DeploymentPackage
           deployables:
-          - name: malaka-invoice-notification
+          - name: test-elton-invoice-notification
             type: k8s.ResourcesFile
             file: !file kubernetes/notification/notification-deployment.yml
-          - name: malaka-notification-svc
+          - name: test-elton-notification-svc
             type: k8s.ResourcesFile
             file: !file kubernetes/notification/notification-service.yml
-      - name: malaka-store
+      - name: test-elton-store
         type: udm.Application
         children:
         - name: !value BUILD_ID
           type: udm.DeploymentPackage
           deployables:
-          - name: malaka-store-deployment
+          - name: test-elton-store-deployment
             type: k8s.ResourcesFile
             file: !file kubernetes/build/store/store-deployment.yml
-          - name: malaka-store-svc
+          - name: test-elton-store-svc
             type: k8s.ResourcesFile
             file: !file kubernetes/store/store-service.yml
