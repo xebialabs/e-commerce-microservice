@@ -4,5 +4,5 @@ metadata:
   imports:
     - xld-infra-env.yaml
     - xld-cloudformation-apps.yaml
-    - xlr-pipeline-ci-cd.yaml.tmpl
-    - xlr-pipeline-destroy.yaml.tmpl
+    - xlr-pipeline-ci-cd.yaml
+    - xlr-pipeline-destroy.yaml
