@@ -1,0 +1,98 @@
+apiVersion: xl-release/v1beta1
+kind: Templates
+spec:
+- name: test-elton
+  type: xlrelease.Folder
+  children:
+  - name: test-elton
+    type: xlrelease.Release
+    description: |
+      This XL Release template shows how to deploy and undeploy an application, based on microservices architecture, to AWS EKS using XL Deploy.
+    tags:
+    - AWS
+    - EKS
+    - test-elton
+    scriptUsername: admin
+    scriptUserPassword: !value XLRPassword
+    variables:
+    - key: buildNumber
+      type: xlrelease.StringVariable
+      requiresValue: false
+      showOnReleaseStart: true
+    phases:
+    - name: Undeploy Application
+      type: xlrelease.Phase
+      tasks:
+      - name: Undeploy stateless services
+        type: xlrelease.ParallelGroup
+        tasks:
+        - name: Undeploy registry svc
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/test-elton/aws-eks-test-elton/test-elton-registry
+        - name: Undeploy invoice svc
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/test-elton/aws-eks-test-elton/test-elton-invoice
+        - name: Undeploy notification svc
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/test-elton/aws-eks-test-elton/test-elton-notification
+        - name: Undeploy store svc
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/test-elton/aws-eks-test-elton/test-elton-store
+      - name: Undeploy stateful services
+        type: xlrelease.ParallelGroup
+        tasks:
+        - name: Undeploy invoice mysql svc
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/test-elton/aws-eks-test-elton/test-elton-invoice-mysql
+        - name: Undeploy store mysql svc
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/test-elton/aws-eks-test-elton/test-elton-store-mysql
+        - name: Undeploy notification mongodb svc
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/test-elton/aws-eks-test-elton/test-elton-notification-mongodb
+      
+      # Un-provision namespace
+      - name: Undeploy xl-demo namespace
+        type: xldeploy.Undeploy
+        server: XL Deploy
+        deployedApplication: Environments/test-elton/aws-eks-test-elton/test-elton-namespace
+      
+    
+    # De-provision Infra
+    - name: Deprovision Infrastructure
+      color: '#ff9e3b'
+      type: xlrelease.Phase
+      tasks:
+      - name: Deprovision AWS EKS cluster
+        type: xlrelease.SequentialGroup
+        tasks:
+        - name: Deprovision EKS config map for workers
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/test-elton/AWS-PREREQUISITE/test-elton-k8s-configmap
+        - name: Deprovision EKS workers nodes
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/test-elton/aws-test-elton-cloudformation/test-elton-cloudformation-eks-workers
+        - name: Deprovision EKS master node
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/test-elton/aws-test-elton-cloudformation/test-elton-cloudformation-eks-master
+      - name: Deprovision AWS VPC and IAM resources
+        type: xlrelease.ParallelGroup
+        tasks:
+        - name: Deprovision AWS IAM resources
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/test-elton/aws-test-elton-cloudformation/test-elton-cloudformation-eks-user
+        - name: Deprovision AWS VPC
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/test-elton/aws-test-elton-cloudformation/test-elton-cloudformation-eks-vpc
