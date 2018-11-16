@@ -10,7 +10,7 @@ spec:
       - name: test-elton-invoice-mysql
         type: udm.Application
         children:
-        - name: '1.0.0'
+        - name: !value BUILD_ID
           type: udm.DeploymentPackage
           deployables:
           - name: test-elton-invoice-mysql
@@ -19,7 +19,7 @@ spec:
       - name: test-elton-store-mysql
         type: udm.Application
         children:
-        - name: '1.0.0'
+        - name: !value BUILD_ID
           type: udm.DeploymentPackage
           deployables:
           - name: test-elton-store-mysql
@@ -28,7 +28,7 @@ spec:
       - name: test-elton-notification-mongodb
         type: udm.Application
         children:
-        - name: '1.0.0'
+        - name: !value BUILD_ID
           type: udm.DeploymentPackage
           deployables:
           - name: test-elton-notification-mongodb
@@ -37,7 +37,7 @@ spec:
       - name: test-elton-registry
         type: udm.Application
         children:
-        - name: '1.0.0'
+        - name: !value BUILD_ID
           type: udm.DeploymentPackage
           deployables:
           - name: test-elton-application-config
@@ -49,7 +49,7 @@ spec:
       - name: test-elton-invoice
         type: udm.Application
         children:
-        - name: '1.0.0'
+        - name: !value BUILD_ID
           type: udm.DeploymentPackage
           deployables:
           - name: test-elton-invoice-deployment
@@ -61,7 +61,7 @@ spec:
       - name: test-elton-notification
         type: udm.Application
         children:
-        - name: '1.0.0'
+        - name: !value BUILD_ID
           type: udm.DeploymentPackage
           deployables:
           - name: test-elton-invoice-notification
