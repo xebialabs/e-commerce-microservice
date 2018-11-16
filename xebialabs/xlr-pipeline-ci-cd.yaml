@@ -130,17 +130,17 @@ spec:
         - name: Deploy invoice mysql svc
           type: xldeploy.Deploy
           server: XL Deploy
-          deploymentPackage: e-commerce/K8S/e-commerce-invoice-mysql/${buildNumber}
+          deploymentPackage: e-commerce/K8S/e-commerce-invoice-mysql/1.0.${buildNumber}
           deploymentEnvironment: Environments/e-commerce/aws-eks-e-commerce
         - name: Deploy store mysql svc
           type: xldeploy.Deploy
           server: XL Deploy
-          deploymentPackage: e-commerce/K8S/e-commerce-store-mysql/${buildNumber}
+          deploymentPackage: e-commerce/K8S/e-commerce-store-mysql/1.0.${buildNumber}
           deploymentEnvironment: Environments/e-commerce/aws-eks-e-commerce
         - name: Deploy notification mongodb svc
           type: xldeploy.Deploy
           server: XL Deploy
-          deploymentPackage: e-commerce/K8S/e-commerce-notification-mongodb/${buildNumber}
+          deploymentPackage: e-commerce/K8S/e-commerce-notification-mongodb/1.0.${buildNumber}
           deploymentEnvironment: Environments/e-commerce/aws-eks-e-commerce
       - name: Deploy stateless services
         type: xlrelease.SequentialGroup
@@ -148,7 +148,7 @@ spec:
         - name: Deploy registry svc
           type: xldeploy.Deploy
           server: XL Deploy
-          deploymentPackage: e-commerce/K8S/e-commerce-registry/${buildNumber}
+          deploymentPackage: e-commerce/K8S/e-commerce-registry/1.0.${buildNumber}
           deploymentEnvironment: Environments/e-commerce/aws-eks-e-commerce
         - name: Deploy microservices
           type: xlrelease.ParallelGroup
@@ -156,17 +156,17 @@ spec:
           - name: Deploy invoice svc
             type: xldeploy.Deploy
             server: XL Deploy
-            deploymentPackage: e-commerce/K8S/e-commerce-invoice/${buildNumber}
+            deploymentPackage: e-commerce/K8S/e-commerce-invoice/1.0.${buildNumber}
             deploymentEnvironment: Environments/e-commerce/aws-eks-e-commerce
           - name: Deploy notification svc
             type: xldeploy.Deploy
             server: XL Deploy
-            deploymentPackage: e-commerce/K8S/e-commerce-notification/${buildNumber}
+            deploymentPackage: e-commerce/K8S/e-commerce-notification/1.0.${buildNumber}
             deploymentEnvironment: Environments/e-commerce/aws-eks-e-commerce
           - name: Deploy store svc
             type: xldeploy.Deploy
             server: XL Deploy
-            deploymentPackage: e-commerce/K8S/e-commerce-store/${buildNumber}
+            deploymentPackage: e-commerce/K8S/e-commerce-store/1.0.${buildNumber}
             deploymentEnvironment: Environments/e-commerce/aws-eks-e-commerce
     - name: Test
       type: xlrelease.Phase

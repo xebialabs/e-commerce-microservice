@@ -14,11 +14,6 @@ spec:
     - e-commerce
     scriptUsername: admin
     scriptUserPassword: !value XLRPassword
-    variables:
-    - key: buildNumber
-      type: xlrelease.StringVariable
-      requiresValue: true
-      showOnReleaseStart: true
     phases:
     - name: Undeploy Application
       type: xlrelease.Phase
