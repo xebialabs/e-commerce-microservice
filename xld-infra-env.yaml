@@ -2,10 +2,10 @@
 apiVersion: xl-deploy/v1beta1
 kind: Infrastructure
 spec:
-- name: test-elton
+- name: e-commerce
   type: core.Directory
   children:
-  - name: aws-test-elton
+  - name: aws-e-commerce
     type: aws.Cloud
     accesskey: !value AWSAccessKey
     accessSecret: !value AWSAccessSecret
@@ -17,10 +17,10 @@ spec:
 apiVersion: xl-deploy/v1beta1
 kind: Environments
 spec:
-- name: test-elton
+- name: e-commerce
   type: core.Directory
   children:
-  - name: aws-test-elton-cloudformation
+  - name: aws-e-commerce-cloudformation
     type: udm.Environment
     members:
-    - Infrastructure/test-elton/aws-test-elton/eks-cloudformation
+    - Infrastructure/e-commerce/aws-e-commerce/eks-cloudformation

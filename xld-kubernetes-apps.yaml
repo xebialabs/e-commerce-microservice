@@ -1,84 +1,84 @@
 apiVersion: xl-deploy/v1beta1
 kind: Applications
 spec:
-- name: test-elton
+- name: e-commerce
   type: core.Directory
   children:
     - name: K8S
       type: core.Directory
       children:
-      - name: test-elton-invoice-mysql
+      - name: e-commerce-invoice-mysql
         type: udm.Application
         children:
         - name: !value BUILD_ID
           type: udm.DeploymentPackage
           deployables:
-          - name: test-elton-invoice-mysql
+          - name: e-commerce-invoice-mysql
             type: k8s.ResourcesFile
             file: !file kubernetes/invoice/invoice-mysql.yml
-      - name: test-elton-store-mysql
+      - name: e-commerce-store-mysql
         type: udm.Application
         children:
         - name: !value BUILD_ID
           type: udm.DeploymentPackage
           deployables:
-          - name: test-elton-store-mysql
+          - name: e-commerce-store-mysql
             type: k8s.ResourcesFile
             file: !file kubernetes/store/store-mysql.yml
-      - name: test-elton-notification-mongodb
+      - name: e-commerce-notification-mongodb
         type: udm.Application
         children:
         - name: !value BUILD_ID
           type: udm.DeploymentPackage
           deployables:
-          - name: test-elton-notification-mongodb
+          - name: e-commerce-notification-mongodb
             type: k8s.ResourcesFile
             file: !file kubernetes/notification/notification-mongodb.yml
-      - name: test-elton-registry
+      - name: e-commerce-registry
         type: udm.Application
         children:
         - name: !value BUILD_ID
           type: udm.DeploymentPackage
           deployables:
-          - name: test-elton-application-config
+          - name: e-commerce-application-config
             type: k8s.ResourcesFile
             file: !file kubernetes/registry/application-configmap.yml
-          - name: test-elton-jhipster-registry
+          - name: e-commerce-jhipster-registry
             type: k8s.ResourcesFile
             file: !file kubernetes/registry/jhipster-registry.yml
-      - name: test-elton-invoice
+      - name: e-commerce-invoice
         type: udm.Application
         children:
         - name: !value BUILD_ID
           type: udm.DeploymentPackage
           deployables:
-          - name: test-elton-invoice-deployment
+          - name: e-commerce-invoice-deployment
             type: k8s.ResourcesFile
             file: !file kubernetes/invoice/invoice-deployment.yml
-          - name: test-elton-invoice-svc
+          - name: e-commerce-invoice-svc
             type: k8s.ResourcesFile
             file: !file kubernetes/invoice/invoice-service.yml
-      - name: test-elton-notification
+      - name: e-commerce-notification
         type: udm.Application
         children:
         - name: !value BUILD_ID
           type: udm.DeploymentPackage
           deployables:
-          - name: test-elton-invoice-notification
+          - name: e-commerce-invoice-notification
             type: k8s.ResourcesFile
             file: !file kubernetes/notification/notification-deployment.yml
-          - name: test-elton-notification-svc
+          - name: e-commerce-notification-svc
             type: k8s.ResourcesFile
             file: !file kubernetes/notification/notification-service.yml
-      - name: test-elton-store
+      - name: e-commerce-store
         type: udm.Application
         children:
         - name: !value BUILD_ID
           type: udm.DeploymentPackage
           deployables:
-          - name: test-elton-store-deployment
+          - name: e-commerce-store-deployment
             type: k8s.ResourcesFile
             file: !file kubernetes/build/store/store-deployment.yml
-          - name: test-elton-store-svc
+          - name: e-commerce-store-svc
             type: k8s.ResourcesFile
             file: !file kubernetes/store/store-service.yml

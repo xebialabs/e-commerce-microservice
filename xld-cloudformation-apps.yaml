@@ -1,7 +1,7 @@
 apiVersion: xl-deploy/v1beta1
 kind: Applications
 spec:
-- name: test-elton
+- name: e-commerce
   type: core.Directory
   children:
 
@@ -9,78 +9,78 @@ spec:
     - name: EKS-CLOUDFORMATION
       type: core.Directory
       children:
-      - name: test-elton-cloudformation-eks-user
+      - name: e-commerce-cloudformation-eks-user
         type: udm.Application
         children:
         - name: '1.0.0'
           type: udm.DeploymentPackage
           deployables:
-          - name: test-elton-eks-user
+          - name: e-commerce-eks-user
             type: aws.cloudformation.Template
             file: !file cloudformation/eks-user.yaml
             capabilities:
             - CAPABILITY_IAM
             - CAPABILITY_NAMED_IAM
             inputVariables:
-              ProjectName: test-elton
-              UserStackName: test-elton-eks-user
-      - name: test-elton-cloudformation-eks-vpc
+              ProjectName: e-commerce
+              UserStackName: e-commerce-eks-user
+      - name: e-commerce-cloudformation-eks-vpc
         type: udm.Application
         children:
         - name: '1.0.0'
           type: udm.DeploymentPackage
           deployables:
-          - name: test-elton-eks-vpc
+          - name: e-commerce-eks-vpc
             type: aws.cloudformation.Template
             file: !file cloudformation/eks-vpc.yaml
             capabilities:
             - CAPABILITY_IAM
             - CAPABILITY_NAMED_IAM
             inputVariables:
-              ProjectName: test-elton
-              VPCStackName: test-elton-eks-vpc
+              ProjectName: e-commerce
+              VPCStackName: e-commerce-eks-vpc
               AvailabilityZones: us-east-1a, us-east-1b
-      - name: test-elton-cloudformation-eks-master
+      - name: e-commerce-cloudformation-eks-master
         type: udm.Application
         children:
         - name: '1.0.0'
           type: udm.DeploymentPackage
           deployables:
-          - name: test-elton-eks-master
+          - name: e-commerce-eks-master
             type: aws.cloudformation.Template
             file: !file cloudformation/eks-master.yaml
             capabilities:
             - CAPABILITY_IAM
             - CAPABILITY_NAMED_IAM
             inputVariables:
-              ProjectName: test-elton
-              VPCStackName: test-elton-eks-vpc
-      - name: test-elton-cloudformation-eks-workers
+              ProjectName: e-commerce
+              VPCStackName: e-commerce-eks-vpc
+      - name: e-commerce-cloudformation-eks-workers
         type: udm.Application
         children:
         - name: '1.0.0'
           type: udm.DeploymentPackage
           deployables:
-          - name: test-elton-eks-workers
+          - name: e-commerce-eks-workers
             type: aws.cloudformation.Template
             file: !file cloudformation/eks-workers.yaml
             capabilities:
             - CAPABILITY_IAM
             - CAPABILITY_NAMED_IAM
             inputVariables:
-              ProjectName: test-elton
-              VPCStackName: test-elton-eks-vpc
-              UserStackName: test-elton-eks-user
-              ClusterStackName: test-elton-eks-master
-              ClusterName: test-elton-master
-              NodeGroupName: test-elton
-      - name: test-elton-k8s-configmap
+              ProjectName: e-commerce
+              VPCStackName: e-commerce-eks-vpc
+              UserStackName: e-commerce-eks-user
+              ClusterStackName: e-commerce-eks-master
+              ClusterName: e-commerce-master
+              NodeGroupName: e-commerce
+      - name: e-commerce-k8s-configmap
         type: udm.Application
         children:
         - name: '1.0.0'
           type: udm.DeploymentPackage
           deployables:
-          - name: test-elton-aws-auth
+          - name: e-commerce-aws-auth
             type: k8s.ResourcesFile
             file: !file kubernetes/aws-auth-cm.yaml
             delimiters: "## ##"
@@ -90,7 +90,7 @@ spec:
 
 # Provision K8s namespace
       children:
-      - name: test-elton-namespace
+      - name: e-commerce-namespace
         type: udm.Application
         children:
         - name: '1.0.0'

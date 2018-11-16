@@ -18,4 +18,4 @@ To deploy this blueprint with XL Platform follow the below steps
     xl apply -f xebialabs.yaml
     ```
 
-3. Go to XL Release and look for the test-elton-release-pipeline and start a new release from it.
+3. Go to XL Release and look for the e-commerce-release-pipeline and start a new release from it.

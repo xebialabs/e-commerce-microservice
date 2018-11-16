@@ -1,23 +1,23 @@
 apiVersion: xl-release/v1beta1
 kind: Templates
 spec:
-- name: test-elton
+- name: e-commerce
   type: xlrelease.Folder
   children:
-  - name: test-elton-destroy
+  - name: e-commerce-destroy
     type: xlrelease.Release
     description: |
       This XL Release template shows how to undeploy an application, based on microservices architecture, to AWS EKS using XL Deploy.
     tags:
     - AWS
     - EKS
-    - test-elton
+    - e-commerce
     scriptUsername: admin
     scriptUserPassword: !value XLRPassword
     variables:
     - key: buildNumber
       type: xlrelease.StringVariable
-      requiresValue: false
+      requiresValue: true
       showOnReleaseStart: true
     phases:
     - name: Undeploy Application
@@ -29,40 +29,40 @@ spec:
         - name: Undeploy registry svc
           type: xldeploy.Undeploy
           server: XL Deploy
-          deployedApplication: Environments/test-elton/aws-eks-test-elton/test-elton-registry
+          deployedApplication: Environments/e-commerce/aws-eks-e-commerce/e-commerce-registry
         - name: Undeploy invoice svc
           type: xldeploy.Undeploy
           server: XL Deploy
-          deployedApplication: Environments/test-elton/aws-eks-test-elton/test-elton-invoice
+          deployedApplication: Environments/e-commerce/aws-eks-e-commerce/e-commerce-invoice
         - name: Undeploy notification svc
           type: xldeploy.Undeploy
           server: XL Deploy
-          deployedApplication: Environments/test-elton/aws-eks-test-elton/test-elton-notification
+          deployedApplication: Environments/e-commerce/aws-eks-e-commerce/e-commerce-notification
         - name: Undeploy store svc
           type: xldeploy.Undeploy
           server: XL Deploy
-          deployedApplication: Environments/test-elton/aws-eks-test-elton/test-elton-store
+          deployedApplication: Environments/e-commerce/aws-eks-e-commerce/e-commerce-store
       - name: Undeploy stateful services
         type: xlrelease.ParallelGroup
         tasks:
         - name: Undeploy invoice mysql svc
           type: xldeploy.Undeploy
           server: XL Deploy
-          deployedApplication: Environments/test-elton/aws-eks-test-elton/test-elton-invoice-mysql
+          deployedApplication: Environments/e-commerce/aws-eks-e-commerce/e-commerce-invoice-mysql
         - name: Undeploy store mysql svc
           type: xldeploy.Undeploy
           server: XL Deploy
-          deployedApplication: Environments/test-elton/aws-eks-test-elton/test-elton-store-mysql
+          deployedApplication: Environments/e-commerce/aws-eks-e-commerce/e-commerce-store-mysql
         - name: Undeploy notification mongodb svc
           type: xldeploy.Undeploy
           server: XL Deploy
-          deployedApplication: Environments/test-elton/aws-eks-test-elton/test-elton-notification-mongodb
+          deployedApplication: Environments/e-commerce/aws-eks-e-commerce/e-commerce-notification-mongodb
       
       # Un-provision namespace
       - name: Undeploy xl-demo namespace
         type: xldeploy.Undeploy
         server: XL Deploy
-        deployedApplication: Environments/test-elton/aws-eks-test-elton/test-elton-namespace
+        deployedApplication: Environments/e-commerce/aws-eks-e-commerce/e-commerce-namespace
       
     
     # De-provision Infra
@@ -76,23 +76,23 @@ spec:
         - name: Deprovision EKS config map for workers
           type: xldeploy.Undeploy
           server: XL Deploy
-          deployedApplication: Environments/test-elton/AWS-PREREQUISITE/test-elton-k8s-configmap
+          deployedApplication: Environments/e-commerce/AWS-PREREQUISITE/e-commerce-k8s-configmap
         - name: Deprovision EKS workers nodes
           type: xldeploy.Undeploy
           server: XL Deploy
-          deployedApplication: Environments/test-elton/aws-test-elton-cloudformation/test-elton-cloudformation-eks-workers
+          deployedApplication: Environments/e-commerce/aws-e-commerce-cloudformation/e-commerce-cloudformation-eks-workers
         - name: Deprovision EKS master node
           type: xldeploy.Undeploy
           server: XL Deploy
-          deployedApplication: Environments/test-elton/aws-test-elton-cloudformation/test-elton-cloudformation-eks-master
+          deployedApplication: Environments/e-commerce/aws-e-commerce-cloudformation/e-commerce-cloudformation-eks-master
       - name: Deprovision AWS VPC and IAM resources
         type: xlrelease.ParallelGroup
         tasks:
         - name: Deprovision AWS IAM resources
           type: xldeploy.Undeploy
           server: XL Deploy
-          deployedApplication: Environments/test-elton/aws-test-elton-cloudformation/test-elton-cloudformation-eks-user
+          deployedApplication: Environments/e-commerce/aws-e-commerce-cloudformation/e-commerce-cloudformation-eks-user
         - name: Deprovision AWS VPC
           type: xldeploy.Undeploy
           server: XL Deploy
-          deployedApplication: Environments/test-elton/aws-test-elton-cloudformation/test-elton-cloudformation-eks-vpc
+          deployedApplication: Environments/e-commerce/aws-e-commerce-cloudformation/e-commerce-cloudformation-eks-vpc

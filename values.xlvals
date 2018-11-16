@@ -1,7 +1,7 @@
 AWSRegion = us-east-1
-AppName = test-elton
+AppName = e-commerce
 ClusterEndpoint = 
-ClusterName = test-elton
+ClusterName = e-commerce
 Namespace = xl-demo
 ProvisionCluster = true
 XLDServerURL = http://xl-deploy:4516

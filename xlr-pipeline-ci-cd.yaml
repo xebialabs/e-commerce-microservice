@@ -1,17 +1,17 @@
 apiVersion: xl-release/v1beta1
 kind: Templates
 spec:
-- name: test-elton
+- name: e-commerce
   type: xlrelease.Folder
   children:
-  - name: test-elton-ci-cd
+  - name: e-commerce-ci-cd
     type: xlrelease.Release
     description: |
       This XL Release template shows how to deploy an application, based on microservices architecture, to AWS EKS using XL Deploy.
     tags:
     - AWS
     - EKS
-    - test-elton
+    - e-commerce
     scriptUsername: admin
     scriptUserPassword: !value XLRPassword
     variables:
@@ -66,63 +66,63 @@ spec:
         - name: Provision AWS IAM resources
           type: xldeploy.Deploy
           server: XL Deploy
-          deploymentPackage: test-elton/EKS-CLOUDFORMATION/test-elton-cloudformation-eks-user/1.0.0
-          deploymentEnvironment: Environments/test-elton/aws-test-elton-cloudformation
+          deploymentPackage: e-commerce/EKS-CLOUDFORMATION/e-commerce-cloudformation-eks-user/1.0.0
+          deploymentEnvironment: Environments/e-commerce/aws-e-commerce-cloudformation
         - name: Provision AWS VPC
           type: xldeploy.Deploy
           server: XL Deploy
-          deploymentPackage: test-elton/EKS-CLOUDFORMATION/test-elton-cloudformation-eks-vpc/1.0.0
-          deploymentEnvironment: Environments/test-elton/aws-test-elton-cloudformation
+          deploymentPackage: e-commerce/EKS-CLOUDFORMATION/e-commerce-cloudformation-eks-vpc/1.0.0
+          deploymentEnvironment: Environments/e-commerce/aws-e-commerce-cloudformation
       - name: Provision AWS EKS cluster
         type: xlrelease.SequentialGroup
         tasks:
         - name: Provision EKS master node
           type: xldeploy.Deploy
           server: XL Deploy
-          deploymentPackage: test-elton/EKS-CLOUDFORMATION/test-elton-cloudformation-eks-master/1.0.0
-          deploymentEnvironment: Environments/test-elton/aws-test-elton-cloudformation
+          deploymentPackage: e-commerce/EKS-CLOUDFORMATION/e-commerce-cloudformation-eks-master/1.0.0
+          deploymentEnvironment: Environments/e-commerce/aws-e-commerce-cloudformation
         - name: Provision EKS workers nodes
           type: xldeploy.Deploy
           server: XL Deploy
-          deploymentPackage: test-elton/EKS-CLOUDFORMATION/test-elton-cloudformation-eks-workers/1.0.0
-          deploymentEnvironment: Environments/test-elton/aws-test-elton-cloudformation
+          deploymentPackage: e-commerce/EKS-CLOUDFORMATION/e-commerce-cloudformation-eks-workers/1.0.0
+          deploymentEnvironment: Environments/e-commerce/aws-e-commerce-cloudformation
         - name: Add accessKey to EKS cluster CI
           type: xld.UpdateCIProperty
           server: XL Deploy
-          ciID: Infrastructure/test-elton/eks-test-elton/eks-cluster
+          ciID: Infrastructure/e-commerce/eks-e-commerce/eks-cluster
           ciProperty: accessKey
           propertyValue: ${AWSaccessKey}
         - name: Add accessSecret to EKS cluster CI
           type: xld.UpdateCIProperty
           server: XL Deploy
-          ciID: Infrastructure/test-elton/eks-test-elton/eks-cluster
+          ciID: Infrastructure/e-commerce/eks-e-commerce/eks-cluster
           ciProperty: accessSecret
           propertyValue: ${AWSaccessSecret}
         - name: Provision EKS config map for workers
           type: xldeploy.Deploy
           server: XL Deploy
-          deploymentPackage: test-elton/EKS-CLOUDFORMATION/test-elton-k8s-configmap/1.0.0
-          deploymentEnvironment: Environments/test-elton/AWS-PREREQUISITE
+          deploymentPackage: e-commerce/EKS-CLOUDFORMATION/e-commerce-k8s-configmap/1.0.0
+          deploymentEnvironment: Environments/e-commerce/AWS-PREREQUISITE
     
-    - name: Build test-elton application
+    - name: Build e-commerce application
       type: xlrelease.Phase
       tasks:
-      - name: Build test-elton store docker image
+      - name: Build e-commerce store docker image
         type: jenkins.Build
         jenkinsServer: jenkins
         jobName: devops-as-code-eks-blueprint
         owner: admin
         variableMapping:
           pythonScript.buildNumber: ${buildNumber}
-    - name: Deploy test-elton application
+    - name: Deploy e-commerce application
       type: xlrelease.Phase
       tasks:
       
       - name: Deploy xl-demo namespace
         type: xldeploy.Deploy
         server: XL Deploy
-        deploymentPackage: test-elton/K8S/test-elton-namespace/1.0.0
-        deploymentEnvironment: Environments/test-elton/aws-eks-test-elton
+        deploymentPackage: e-commerce/K8S/e-commerce-namespace/1.0.0
+        deploymentEnvironment: Environments/e-commerce/aws-eks-e-commerce
       
       - name: Deploy stateful services
         type: xlrelease.ParallelGroup
@@ -130,44 +130,44 @@ spec:
         - name: Deploy invoice mysql svc
           type: xldeploy.Deploy
           server: XL Deploy
-          deploymentPackage: test-elton/K8S/test-elton-invoice-mysql/${buildNumber}
-          deploymentEnvironment: Environments/test-elton/aws-eks-test-elton
+          deploymentPackage: e-commerce/K8S/e-commerce-invoice-mysql/${buildNumber}
+          deploymentEnvironment: Environments/e-commerce/aws-eks-e-commerce
         - name: Deploy store mysql svc
           type: xldeploy.Deploy
           server: XL Deploy
-          deploymentPackage: test-elton/K8S/test-elton-store-mysql/${buildNumber}
-          deploymentEnvironment: Environments/test-elton/aws-eks-test-elton
+          deploymentPackage: e-commerce/K8S/e-commerce-store-mysql/${buildNumber}
+          deploymentEnvironment: Environments/e-commerce/aws-eks-e-commerce
         - name: Deploy notification mongodb svc
           type: xldeploy.Deploy
           server: XL Deploy
-          deploymentPackage: test-elton/K8S/test-elton-notification-mongodb/${buildNumber}
-          deploymentEnvironment: Environments/test-elton/aws-eks-test-elton
+          deploymentPackage: e-commerce/K8S/e-commerce-notification-mongodb/${buildNumber}
+          deploymentEnvironment: Environments/e-commerce/aws-eks-e-commerce
       - name: Deploy stateless services
         type: xlrelease.SequentialGroup
         tasks:
         - name: Deploy registry svc
           type: xldeploy.Deploy
           server: XL Deploy
-          deploymentPackage: test-elton/K8S/test-elton-registry/${buildNumber}
-          deploymentEnvironment: Environments/test-elton/aws-eks-test-elton
+          deploymentPackage: e-commerce/K8S/e-commerce-registry/${buildNumber}
+          deploymentEnvironment: Environments/e-commerce/aws-eks-e-commerce
         - name: Deploy microservices
           type: xlrelease.ParallelGroup
           tasks:
           - name: Deploy invoice svc
             type: xldeploy.Deploy
             server: XL Deploy
-            deploymentPackage: test-elton/K8S/test-elton-invoice/${buildNumber}
-            deploymentEnvironment: Environments/test-elton/aws-eks-test-elton
+            deploymentPackage: e-commerce/K8S/e-commerce-invoice/${buildNumber}
+            deploymentEnvironment: Environments/e-commerce/aws-eks-e-commerce
           - name: Deploy notification svc
             type: xldeploy.Deploy
             server: XL Deploy
-            deploymentPackage: test-elton/K8S/test-elton-notification/${buildNumber}
-            deploymentEnvironment: Environments/test-elton/aws-eks-test-elton
+            deploymentPackage: e-commerce/K8S/e-commerce-notification/${buildNumber}
+            deploymentEnvironment: Environments/e-commerce/aws-eks-e-commerce
           - name: Deploy store svc
             type: xldeploy.Deploy
             server: XL Deploy
-            deploymentPackage: test-elton/K8S/test-elton-store/${buildNumber}
-            deploymentEnvironment: Environments/test-elton/aws-eks-test-elton
+            deploymentPackage: e-commerce/K8S/e-commerce-store/${buildNumber}
+            deploymentEnvironment: Environments/e-commerce/aws-eks-e-commerce
     - name: Test
       type: xlrelease.Phase
       tasks:
@@ -180,7 +180,7 @@ spec:
           numberOfContinueRetrials: 100
           pollingInterval: 10
           
-          ciId: Infrastructure/test-elton/eks-test-elton/eks-cluster
+          ciId: Infrastructure/e-commerce/eks-e-commerce/eks-cluster
           
           taskName: describeService
           variableMapping:
@@ -205,7 +205,7 @@ spec:
                 if "None" not in item:
                     releaseVariables['lbHostnameOrIp'] = item
           # end of script
-      - name: Check test-elton application status
+      - name: Check e-commerce application status
         type: xlrelease.ScriptTask
         script: |
           import urllib2
@@ -238,7 +238,7 @@ spec:
         type: xlrelease.GateTask
         team: Release Admin
         description: |
-          The test-elton app is now live on EKS!
+          The e-commerce app is now live on EKS!
           Check out the web site and complete this task when done.
 
           URL => http://${lbHostnameOrIp}:8080
