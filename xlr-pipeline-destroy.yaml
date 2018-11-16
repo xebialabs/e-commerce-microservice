@@ -1,10 +1,10 @@
 apiVersion: xl-release/v1beta1
 kind: Templates
 spec:
-- name: test-elton-destroy
+- name: test-elton
   type: xlrelease.Folder
   children:
-  - name: test-elton
+  - name: test-elton-destroy
     type: xlrelease.Release
     description: |
       This XL Release template shows how to undeploy an application, based on microservices architecture, to AWS EKS using XL Deploy.
