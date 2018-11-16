@@ -1,1 +1,15 @@
 secrets.xlvals
+kubernetes/build
+kubernetes/.gradle
+
+######################
+# Intellij
+######################
+.idea/
+*.iml
+*.iws
+*.ipr
+*.ids
+*.orig
+classes/
+out/

@@ -1,8 +1,0 @@
-apiVersion: xl/v1
-kind: Import
-metadata:
-  imports:
-    - xld-infra-env.yaml
-    - xld-cloudformation-apps.yaml
-    - xlr-pipeline-ci-cd.yaml
-    - xlr-pipeline-destroy.yaml
