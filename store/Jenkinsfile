@@ -86,7 +86,7 @@ pipeline {
 
         stage ("push xld package") {
             steps {
-                sh "cd kubernetes && ./gradlew clean  sourcesForRelease -PimageTag=${env.BUILD_ID} --no-daemon"
+                sh "cd kubernetes && ./gradlew clean  sourcesForRelease -PimageTag=1.0.${env.BUILD_ID} --no-daemon"
                 sh "./xlw apply -f xebialabs/xld-kubernetes-apps.yaml"
             }
         }

@@ -1,0 +1,10 @@
+AWSRegion = us-east-1
+AppName = e-commerce
+ClusterEndpoint = 
+ClusterName = e-commerce
+Namespace = xl-demo
+ProvisionCluster = true
+UseAWSCredentialsFromSystem = true
+XLDServerURL = http://xl-deploy:4516
+XLDUsername = admin
+XLRUsername = admin
