@@ -75,8 +75,8 @@ pipeline {
                     }
                     stage ("publish docker") {
                         docker.withRegistry('https://index.docker.io/v1/', 'docker-login') {
-                            dockerImage.tag("${env.BUILD_ID}")
-                            dockerImage.push("${env.BUILD_ID}")
+                            dockerImage.tag("1.0.${env.BUILD_ID}")
+                            dockerImage.push("1.0.${env.BUILD_ID}")
                         }
                     }
                 }
