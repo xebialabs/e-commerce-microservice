@@ -40,12 +40,12 @@ spec:
       type: xlrelease.StringVariable
       requiresValue: true
       showOnReleaseStart: false
-      value: <no value>
+      value: admin
     - key: store-admin-password
       type: xlrelease.StringVariable
       requiresValue: true
       showOnReleaseStart: false
-      value: <no value>
+      value: admin
     - key: xld-admin-password
       type: xlrelease.PasswordStringVariable
       requiresValue: true

@@ -4,4 +4,6 @@ ClusterEndpoint =
 ClusterName = e-commerce2
 Namespace = xl-demo
 ProvisionCluster = true
+StoreAdminPassword = admin
+StoreAdminUsername = admin
 UseAWSCredentialsFromSystem = true
