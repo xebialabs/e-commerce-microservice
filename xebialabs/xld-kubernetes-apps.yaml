@@ -1,84 +1,84 @@
 apiVersion: xl-deploy/v1
 kind: Applications
 spec:
-- name: e-commerce
+- name: e-commerce-2
   type: core.Directory
   children:
     - name: K8S
       type: core.Directory
       children:
-      - name: e-commerce-invoice-mysql
+      - name: e-commerce-2-invoice-mysql
         type: udm.Application
         children:
         - name: !value BUILD_ID
           type: udm.DeploymentPackage
           deployables:
-          - name: e-commerce-invoice-mysql
+          - name: e-commerce-2-invoice-mysql
             type: k8s.ResourcesFile
             file: !file ../kubernetes/invoice/invoice-mysql.yml
-      - name: e-commerce-store-mysql
+      - name: e-commerce-2-store-mysql
         type: udm.Application
         children:
         - name: !value BUILD_ID
           type: udm.DeploymentPackage
           deployables:
-          - name: e-commerce-store-mysql
+          - name: e-commerce-2-store-mysql
             type: k8s.ResourcesFile
             file: !file ../kubernetes/store/store-mysql.yml
-      - name: e-commerce-notification-mongodb
+      - name: e-commerce-2-notification-mongodb
         type: udm.Application
         children:
         - name: !value BUILD_ID
           type: udm.DeploymentPackage
           deployables:
-          - name: e-commerce-notification-mongodb
+          - name: e-commerce-2-notification-mongodb
             type: k8s.ResourcesFile
             file: !file ../kubernetes/notification/notification-mongodb.yml
-      - name: e-commerce-registry
+      - name: e-commerce-2-registry
         type: udm.Application
         children:
         - name: !value BUILD_ID
           type: udm.DeploymentPackage
           deployables:
-          - name: e-commerce-application-config
+          - name: e-commerce-2-application-config
             type: k8s.ResourcesFile
             file: !file ../kubernetes/registry/application-configmap.yml
-          - name: e-commerce-jhipster-registry
+          - name: e-commerce-2-jhipster-registry
             type: k8s.ResourcesFile
             file: !file ../kubernetes/registry/jhipster-registry.yml
-      - name: e-commerce-invoice
+      - name: e-commerce-2-invoice
         type: udm.Application
         children:
         - name: !value BUILD_ID
           type: udm.DeploymentPackage
           deployables:
-          - name: e-commerce-invoice-deployment
+          - name: e-commerce-2-invoice-deployment
             type: k8s.ResourcesFile
             file: !file ../kubernetes/invoice/invoice-deployment.yml
-          - name: e-commerce-invoice-svc
+          - name: e-commerce-2-invoice-svc
             type: k8s.ResourcesFile
             file: !file ../kubernetes/invoice/invoice-service.yml
-      - name: e-commerce-notification
+      - name: e-commerce-2-notification
         type: udm.Application
         children:
         - name: !value BUILD_ID
           type: udm.DeploymentPackage
           deployables:
-          - name: e-commerce-invoice-notification
+          - name: e-commerce-2-invoice-notification
             type: k8s.ResourcesFile
             file: !file ../kubernetes/notification/notification-deployment.yml
-          - name: e-commerce-notification-svc
+          - name: e-commerce-2-notification-svc
             type: k8s.ResourcesFile
             file: !file ../kubernetes/notification/notification-service.yml
-      - name: e-commerce-store
+      - name: e-commerce-2-store
         type: udm.Application
         children:
         - name: !value BUILD_ID
           type: udm.DeploymentPackage
           deployables:
-          - name: e-commerce-store-deployment
+          - name: e-commerce-2-store-deployment
             type: k8s.ResourcesFile
             file: !file ../kubernetes/build/store/store-deployment.yml
-          - name: e-commerce-store-svc
+          - name: e-commerce-2-store-svc
             type: k8s.ResourcesFile
             file: !file ../kubernetes/store/store-service.yml
