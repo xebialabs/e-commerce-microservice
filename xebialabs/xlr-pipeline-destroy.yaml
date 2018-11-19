@@ -12,8 +12,8 @@ spec:
     - AWS
     - EKS
     - e-commerce-2
-    scriptUsername: <no value>
-    scriptUserPassword: <no value>
+    scriptUsername: !value XL_RELEASE_USERNAME
+    scriptUserPassword: !value XL_RELEASE_PASSWORD
     phases:
     - name: Undeploy Application
       type: xlrelease.Phase
