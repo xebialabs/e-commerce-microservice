@@ -12,8 +12,8 @@ spec:
     - AWS
     - EKS
     - e-commerce-2
-    scriptUsername: !value XLRScriptUsername
-    scriptUserPassword: !value XLRScriptUserPassword
+    scriptUsername: !value XL_RELEASE_USERNAME
+    scriptUserPassword: !value XL_RELEASE_PASSWORD
     variables:
     - key: control
       type: xlrelease.MapStringStringVariable
@@ -40,21 +40,17 @@ spec:
       type: xlrelease.StringVariable
       requiresValue: true
       showOnReleaseStart: false
-      value: admin
+      value: <no value>
     - key: store-admin-password
       type: xlrelease.StringVariable
       requiresValue: true
       showOnReleaseStart: false
-      value: admin
+      value: <no value>
     - key: xld-admin-password
       type: xlrelease.PasswordStringVariable
       requiresValue: true
       showOnReleaseStart: false
-      value: !value XLDPassword
-    - key: buildNumber
-      type: xlrelease.StringVariable
-      requiresValue: false
-      showOnReleaseStart: false
+      value: !value XL_DEPLOY_PASSWORD
     phases:
     
     # Provision Infra
@@ -69,12 +65,12 @@ spec:
           type: xldeploy.Deploy
           server: XL Deploy
           deploymentPackage: e-commerce-2/EKS-LAMBDA/e-commerce-2-lambda-bucket/1.0.0
-          deploymentEnvironment: Environments/e-commerce-2/aws-e-commerce-2
+          deploymentEnvironment: Environments/e-commerce-2/aws-cloudformation-e-commerce-2
         - name: Upload lambda artifacts to S3
           type: xldeploy.Deploy
           server: XL Deploy
           deploymentPackage: e-commerce-2/EKS-LAMBDA/e-commerce-2-lambda-artifacts/1.0.0
-          deploymentEnvironment: Environments/e-commerce-2/aws-e-commerce-2
+          deploymentEnvironment: Environments/e-commerce-2/aws-cloudformation-e-commerce-2
       - name: Provision AWS VPC and IAM resources
         type: xlrelease.ParallelGroup
         tasks:
@@ -82,12 +78,12 @@ spec:
           type: xldeploy.Deploy
           server: XL Deploy
           deploymentPackage: e-commerce-2/EKS-CLOUDFORMATION/e-commerce-2-cloudformation-eks-user/1.0.0
-          deploymentEnvironment: Environments/e-commerce-2/aws-e-commerce-2
+          deploymentEnvironment: Environments/e-commerce-2/aws-cloudformation-e-commerce-2
         - name: Provision AWS VPC
           type: xldeploy.Deploy
           server: XL Deploy
           deploymentPackage: e-commerce-2/EKS-CLOUDFORMATION/e-commerce-2-cloudformation-eks-vpc/1.0.0
-          deploymentEnvironment: Environments/e-commerce-2/aws-e-commerce-2
+          deploymentEnvironment: Environments/e-commerce-2/aws-cloudformation-e-commerce-2
       - name: Provision AWS EKS cluster
         type: xlrelease.SequentialGroup
         tasks:
@@ -95,12 +91,12 @@ spec:
           type: xldeploy.Deploy
           server: XL Deploy
           deploymentPackage: e-commerce-2/EKS-CLOUDFORMATION/e-commerce-2-cloudformation-eks-master/1.0.0
-          deploymentEnvironment: Environments/e-commerce-2/aws-e-commerce-2
+          deploymentEnvironment: Environments/e-commerce-2/aws-cloudformation-e-commerce-2
         - name: Provision EKS workers nodes
           type: xldeploy.Deploy
           server: XL Deploy
           deploymentPackage: e-commerce-2/EKS-CLOUDFORMATION/e-commerce-2-cloudformation-eks-workers/1.0.0
-          deploymentEnvironment: Environments/e-commerce-2/aws-e-commerce-2
+          deploymentEnvironment: Environments/e-commerce-2/aws-cloudformation-e-commerce-2
         - name: Add accessKey to EKS cluster CI
           type: xld.UpdateCIProperty
           server: XL Deploy
@@ -203,9 +199,9 @@ spec:
             pythonScript.parameters: ${control}
         - name: Parse Store k8s service
           type: webhook.XmlWebhook
-          URL: http://xl-deploy:4516/deployit/tasks/v2/export
+          URL: !format '%XL_DEPLOY_URL%/deployit/tasks/v2/export'
           method: GET
-          username: admin
+          username: !value XL_DEPLOY_USERNAME
           xPathExpression: "/list/task[@id=\"${taskId}\"]//log/text()"
           variableMapping:
             pythonScript.result: ${taskOutput}

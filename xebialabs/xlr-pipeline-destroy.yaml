@@ -75,30 +75,30 @@ spec:
         - name: Deprovision EKS workers nodes
           type: xldeploy.Undeploy
           server: XL Deploy
-          deployedApplication: Environments/e-commerce-2/aws-e-commerce-2-cloudformation/e-commerce-2-cloudformation-eks-workers
+          deployedApplication: Environments/e-commerce-2/aws-cloudformation-e-commerce-2/e-commerce-2-cloudformation-eks-workers
         - name: Deprovision EKS master node
           type: xldeploy.Undeploy
           server: XL Deploy
-          deployedApplication: Environments/e-commerce-2/aws-e-commerce-2-cloudformation/e-commerce-2-cloudformation-eks-master
+          deployedApplication: Environments/e-commerce-2/aws-cloudformation-e-commerce-2/e-commerce-2-cloudformation-eks-master
       - name: Delete artifacts from S3
         type: xlrelease.SequentialGroup
         tasks:
         - name: Delete artifacts from S3
           type: xldeploy.Undeploy
           server: XL Deploy
-          deployedApplication: Environments/e-commerce-2/aws-e-commerce-2/e-commerce-2-lambda-artifacts
+          deployedApplication: Environments/e-commerce-2/aws-cloudformation-e-commerce-2/e-commerce-2-lambda-artifacts
         - name: Delete S3 bucket
           type: xldeploy.Undeploy
           server: XL Deploy
-          deployedApplication: Environments/e-commerce-2/aws-e-commerce-2/e-commerce-2-lambda-bucket
+          deployedApplication: Environments/e-commerce-2/aws-cloudformation-e-commerce-2/e-commerce-2-lambda-bucket
       - name: Deprovision AWS VPC and IAM resources
         type: xlrelease.ParallelGroup
         tasks:
         - name: Deprovision AWS IAM resources
           type: xldeploy.Undeploy
           server: XL Deploy
-          deployedApplication: Environments/e-commerce-2/aws-e-commerce-2-cloudformation/e-commerce-2-cloudformation-eks-user
+          deployedApplication: Environments/e-commerce-2/aws-cloudformation-e-commerce-2/e-commerce-2-cloudformation-eks-user
         - name: Deprovision AWS VPC
           type: xldeploy.Undeploy
           server: XL Deploy
-          deployedApplication: Environments/e-commerce-2/aws-e-commerce-2-cloudformation/e-commerce-2-cloudformation-eks-vpc
+          deployedApplication: Environments/e-commerce-2/aws-cloudformation-e-commerce-2/e-commerce-2-cloudformation-eks-vpc

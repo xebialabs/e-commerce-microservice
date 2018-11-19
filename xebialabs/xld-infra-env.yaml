@@ -20,7 +20,7 @@ spec:
 - name: e-commerce-2
   type: core.Directory
   children:
-  - name: aws-e-commerce-2
+  - name: aws-cloudformation-e-commerce-2
     type: udm.Environment
     members:
     - Infrastructure/e-commerce-2/aws-e-commerce-2

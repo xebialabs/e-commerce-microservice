@@ -50,6 +50,7 @@ spec:
           inputVariables:
             ProjectName: e-commerce-2
             UserStackName: e-commerce-2-eks-user
+            S3BucketPrefix: e-commerce-2-lambda
     - name: e-commerce-2-cloudformation-eks-vpc
       type: udm.Application
       children:
