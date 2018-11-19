@@ -50,66 +50,66 @@ spec:
           inputVariables:
             ProjectName: e-commerce-2
             UserStackName: e-commerce-2-eks-user
-      - name: e-commerce-2-cloudformation-eks-vpc
-        type: udm.Application
-        children:
-        - name: '1.0.0'
-          type: udm.DeploymentPackage
-          deployables:
-          - name: e-commerce-2-eks-vpc
-            type: aws.cloudformation.Template
-            file: !file ../cloudformation/eks-vpc.yaml
-            capabilities:
-            - CAPABILITY_IAM
-            - CAPABILITY_NAMED_IAM
-            inputVariables:
-              ProjectName: e-commerce-2
-              VPCStackName: e-commerce-2-eks-vpc
-              AvailabilityZones: eu-west-1a, eu-west-1b
-      - name: e-commerce-2-cloudformation-eks-master
-        type: udm.Application
-        children:
-        - name: '1.0.0'
-          type: udm.DeploymentPackage
-          deployables:
-          - name: e-commerce-2-eks-master
-            type: aws.cloudformation.Template
-            file: !file ../cloudformation/eks-master.yaml
-            capabilities:
-            - CAPABILITY_IAM
-            - CAPABILITY_NAMED_IAM
-            inputVariables:
-              ProjectName: e-commerce-2
-              VPCStackName: e-commerce-2-eks-vpc
-      - name: e-commerce-2-cloudformation-eks-workers
-        type: udm.Application
-        children:
-        - name: '1.0.0'
-          type: udm.DeploymentPackage
-          deployables:
-          - name: e-commerce-2-eks-workers
-            type: aws.cloudformation.Template
-            file: !file ../cloudformation/eks-workers.yaml
-            capabilities:
-            - CAPABILITY_IAM
-            - CAPABILITY_NAMED_IAM
-            inputVariables:
-              ProjectName: e-commerce-2
-              VPCStackName: e-commerce-2-eks-vpc
-              UserStackName: e-commerce-2-eks-user
-              ClusterStackName: e-commerce-2-eks-master
-              ClusterName: e-commerce-2-master
-              NodeGroupName: e-commerce-2
-      - name: e-commerce-2-k8s-configmap
-        type: udm.Application
-        children:
-        - name: '1.0.0'
-          type: udm.DeploymentPackage
-          deployables:
-          - name: e-commerce-2-aws-auth
-            type: k8s.ResourcesFile
-            file: !file ../kubernetes/aws-auth-cm.yaml
-            delimiters: "## ##"
+    - name: e-commerce-2-cloudformation-eks-vpc
+      type: udm.Application
+      children:
+      - name: '1.0.0'
+        type: udm.DeploymentPackage
+        deployables:
+        - name: e-commerce-2-eks-vpc
+          type: aws.cloudformation.Template
+          file: !file ../cloudformation/eks-vpc.yaml
+          capabilities:
+          - CAPABILITY_IAM
+          - CAPABILITY_NAMED_IAM
+          inputVariables:
+            ProjectName: e-commerce-2
+            VPCStackName: e-commerce-2-eks-vpc
+            AvailabilityZones: eu-west-1a, eu-west-1b
+    - name: e-commerce-2-cloudformation-eks-master
+      type: udm.Application
+      children:
+      - name: '1.0.0'
+        type: udm.DeploymentPackage
+        deployables:
+        - name: e-commerce-2-eks-master
+          type: aws.cloudformation.Template
+          file: !file ../cloudformation/eks-master.yaml
+          capabilities:
+          - CAPABILITY_IAM
+          - CAPABILITY_NAMED_IAM
+          inputVariables:
+            ProjectName: e-commerce-2
+            VPCStackName: e-commerce-2-eks-vpc
+    - name: e-commerce-2-cloudformation-eks-workers
+      type: udm.Application
+      children:
+      - name: '1.0.0'
+        type: udm.DeploymentPackage
+        deployables:
+        - name: e-commerce-2-eks-workers
+          type: aws.cloudformation.Template
+          file: !file ../cloudformation/eks-workers.yaml
+          capabilities:
+          - CAPABILITY_IAM
+          - CAPABILITY_NAMED_IAM
+          inputVariables:
+            ProjectName: e-commerce-2
+            VPCStackName: e-commerce-2-eks-vpc
+            UserStackName: e-commerce-2-eks-user
+            ClusterStackName: e-commerce-2-eks-master
+            ClusterName: e-commerce-2-master
+            NodeGroupName: e-commerce-2
+    - name: e-commerce-2-k8s-configmap
+      type: udm.Application
+      children:
+      - name: '1.0.0'
+        type: udm.DeploymentPackage
+        deployables:
+        - name: e-commerce-2-aws-auth
+          type: k8s.ResourcesFile
+          file: !file ../kubernetes/aws-auth-cm.yaml
+          delimiters: "## ##"
 
   - name: K8S
     type: core.Directory
