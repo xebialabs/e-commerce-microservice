@@ -34,4 +34,5 @@ To deploy this blueprint with XL Platform follow the below steps
     ```
 
 3. Go to XL Release and look for the `e-commerce / e-commerce-ci-cd` tamplate and start a new release from it.
+
 [arch-image]: https://raw.githubusercontent.com/xebialabs/e-commerce-microservice/master/arch.png
