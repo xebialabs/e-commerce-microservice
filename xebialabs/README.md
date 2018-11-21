@@ -17,4 +17,4 @@ To deploy this blueprint with XL Platform follow the below steps
     xl apply -f xebialabs.yaml
     ```
 
-2. Go to XL Release and look for the e-commerce2-release-pipeline and start a new release from it.
+2. Go to XL Release and look for the e-commerce-release-pipeline and start a new release from it.
