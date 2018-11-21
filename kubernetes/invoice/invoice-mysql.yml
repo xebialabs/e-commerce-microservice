@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: invoice-mysql
+  namespace: xl-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: invoice-mysql
+  template:
+    metadata:
+      labels:
+        app: invoice-mysql
+    spec:
+      volumes:
+      - name: data
+        emptyDir: {}
+      containers:
+      - name: mysql
+        image: mysql:5.7.20
+        env:
+        - name: MYSQL_USER
+          value: root
+        - name: MYSQL_ALLOW_EMPTY_PASSWORD
+          value: 'yes'
+        - name: MYSQL_DATABASE
+          value: invoice
+        args:
+        - --lower_case_table_names=1
+        - --skip-ssl
+        - --character_set_server=utf8mb4
+        - --explicit_defaults_for_timestamp
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/mysql/
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: invoice-mysql
+  namespace: xl-demo
+spec:
+  selector:
+    app: invoice-mysql
+  ports:
+  - port: 3306

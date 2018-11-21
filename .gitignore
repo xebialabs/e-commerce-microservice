@@ -1,36 +1,15 @@
-# use glob syntax.
-syntax: glob
-.gradle/
+secrets.xlvals
+kubernetes/build
+kubernetes/.gradle
 
-# Build output
-#src/downloads/
-build/
-out/
-target/
-bin/
-test-output/
-.cache
-# Maven
-pom.xml
-
-# Eclipse
-.metadata/
-.settings/
-.classpath
-.project
-.pydevproject
-.scala_dependencies
-
-# IntelliJ
+######################
+# Intellij
+######################
 .idea/
 *.iml
-*.ipr
 *.iws
-*.log
-s101plugin.state
-
-# Mac
-.DS_Store
-
-# Cloud Provisioning
-scenarios/cloud/src/runtime/keys/*
+*.ipr
+*.ids
+*.orig
+classes/
+out/

@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+
+##############################################################################
+##
+##  XL Cli wrapper script for Linux/Darwin
+##
+##############################################################################
+
+set -e
+
+# detecting program dir
+PROG_DIR="$(cd "$(dirname "${0:-$PWD}")" 2>/dev/null 1>&2 && pwd)"
+
+source "${PROG_DIR}/.xebialabs/wrapper.conf"
+
+XL_WRAPPER_HOME="${HOME}/.xebialabs/wrapper/${CLI_VERSION}"
+
+# checking OS
+BINARY_TYPE="unknown"
+case "`uname`" in
+  Darwin* )
+    BINARY_TYPE="darwin-amd64"
+    ;;
+  Linux* )
+    BINARY_TYPE="linux-amd64"
+    ;;
+esac
+
+if [ ${BINARY_TYPE} = "unknown" ] ; then
+    echo "Unsupported OS `uname`"
+    exit 1
+fi
+
+# find target location
+if [ ! -d "${XL_WRAPPER_HOME}" ] ; then
+  mkdir -p "${XL_WRAPPER_HOME}"
+fi
+
+# if xl does not exist download it
+XL_BIN="${XL_WRAPPER_HOME}/xl"
+if [ ! -f "${XL_BIN}" ] ; then
+  echo "Downloading xl binary to ${XL_BIN}"
+  curl -fLso "${XL_BIN}.$$" "${CLI_BASE_URL}/${CLI_VERSION}/${BINARY_TYPE}/xl"
+  chmod +x "${XL_BIN}.$$"
+  mv "${XL_BIN}.$$" "${XL_BIN}"
+fi
+
+# now run xl cli
+exec "${XL_BIN}" "$@"

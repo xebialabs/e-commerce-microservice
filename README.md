@@ -1,38 +1,21 @@
-# A microservice e-commerce application demo
+## e-commerce microservice application on AWS EKS 
 
-There is a version of this app with Consul as registry instead of JHipster Registry in the [consul branch](https://github.com/xebialabs/e-commerce-microservice/tree/consul)
+The blueprint deploys an e-commerce microservice created using JHipster to AWS EKS.
+XL deploy does the provisioning and deployment, while XL release orchestrates everything.
 
-The stack is based on JHipster microservice architecture. Below are the componenets
+### Prerequisites.
 
-![Architecture][arch-image]
-
-## Store app:
-
-This is the Gateway to the mircoservices. Refer [this](https://github.com/xebialabs/e-commerce-microservice/store/README.md)
-
-## Invoice app:
-
-This is one of the mircoservices. Refer [this](https://github.com/xebialabs/e-commerce-microservice/invoice/README.md)
-
-## Notification app:
-
-This is one of the mircoservices. Refer [this](https://github.com/xebialabs/e-commerce-microservice/notification/README.md)
+1. Git clone [https://github.com/xebialabs/e-commerce-microservice/tree/blueprint-demo](https://github.com/xebialabs/e-commerce-microservice/tree/blueprint-demo)
+2. Generate the blueprint with `xl blueprint -t aws/microservice-ecommerce`
 
 
-## Docker compose files:
+To deploy this blueprint with XL Platform follow the below steps
 
-The complete docker compose setup for the stack. Refer [this](https://github.com/xebialabs/e-commerce-microservice/docker-compose/README-DOCKER-COMPOSE.md)
+1. Move the `kubernetes` folder from the root directory into the xebialabs folder created by blueprint
+2. Apply the generated yaml configurations
 
-## Kubernetes files:
+    ```
+    xl apply -f xebialabs.yaml
+    ```
 
-The complete Kubernetes setup for the stack. Refer [this](https://github.com/xebialabs/e-commerce-microservice/xl-platform/kubernetes/README.md)
-
-## Xl Platform files:
-
-The complete XL-Platform setup for the stack. Refer [this](https://github.com/xebialabs/e-commerce-microservice/xl-platform/)
-
-## XLD files
-XLD as-code yaml files that import the whole setup into an XLD instance. Mircorservices have dependencies on each other. Deploying store service will deploy also all other services.
-
-
-[arch-image]: https://raw.githubusercontent.com/xebialabs/e-commerce-microservice/master/arch.png
+3. Go to XL Release and look for the e-commerce-release-pipeline and start a new release from it.

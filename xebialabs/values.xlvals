@@ -1,0 +1,9 @@
+AWSRegion = eu-west-1
+AppName = e-commerce2
+ClusterEndpoint = 
+ClusterName = e-commerce2
+Namespace = xl-demo
+ProvisionCluster = true
+StoreAdminPassword = admin
+StoreAdminUsername = admin
+UseAWSCredentialsFromSystem = true

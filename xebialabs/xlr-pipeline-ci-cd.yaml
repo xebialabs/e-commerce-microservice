@@ -1,0 +1,255 @@
+apiVersion: xl-release/v1
+kind: Templates
+spec:
+- name: e-commerce-2
+  type: xlrelease.Folder
+  children:
+  - name: e-commerce-2-ci-cd
+    type: xlrelease.Release
+    description: |
+      This XL Release template shows how to deploy an application, based on microservices architecture, to AWS EKS using XL Deploy.
+    tags:
+    - AWS
+    - EKS
+    - e-commerce-2
+    scriptUsername: !value XL_RELEASE_USERNAME
+    scriptUserPassword: !value XL_RELEASE_PASSWORD
+    variables:
+    - key: control
+      type: xlrelease.MapStringStringVariable
+      requiresValue: false
+      showOnReleaseStart: false
+      value:
+        namespace: xl-demo
+        serviceName: store
+    - key: lbHostnameOrIp
+      type: xlrelease.StringVariable
+      requiresValue: false
+      showOnReleaseStart: false
+    - key: AWSaccessKey
+      type: xlrelease.StringVariable
+      requiresValue: true
+      showOnReleaseStart: false
+      value: !value AWSAccessKey
+    - key: AWSaccessSecret
+      type: xlrelease.StringVariable
+      requiresValue: true
+      showOnReleaseStart: false
+      value: !value AWSAccessSecret
+    - key: store-admin-username
+      type: xlrelease.StringVariable
+      requiresValue: true
+      showOnReleaseStart: false
+      value: admin
+    - key: store-admin-password
+      type: xlrelease.StringVariable
+      requiresValue: true
+      showOnReleaseStart: false
+      value: admin
+    - key: xld-admin-password
+      type: xlrelease.PasswordStringVariable
+      requiresValue: true
+      showOnReleaseStart: false
+      value: !value XL_DEPLOY_PASSWORD
+    phases:
+    
+    # Provision Infra
+    - name: Provision Infrastructure
+      color: '#ff9e3b'
+      type: xlrelease.Phase
+      tasks:
+      - name: Provision Lambda artifacts
+        type: xlrelease.SequentialGroup
+        tasks:
+        - name: Create S3 bucket for lambda artifacts
+          type: xldeploy.Deploy
+          server: XL Deploy
+          deploymentPackage: e-commerce-2/EKS-LAMBDA/e-commerce-2-lambda-bucket/1.0.0
+          deploymentEnvironment: Environments/e-commerce-2/aws-cloudformation-e-commerce-2
+        - name: Upload lambda artifacts to S3
+          type: xldeploy.Deploy
+          server: XL Deploy
+          deploymentPackage: e-commerce-2/EKS-LAMBDA/e-commerce-2-lambda-artifacts/1.0.0
+          deploymentEnvironment: Environments/e-commerce-2/aws-cloudformation-e-commerce-2
+      - name: Provision AWS VPC and IAM resources
+        type: xlrelease.ParallelGroup
+        tasks:
+        - name: Provision AWS IAM resources
+          type: xldeploy.Deploy
+          server: XL Deploy
+          deploymentPackage: e-commerce-2/EKS-CLOUDFORMATION/e-commerce-2-cloudformation-eks-user/1.0.0
+          deploymentEnvironment: Environments/e-commerce-2/aws-cloudformation-e-commerce-2
+        - name: Provision AWS VPC
+          type: xldeploy.Deploy
+          server: XL Deploy
+          deploymentPackage: e-commerce-2/EKS-CLOUDFORMATION/e-commerce-2-cloudformation-eks-vpc/1.0.0
+          deploymentEnvironment: Environments/e-commerce-2/aws-cloudformation-e-commerce-2
+      - name: Provision AWS EKS cluster
+        type: xlrelease.SequentialGroup
+        tasks:
+        - name: Provision EKS master node
+          type: xldeploy.Deploy
+          server: XL Deploy
+          deploymentPackage: e-commerce-2/EKS-CLOUDFORMATION/e-commerce-2-cloudformation-eks-master/1.0.0
+          deploymentEnvironment: Environments/e-commerce-2/aws-cloudformation-e-commerce-2
+        - name: Provision EKS workers nodes
+          type: xldeploy.Deploy
+          server: XL Deploy
+          deploymentPackage: e-commerce-2/EKS-CLOUDFORMATION/e-commerce-2-cloudformation-eks-workers/1.0.0
+          deploymentEnvironment: Environments/e-commerce-2/aws-cloudformation-e-commerce-2
+        - name: Add accessKey to EKS cluster CI
+          type: xld.UpdateCIProperty
+          server: XL Deploy
+          ciID: Infrastructure/e-commerce-2/eks-e-commerce-2/eks-cluster
+          ciProperty: accessKey
+          propertyValue: ${AWSaccessKey}
+        - name: Add accessSecret to EKS cluster CI
+          type: xld.UpdateCIProperty
+          server: XL Deploy
+          ciID: Infrastructure/e-commerce-2/eks-e-commerce-2/eks-cluster
+          ciProperty: accessSecret
+          propertyValue: ${AWSaccessSecret}
+        - name: Provision EKS config map for workers
+          type: xldeploy.Deploy
+          server: XL Deploy
+          deploymentPackage: e-commerce-2/EKS-CLOUDFORMATION/e-commerce-2-k8s-configmap/1.0.0
+          deploymentEnvironment: Environments/e-commerce-2/AWS-PREREQUISITE
+    
+    - name: Build e-commerce-2 application
+      type: xlrelease.Phase
+      tasks:
+      - name: Build e-commerce-2 store docker image
+        type: jenkins.Build
+        jenkinsServer: jenkins
+        jobName: devops-as-code-eks-blueprint
+        owner: admin
+        variableMapping:
+          pythonScript.buildNumber: ${buildNumber}
+    - name: Deploy e-commerce-2 application
+      type: xlrelease.Phase
+      tasks:
+      
+      - name: Deploy xl-demo namespace
+        type: xldeploy.Deploy
+        server: XL Deploy
+        deploymentPackage: e-commerce-2/K8S/e-commerce-2-namespace/1.0.0
+        deploymentEnvironment: Environments/e-commerce-2/aws-eks-e-commerce-2
+      
+      - name: Deploy stateful services
+        type: xlrelease.ParallelGroup
+        tasks:
+        - name: Deploy invoice mysql svc
+          type: xldeploy.Deploy
+          server: XL Deploy
+          deploymentPackage: e-commerce-2/K8S/e-commerce-2-invoice-mysql/1.0.${buildNumber}
+          deploymentEnvironment: Environments/e-commerce-2/aws-eks-e-commerce-2
+        - name: Deploy store mysql svc
+          type: xldeploy.Deploy
+          server: XL Deploy
+          deploymentPackage: e-commerce-2/K8S/e-commerce-2-store-mysql/1.0.${buildNumber}
+          deploymentEnvironment: Environments/e-commerce-2/aws-eks-e-commerce-2
+        - name: Deploy notification mongodb svc
+          type: xldeploy.Deploy
+          server: XL Deploy
+          deploymentPackage: e-commerce-2/K8S/e-commerce-2-notification-mongodb/1.0.${buildNumber}
+          deploymentEnvironment: Environments/e-commerce-2/aws-eks-e-commerce-2
+      - name: Deploy stateless services
+        type: xlrelease.SequentialGroup
+        tasks:
+        - name: Deploy registry svc
+          type: xldeploy.Deploy
+          server: XL Deploy
+          deploymentPackage: e-commerce-2/K8S/e-commerce-2-registry/1.0.${buildNumber}
+          deploymentEnvironment: Environments/e-commerce-2/aws-eks-e-commerce-2
+        - name: Deploy microservices
+          type: xlrelease.ParallelGroup
+          tasks:
+          - name: Deploy invoice svc
+            type: xldeploy.Deploy
+            server: XL Deploy
+            deploymentPackage: e-commerce-2/K8S/e-commerce-2-invoice/1.0.${buildNumber}
+            deploymentEnvironment: Environments/e-commerce-2/aws-eks-e-commerce-2
+          - name: Deploy notification svc
+            type: xldeploy.Deploy
+            server: XL Deploy
+            deploymentPackage: e-commerce-2/K8S/e-commerce-2-notification/1.0.${buildNumber}
+            deploymentEnvironment: Environments/e-commerce-2/aws-eks-e-commerce-2
+          - name: Deploy store svc
+            type: xldeploy.Deploy
+            server: XL Deploy
+            deploymentPackage: e-commerce-2/K8S/e-commerce-2-store/1.0.${buildNumber}
+            deploymentEnvironment: Environments/e-commerce-2/aws-eks-e-commerce-2
+    - name: Test
+      type: xlrelease.Phase
+      tasks:
+      - name: Get Store service public URL
+        type: xlrelease.SequentialGroup
+        tasks:
+        - name: Get Store k8s service specs
+          type: xldeploy.Controltask
+          server: XL Deploy
+          numberOfContinueRetrials: 100
+          pollingInterval: 10
+          
+          ciId: Infrastructure/e-commerce-2/eks-e-commerce-2/eks-cluster
+          
+          taskName: describeService
+          variableMapping:
+            pythonScript.xlDeployTaskId: ${taskId}
+            pythonScript.parameters: ${control}
+        - name: Parse Store k8s service
+          type: webhook.XmlWebhook
+          URL: !format '%XL_DEPLOY_URL%/deployit/tasks/v2/export'
+          method: GET
+          username: !value XL_DEPLOY_USERNAME
+          xPathExpression: "/list/task[@id=\"${taskId}\"]//log/text()"
+          variableMapping:
+            pythonScript.result: ${taskOutput}
+            pythonScript.password: ${xld-admin-password}
+        - name: Get Store k8s service ip or hostname
+          type: xlrelease.ScriptTask
+          script: |
+            import re
+            m = re.search('hostname:(.*)\nip:([0-9.]+|None)', releaseVariables['taskOutput'])
+            ipHostname = [m.group(1),m.group(2)]
+            for item in ipHostname:
+                if "None" not in item:
+                    releaseVariables['lbHostnameOrIp'] = item
+          # end of script
+      - name: Check e-commerce-2 application status
+        type: xlrelease.ScriptTask
+        script: |
+          import urllib2
+          import json
+          import time
+
+          time.sleep(60)
+          token_url = 'http://${lbHostnameOrIp}:8080/jhipster-registry/api/authenticate'
+          instances_url = 'http://${lbHostnameOrIp}:8080/jhipster-registry/api/eureka/applications'
+          values = {"password": "${store-admin-password}",
+                    "rememberMe": "false",
+                    "username": "${store-admin-username}" }
+
+
+          def make_req(url, body=None, token=None):
+              req = urllib2.Request(url, json.dumps(body) if body else None, headers={'Content-type': 'application/json', 'Accept': 'application/json', 'Authorization': 'Bearer %s' % token})
+              opener = urllib2.build_opener()
+              response = opener.open(req)
+              return json.loads(response.read())
+
+          token = make_req(token_url, body=values)['id_token']
+          resp = make_req(instances_url, token=token)
+          if len(resp['applications']) == 4:
+              print "All instances are registered"
+          else:
+              print "Not all instances are registered. Only {0} are registered".format(len(resp['applications']))
+              exit(1)
+        # end of script
+      - name: Verify application
+        type: xlrelease.GateTask
+        team: Release Admin
+        description: |
+          The e-commerce-2 app is now live on EKS!
+          Check out the web site and complete this task when done.
+
+          URL => http://${lbHostnameOrIp}:8080

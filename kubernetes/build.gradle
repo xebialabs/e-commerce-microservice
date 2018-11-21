@@ -1,0 +1,24 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+buildscript {
+    repositories {
+        jcenter()
+    }
+}
+
+apply plugin: 'java'
+
+
+if (!hasProperty('imageTag')) {
+    ext.imageTag = "latest"
+}
+
+
+task sourcesForRelease(type: Copy) {
+    outputs.upToDateWhen { false }
+    from 'store'
+    exclude "build"
+    into 'build/store'
+    filter(ReplaceTokens, tokens: [IMAGE_TAG: project.imageTag])
+}
+
+
