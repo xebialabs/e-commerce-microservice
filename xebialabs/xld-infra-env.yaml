@@ -2,10 +2,10 @@
 apiVersion: xl-deploy/v1
 kind: Infrastructure
 spec:
-- name: e-commerce-2
+- name: e-commerce
   type: core.Directory
   children:
-  - name: aws-e-commerce-2
+  - name: aws-e-commerce
     type: aws.Cloud
     accesskey: !value AWSAccessKey
     accessSecret: !value AWSAccessSecret
@@ -17,11 +17,11 @@ spec:
 apiVersion: xl-deploy/v1
 kind: Environments
 spec:
-- name: e-commerce-2
+- name: e-commerce
   type: core.Directory
   children:
-  - name: aws-cloudformation-e-commerce-2
+  - name: aws-cloudformation-e-commerce
     type: udm.Environment
     members:
-    - Infrastructure/e-commerce-2/aws-e-commerce-2
-    - Infrastructure/e-commerce-2/aws-e-commerce-2/eks-cloudformation
+    - Infrastructure/e-commerce/aws-e-commerce
+    - Infrastructure/e-commerce/aws-e-commerce/eks-cloudformation

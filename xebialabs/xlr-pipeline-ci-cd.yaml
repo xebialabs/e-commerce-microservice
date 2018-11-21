@@ -1,17 +1,17 @@
 apiVersion: xl-release/v1
 kind: Templates
 spec:
-- name: e-commerce-2
+- name: e-commerce
   type: xlrelease.Folder
   children:
-  - name: e-commerce-2-ci-cd
+  - name: e-commerce-ci-cd
     type: xlrelease.Release
     description: |
       This XL Release template shows how to deploy an application, based on microservices architecture, to AWS EKS using XL Deploy.
     tags:
     - AWS
     - EKS
-    - e-commerce-2
+    - e-commerce
     scriptUsername: !value XL_RELEASE_USERNAME
     scriptUserPassword: !value XL_RELEASE_PASSWORD
     variables:
@@ -64,76 +64,76 @@ spec:
         - name: Create S3 bucket for lambda artifacts
           type: xldeploy.Deploy
           server: XL Deploy
-          deploymentPackage: e-commerce-2/EKS-LAMBDA/e-commerce-2-lambda-bucket/1.0.0
-          deploymentEnvironment: Environments/e-commerce-2/aws-cloudformation-e-commerce-2
+          deploymentPackage: e-commerce/EKS-LAMBDA/e-commerce-lambda-bucket/1.0.0
+          deploymentEnvironment: Environments/e-commerce/aws-cloudformation-e-commerce
         - name: Upload lambda artifacts to S3
           type: xldeploy.Deploy
           server: XL Deploy
-          deploymentPackage: e-commerce-2/EKS-LAMBDA/e-commerce-2-lambda-artifacts/1.0.0
-          deploymentEnvironment: Environments/e-commerce-2/aws-cloudformation-e-commerce-2
+          deploymentPackage: e-commerce/EKS-LAMBDA/e-commerce-lambda-artifacts/1.0.0
+          deploymentEnvironment: Environments/e-commerce/aws-cloudformation-e-commerce
       - name: Provision AWS VPC and IAM resources
         type: xlrelease.ParallelGroup
         tasks:
         - name: Provision AWS IAM resources
           type: xldeploy.Deploy
           server: XL Deploy
-          deploymentPackage: e-commerce-2/EKS-CLOUDFORMATION/e-commerce-2-cloudformation-eks-user/1.0.0
-          deploymentEnvironment: Environments/e-commerce-2/aws-cloudformation-e-commerce-2
+          deploymentPackage: e-commerce/EKS-CLOUDFORMATION/e-commerce-cloudformation-eks-user/1.0.0
+          deploymentEnvironment: Environments/e-commerce/aws-cloudformation-e-commerce
         - name: Provision AWS VPC
           type: xldeploy.Deploy
           server: XL Deploy
-          deploymentPackage: e-commerce-2/EKS-CLOUDFORMATION/e-commerce-2-cloudformation-eks-vpc/1.0.0
-          deploymentEnvironment: Environments/e-commerce-2/aws-cloudformation-e-commerce-2
+          deploymentPackage: e-commerce/EKS-CLOUDFORMATION/e-commerce-cloudformation-eks-vpc/1.0.0
+          deploymentEnvironment: Environments/e-commerce/aws-cloudformation-e-commerce
       - name: Provision AWS EKS cluster
         type: xlrelease.SequentialGroup
         tasks:
         - name: Provision EKS master node
           type: xldeploy.Deploy
           server: XL Deploy
-          deploymentPackage: e-commerce-2/EKS-CLOUDFORMATION/e-commerce-2-cloudformation-eks-master/1.0.0
-          deploymentEnvironment: Environments/e-commerce-2/aws-cloudformation-e-commerce-2
+          deploymentPackage: e-commerce/EKS-CLOUDFORMATION/e-commerce-cloudformation-eks-master/1.0.0
+          deploymentEnvironment: Environments/e-commerce/aws-cloudformation-e-commerce
         - name: Provision EKS workers nodes
           type: xldeploy.Deploy
           server: XL Deploy
-          deploymentPackage: e-commerce-2/EKS-CLOUDFORMATION/e-commerce-2-cloudformation-eks-workers/1.0.0
-          deploymentEnvironment: Environments/e-commerce-2/aws-cloudformation-e-commerce-2
+          deploymentPackage: e-commerce/EKS-CLOUDFORMATION/e-commerce-cloudformation-eks-workers/1.0.0
+          deploymentEnvironment: Environments/e-commerce/aws-cloudformation-e-commerce
         - name: Add accessKey to EKS cluster CI
           type: xld.UpdateCIProperty
           server: XL Deploy
-          ciID: Infrastructure/e-commerce-2/eks-e-commerce-2/eks-cluster
+          ciID: Infrastructure/e-commerce/eks-e-commerce/eks-cluster
           ciProperty: accessKey
           propertyValue: ${AWSaccessKey}
         - name: Add accessSecret to EKS cluster CI
           type: xld.UpdateCIProperty
           server: XL Deploy
-          ciID: Infrastructure/e-commerce-2/eks-e-commerce-2/eks-cluster
+          ciID: Infrastructure/e-commerce/eks-e-commerce/eks-cluster
           ciProperty: accessSecret
           propertyValue: ${AWSaccessSecret}
         - name: Provision EKS config map for workers
           type: xldeploy.Deploy
           server: XL Deploy
-          deploymentPackage: e-commerce-2/EKS-CLOUDFORMATION/e-commerce-2-k8s-configmap/1.0.0
-          deploymentEnvironment: Environments/e-commerce-2/AWS-PREREQUISITE
+          deploymentPackage: e-commerce/EKS-CLOUDFORMATION/e-commerce-k8s-configmap/1.0.0
+          deploymentEnvironment: Environments/e-commerce/AWS-PREREQUISITE
     
-    - name: Build e-commerce-2 application
+    - name: Build e-commerce application
       type: xlrelease.Phase
       tasks:
-      - name: Build e-commerce-2 store docker image
+      - name: Build e-commerce store docker image
         type: jenkins.Build
         jenkinsServer: jenkins
         jobName: devops-as-code-eks-blueprint
         owner: admin
         variableMapping:
           pythonScript.buildNumber: ${buildNumber}
-    - name: Deploy e-commerce-2 application
+    - name: Deploy e-commerce application
       type: xlrelease.Phase
       tasks:
       
       - name: Deploy xl-demo namespace
         type: xldeploy.Deploy
         server: XL Deploy
-        deploymentPackage: e-commerce-2/K8S/e-commerce-2-namespace/1.0.0
-        deploymentEnvironment: Environments/e-commerce-2/aws-eks-e-commerce-2
+        deploymentPackage: e-commerce/K8S/e-commerce-namespace/1.0.0
+        deploymentEnvironment: Environments/e-commerce/aws-eks-e-commerce
       
       - name: Deploy stateful services
         type: xlrelease.ParallelGroup
@@ -141,44 +141,44 @@ spec:
         - name: Deploy invoice mysql svc
           type: xldeploy.Deploy
           server: XL Deploy
-          deploymentPackage: e-commerce-2/K8S/e-commerce-2-invoice-mysql/1.0.${buildNumber}
-          deploymentEnvironment: Environments/e-commerce-2/aws-eks-e-commerce-2
+          deploymentPackage: e-commerce/K8S/e-commerce-invoice-mysql/1.0.${buildNumber}
+          deploymentEnvironment: Environments/e-commerce/aws-eks-e-commerce
         - name: Deploy store mysql svc
           type: xldeploy.Deploy
           server: XL Deploy
-          deploymentPackage: e-commerce-2/K8S/e-commerce-2-store-mysql/1.0.${buildNumber}
-          deploymentEnvironment: Environments/e-commerce-2/aws-eks-e-commerce-2
+          deploymentPackage: e-commerce/K8S/e-commerce-store-mysql/1.0.${buildNumber}
+          deploymentEnvironment: Environments/e-commerce/aws-eks-e-commerce
         - name: Deploy notification mongodb svc
           type: xldeploy.Deploy
           server: XL Deploy
-          deploymentPackage: e-commerce-2/K8S/e-commerce-2-notification-mongodb/1.0.${buildNumber}
-          deploymentEnvironment: Environments/e-commerce-2/aws-eks-e-commerce-2
+          deploymentPackage: e-commerce/K8S/e-commerce-notification-mongodb/1.0.${buildNumber}
+          deploymentEnvironment: Environments/e-commerce/aws-eks-e-commerce
       - name: Deploy stateless services
         type: xlrelease.SequentialGroup
         tasks:
         - name: Deploy registry svc
           type: xldeploy.Deploy
           server: XL Deploy
-          deploymentPackage: e-commerce-2/K8S/e-commerce-2-registry/1.0.${buildNumber}
-          deploymentEnvironment: Environments/e-commerce-2/aws-eks-e-commerce-2
+          deploymentPackage: e-commerce/K8S/e-commerce-registry/1.0.${buildNumber}
+          deploymentEnvironment: Environments/e-commerce/aws-eks-e-commerce
         - name: Deploy microservices
           type: xlrelease.ParallelGroup
           tasks:
           - name: Deploy invoice svc
             type: xldeploy.Deploy
             server: XL Deploy
-            deploymentPackage: e-commerce-2/K8S/e-commerce-2-invoice/1.0.${buildNumber}
-            deploymentEnvironment: Environments/e-commerce-2/aws-eks-e-commerce-2
+            deploymentPackage: e-commerce/K8S/e-commerce-invoice/1.0.${buildNumber}
+            deploymentEnvironment: Environments/e-commerce/aws-eks-e-commerce
           - name: Deploy notification svc
             type: xldeploy.Deploy
             server: XL Deploy
-            deploymentPackage: e-commerce-2/K8S/e-commerce-2-notification/1.0.${buildNumber}
-            deploymentEnvironment: Environments/e-commerce-2/aws-eks-e-commerce-2
+            deploymentPackage: e-commerce/K8S/e-commerce-notification/1.0.${buildNumber}
+            deploymentEnvironment: Environments/e-commerce/aws-eks-e-commerce
           - name: Deploy store svc
             type: xldeploy.Deploy
             server: XL Deploy
-            deploymentPackage: e-commerce-2/K8S/e-commerce-2-store/1.0.${buildNumber}
-            deploymentEnvironment: Environments/e-commerce-2/aws-eks-e-commerce-2
+            deploymentPackage: e-commerce/K8S/e-commerce-store/1.0.${buildNumber}
+            deploymentEnvironment: Environments/e-commerce/aws-eks-e-commerce
     - name: Test
       type: xlrelease.Phase
       tasks:
@@ -191,7 +191,7 @@ spec:
           numberOfContinueRetrials: 100
           pollingInterval: 10
           
-          ciId: Infrastructure/e-commerce-2/eks-e-commerce-2/eks-cluster
+          ciId: Infrastructure/e-commerce/eks-e-commerce/eks-cluster
           
           taskName: describeService
           variableMapping:
@@ -216,7 +216,7 @@ spec:
                 if "None" not in item:
                     releaseVariables['lbHostnameOrIp'] = item
           # end of script
-      - name: Check e-commerce-2 application status
+      - name: Check e-commerce application status
         type: xlrelease.ScriptTask
         script: |
           import urllib2
@@ -249,7 +249,7 @@ spec:
         type: xlrelease.GateTask
         team: Release Admin
         description: |
-          The e-commerce-2 app is now live on EKS!
+          The e-commerce app is now live on EKS!
           Check out the web site and complete this task when done.
 
           URL => http://${lbHostnameOrIp}:8080

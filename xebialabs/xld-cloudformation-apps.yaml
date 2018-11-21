@@ -1,7 +1,7 @@
 apiVersion: xl-deploy/v1
 kind: Applications
 spec:
-- name: e-commerce-2
+- name: e-commerce
   type: core.Directory
   children:
 
@@ -9,24 +9,24 @@ spec:
     type: core.Directory
     children:
     ### create S3 bucket ###
-    - name: e-commerce-2-lambda-bucket
+    - name: e-commerce-lambda-bucket
       type: udm.Application
       children:
       - name: '1.0.0'
         type: udm.DeploymentPackage
         deployables:
-        - name: s3-bucket-e-commerce-2-lambda
+        - name: s3-bucket-e-commerce-lambda
           type: aws.s3.BucketSpec
-          bucketName: e-commerce-2-lambda
+          bucketName: e-commerce-lambda
           region: eu-west-1
     ### upload the artifacts to S3 bucket ###
-    - name: e-commerce-2-lambda-artifacts
+    - name: e-commerce-lambda-artifacts
       type: udm.Application
       children:
       - name: '1.0.0'
         type: udm.DeploymentPackage
         deployables:
-        - name: e-commerce-2-lambda-artifacts
+        - name: e-commerce-lambda-artifacts
           type: aws.s3.File
           file: !file ../cloudformation/cfn-secret-provider.zip
           acl: bucket-owner-full-control
@@ -35,79 +35,79 @@ spec:
   - name: EKS-CLOUDFORMATION
     type: core.Directory
     children:
-    - name: e-commerce-2-cloudformation-eks-user
+    - name: e-commerce-cloudformation-eks-user
       type: udm.Application
       children:
       - name: '1.0.0'
         type: udm.DeploymentPackage
         deployables:
-        - name: e-commerce-2-eks-user
+        - name: e-commerce-eks-user
           type: aws.cloudformation.Template
           file: !file ../cloudformation/eks-user.yaml
           capabilities:
           - CAPABILITY_IAM
           - CAPABILITY_NAMED_IAM
           inputVariables:
-            ProjectName: e-commerce-2
-            UserStackName: e-commerce-2-eks-user
-            S3BucketPrefix: e-commerce-2-lambda
-    - name: e-commerce-2-cloudformation-eks-vpc
+            ProjectName: e-commerce
+            UserStackName: e-commerce-eks-user
+            S3BucketPrefix: e-commerce-lambda
+    - name: e-commerce-cloudformation-eks-vpc
       type: udm.Application
       children:
       - name: '1.0.0'
         type: udm.DeploymentPackage
         deployables:
-        - name: e-commerce-2-eks-vpc
+        - name: e-commerce-eks-vpc
           type: aws.cloudformation.Template
           file: !file ../cloudformation/eks-vpc.yaml
           capabilities:
           - CAPABILITY_IAM
           - CAPABILITY_NAMED_IAM
           inputVariables:
-            ProjectName: e-commerce-2
-            VPCStackName: e-commerce-2-eks-vpc
+            ProjectName: e-commerce
+            VPCStackName: e-commerce-eks-vpc
             AvailabilityZones: eu-west-1a, eu-west-1b
-    - name: e-commerce-2-cloudformation-eks-master
+    - name: e-commerce-cloudformation-eks-master
       type: udm.Application
       children:
       - name: '1.0.0'
         type: udm.DeploymentPackage
         deployables:
-        - name: e-commerce-2-eks-master
+        - name: e-commerce-eks-master
           type: aws.cloudformation.Template
           file: !file ../cloudformation/eks-master.yaml
           capabilities:
           - CAPABILITY_IAM
           - CAPABILITY_NAMED_IAM
           inputVariables:
-            ProjectName: e-commerce-2
-            VPCStackName: e-commerce-2-eks-vpc
-    - name: e-commerce-2-cloudformation-eks-workers
+            ProjectName: e-commerce
+            VPCStackName: e-commerce-eks-vpc
+    - name: e-commerce-cloudformation-eks-workers
       type: udm.Application
       children:
       - name: '1.0.0'
         type: udm.DeploymentPackage
         deployables:
-        - name: e-commerce-2-eks-workers
+        - name: e-commerce-eks-workers
           type: aws.cloudformation.Template
           file: !file ../cloudformation/eks-workers.yaml
           capabilities:
           - CAPABILITY_IAM
           - CAPABILITY_NAMED_IAM
           inputVariables:
-            ProjectName: e-commerce-2
-            VPCStackName: e-commerce-2-eks-vpc
-            UserStackName: e-commerce-2-eks-user
-            ClusterStackName: e-commerce-2-eks-master
-            ClusterName: e-commerce-2-master
-            NodeGroupName: e-commerce-2
-    - name: e-commerce-2-k8s-configmap
+            ProjectName: e-commerce
+            VPCStackName: e-commerce-eks-vpc
+            UserStackName: e-commerce-eks-user
+            ClusterStackName: e-commerce-eks-master
+            ClusterName: e-commerce-master
+            NodeGroupName: e-commerce
+    - name: e-commerce-k8s-configmap
       type: udm.Application
       children:
       - name: '1.0.0'
         type: udm.DeploymentPackage
         deployables:
-        - name: e-commerce-2-aws-auth
+        - name: e-commerce-aws-auth
           type: k8s.ResourcesFile
           file: !file ../kubernetes/aws-auth-cm.yaml
           delimiters: "## ##"
@@ -117,7 +117,7 @@ spec:
 
 # Provision K8s namespace
     children:
-    - name: e-commerce-2-namespace
+    - name: e-commerce-namespace
       type: udm.Application
       children:
       - name: '1.0.0'
