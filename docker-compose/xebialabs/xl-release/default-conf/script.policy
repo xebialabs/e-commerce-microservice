@@ -1,0 +1,32 @@
+grant {
+    // Network access
+    permission  java.lang.RuntimePermission "accessClassInPackage.sun.nio.ch";
+    permission  java.lang.RuntimePermission "accessClassInPackage.sun.security.ssl";
+    permission  java.net.SocketPermission "*", "connect, resolve";
+
+    // Releases
+    permission  java.io.FilePermission "work", "read";
+    permission  java.io.FilePermission "work/-", "read, write";
+    permission  java.io.FilePermission "conf/logback.xml", "read";
+
+    // SVN Kit
+    permission  java.util.PropertyPermission "*", "read";
+    permission  java.io.FilePermission "${user.home}/.subversion", "read, write";
+    permission  java.io.FilePermission "${user.home}/.subversion/-", "read, write";
+    permission  java.io.FilePermission "/etc/subversion/*", "read";
+    permission  java.io.FilePermission "<<ALL FILES>>", "execute";
+    permission  java.net.NetPermission "getCookieHandler";
+
+    // JGit
+    permission  java.net.NetPermission "getProxySelector";
+
+    // API - access to database
+    permission  java.sql.SQLPermission "setLog";
+    permission  java.sql.SQLPermission "callAbort";
+    permission  java.sql.SQLPermission "setSyncFactory";
+    permission  java.sql.SQLPermission "setNetworkTimeout";
+
+    permission  java.io.FilePermission "/etc/ssl/certs/java", "read";
+    permission  java.io.FilePermission "/etc/ssl/certs/java/*", "read";
+
+};

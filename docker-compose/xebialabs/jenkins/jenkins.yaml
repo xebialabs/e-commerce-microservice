@@ -1,0 +1,46 @@
+jenkins:
+  systemMessage: "Jenkins configured as code"
+
+jobs:
+  - script: >
+      pipelineJob('devops-as-code-eks-blueprint') {
+          definition {
+              cpsScm {
+                  scm {
+                      git {
+                          branch("master")
+                          remote {
+                        	credentials('github-credentials')
+                        	url('https://github.com/xebialabs/e-commerce-microservice.git')
+                          }
+                      }
+                  }
+                  scriptPath('store/Jenkinsfile')
+              }
+          }
+      }
+
+credentials:
+  system:
+    domainCredentials:
+      - credentials:
+        - usernamePassword:
+            scope:    GLOBAL
+            id:       github-credentials
+            username: ${GITHUB_USER}
+            password: ${GITHUB_TOKEN}
+        - usernamePassword:
+            scope:    GLOBAL
+            id:       xld-credentials
+            username: admin
+            password: admin
+        - usernamePassword:
+            scope:    GLOBAL
+            id:       xlr-credentials
+            username: admin
+            password: admin
+        - usernamePassword:
+            scope:    GLOBAL
+            id:       docker-login
+            username: ${DOCKER_USER}
+            password: ${DOCKER_PASS}
