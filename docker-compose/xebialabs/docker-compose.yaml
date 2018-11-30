@@ -1,14 +1,14 @@
 version: '2.3'
 services:
   xl-deploy:
-    build: docker/xl-deploy
+    build: xl-deploy
     ports:
     - 4516:4516
     environment:
     - ADMIN_PASSWORD=admin
 
   xl-release:
-    build: docker/xl-release
+    build: xl-release
     ports:
     - 5516:5516
     depends_on:
@@ -17,7 +17,7 @@ services:
     - ADMIN_PASSWORD=admin
 
   xl-cli:
-    build: docker/xl-cli
+    build: xl-cli
     depends_on:
     - xl-deploy
     - xl-release
@@ -26,7 +26,7 @@ services:
     - .:/data:ro
 
   jenkins:
-    build: docker/jenkins
+    build: jenkins
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./docker/jenkins/jenkins.yaml:/var/jenkins_home/casc_configs/jenkins.yaml
