@@ -1,0 +1,1 @@
+# This file includes all non-secret values, you can add variables here and then refer them with '!value' tag in YAML files
