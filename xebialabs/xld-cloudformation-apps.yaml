@@ -1,9 +1,0 @@
-apiVersion: xl-deploy/v1
-kind: Applications
-spec:
-- name: malaka-123
-  type: core.Directory
-  children:
-
-  - name: K8S
-    type: core.Directory

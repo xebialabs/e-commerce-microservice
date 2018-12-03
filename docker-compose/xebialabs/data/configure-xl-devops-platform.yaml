@@ -1,5 +1,5 @@
 apiVersion: xl-release/v1
-kind: Configurations
+kind: Templates
 spec:
 - name: XL Deploy
   type: xldeploy.XLDeployServer
@@ -8,7 +8,7 @@ spec:
   password: admin
 ---
 apiVersion: xl-release/v1
-kind: Configurations
+kind: Templates
 spec:
 - name: jenkins
   type: jenkins.Server
