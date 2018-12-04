@@ -1,4 +1,5 @@
 import org.gradle.internal.os.OperatingSystem
+import org.apache.tools.ant.filters.ReplaceTokens
 
 buildscript {
     repositories {
@@ -268,3 +269,25 @@ task stage(dependsOn: 'bootWar') {
 compileJava.dependsOn processResources
 processResources.dependsOn cleanResources,bootBuildInfo
 bootBuildInfo.mustRunAfter cleanResources
+
+repositories {
+        jcenter()
+}
+
+apply plugin: 'java'
+
+
+if (!hasProperty('imageTag')) {
+    ext.imageTag = "latest"
+}
+
+
+task sourcesForRelease(type: Copy) {
+    outputs.upToDateWhen { false }
+    from 'kubernetes'
+    exclude "build"
+    into 'build/kubernetes'
+    filter(ReplaceTokens, tokens: [IMAGE_TAG: project.imageTag])
+}
+
+
