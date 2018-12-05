@@ -66,9 +66,10 @@ pipeline {
         }
 
 
-        stage ("put image version into k8s templates") {
+        stage ("push xld package for invoice") {
             steps {
                 sh "cd invoice && ./gradlew clean  sourcesForRelease -PimageTag=1.0.${env.BUILD_ID} --no-daemon"
+                sh "./xlw apply -f xebialabs/xld-kubernetes-invoice-app.yaml"
             }
         }
 

@@ -84,9 +84,10 @@ pipeline {
         }
 
 
-        stage ("put image version into k8s templates") {
+        stage ("push xld package for store") {
             steps {
                 sh "cd store && ./gradlew clean  sourcesForRelease -PimageTag=1.0.${env.BUILD_ID} --no-daemon"
+                sh "./xlw apply -f xebialabs/xld-kubernetes-store-app.yaml"
             }
         }
 
