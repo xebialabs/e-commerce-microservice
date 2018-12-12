@@ -11,8 +11,8 @@ jobs:
                       git {
                           branch("master")
                           remote {
-                        	credentials('github-credentials')
-                        	url('https://github.com/xebialabs/e-commerce-microservice.git')
+                            credentials('github-credentials')
+                            url('https://github.com/<your-github-username>/e-commerce-microservice.git')
                           }
                       }
                   }
