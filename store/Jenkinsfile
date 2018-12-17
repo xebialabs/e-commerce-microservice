@@ -21,9 +21,9 @@ pipeline {
         }
         stage ("clean") {
             steps {
+                sh "cd store && chmod +x ./gradlew"
+                sh "cd store && ./gradlew clean --no-daemon"
                 echo "Clean Done"
-                //    sh "cd store && chmod +x ./gradlew"
-                //    sh "cd store && ./gradlew clean --no-daemon"
             }
         }
         stage ("npm install") {
@@ -33,27 +33,24 @@ pipeline {
         }
         stage ("backend tests") {
             steps {
-                echo "Backend tests Done"
-                //    try {
-                //        sh "cd store && ./gradlew test -PnodeInstall --no-daemon"
-                //    } catch(err) {
-                //        throw err
-                //    } finally {
-                //        junit '**/build/**/TEST-*.xml'
-                //    }
+                try {
+                    sh "cd store && ./gradlew test -PnodeInstall --no-daemon"
+                } catch(err) {
+                    throw err
+                } finally {
+                    junit '**/build/**/TEST-*.xml'
+                }
             }
         }
         stage ("frontend tests") {
             steps {
-                echo "Frontend tests Done"
-
-                //    try {
-                //        sh "cd store && ./gradlew npm_test -PnodeInstall --no-daemon"
-                //    } catch(err) {
-                //        throw err
-                //    } finally {
-                //        junit '**/build/test-results/jest/TESTS-*.xml'
-                //    }
+                try {
+                    sh "cd store && ./gradlew npm_test -PnodeInstall --no-daemon"
+                } catch(err) {
+                    throw err
+                } finally {
+                    junit '**/build/test-results/jest/TESTS-*.xml'
+                }
             }
         }
         stage ("packaging") {

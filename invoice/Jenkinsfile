@@ -21,21 +21,18 @@ pipeline {
         }
         stage ("clean") {
             steps {
-                echo "Clean Done"
-                //    sh "cd invoice && chmod +x ./gradlew"
-                //    sh "cd invoice && ./gradlew clean --no-daemon"
+                sh "cd invoice && chmod +x ./gradlew"
+                sh "cd invoice && ./gradlew clean --no-daemon"
             }
         }
         stage ("backend tests") {
-            steps {
-                echo "Backend tests Done"
-                //    try {
-                //        sh "cd invoice && ./gradlew test -PnodeInstall --no-daemon"
-                //    } catch(err) {
-                //        throw err
-                //    } finally {
-                //        junit '**/build/**/TEST-*.xml'
-                //    }
+                try {
+                    sh "cd invoice && ./gradlew test -PnodeInstall --no-daemon"
+                } catch(err) {
+                    throw err
+                } finally {
+                    junit '**/build/**/TEST-*.xml'
+                }
             }
         }
         stage ("packaging") {
