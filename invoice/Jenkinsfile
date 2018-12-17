@@ -1,51 +1,74 @@
 #!/usr/bin/env groovy
+pipeline {
+    agent any
+    environment {
+        XL_VALUE_BUILD_ID = "1.0.${env.BUILD_ID}"
 
-node {
-    stage('checkout') {
-        checkout scm
+        XL_DEPLOY_URL = "http://xl-deploy:4516"
+        XL_DEPLOY_CREDENTIALS = credentials("xld-credentials")
     }
 
-    stage('check java') {
-        sh "java -version"
-    }
-
-    stage('clean') {
-        sh "chmod +x gradlew"
-        sh "./gradlew clean --no-daemon"
-    }
-
-
-    stage('backend tests') {
-        try {
-            sh "./gradlew test -PnodeInstall --no-daemon"
-        } catch(err) {
-            throw err
-        } finally {
-            junit '**/build/**/TEST-*.xml'
+    stages {
+        stage ("checkout") {
+            steps {
+                checkout scm
+            }
         }
-    }
-
-    stage('packaging') {
-        sh "./gradlew bootWar -x test -Pprod -PnodeInstall --no-daemon"
-        archiveArtifacts artifacts: '**/build/libs/*.war', fingerprint: true
-    }
-
-    stage('quality analysis') {
-        withSonarQubeEnv('sonar') {
-            sh "./gradlew sonarqube --no-daemon"
+        stage ("check java") {
+            steps {
+                sh "java -version"
+            }
         }
-    }
-
-    def dockerImage
-    stage('build docker') {
-        sh "cp -R src/main/docker build/"
-        sh "cp build/libs/*.war build/docker/"
-        dockerImage = docker.build('xebialabsunsupported/invoice', 'build/docker')
-    }
-
-    stage('publish docker') {
-        docker.withRegistry('https://registry.hub.docker.com', 'docker-login') {
-            dockerImage.push 'latest'
+        stage ("clean") {
+            steps {
+                sh "cd invoice && chmod +x ./gradlew"
+                sh "cd invoice && ./gradlew clean --no-daemon"
+            }
         }
+        stage ("backend tests") {
+                try {
+                    sh "cd invoice && ./gradlew test -PnodeInstall --no-daemon"
+                } catch(err) {
+                    throw err
+                } finally {
+                    junit '**/build/**/TEST-*.xml'
+                }
+            }
+        }
+        stage ("packaging") {
+            steps {
+                sh "cd invoice && ./gradlew bootWar -x test -Pprod -PnodeInstall --no-daemon"
+                archiveArtifacts artifacts: '**/build/libs/*.war', fingerprint: true
+            }
+        }
+
+
+        stage ("build and publish docker") {
+            steps {
+                script {
+                    def dockerImage
+                    stage ("build docker") {
+                        sh "cp -R invoice/src/main/docker invoice/build/"
+                        sh "cp invoice/build/libs/*.war invoice/build/docker/"
+                        dockerImage = docker.build('xebialabsunsupported/ecommerce-invoice', 'invoice/build/docker')
+                    }
+                    stage ("publish docker") {
+                        docker.withRegistry('https://index.docker.io/v1/', 'docker-login') {
+                            dockerImage.tag("1.0.${env.BUILD_ID}")
+                            dockerImage.push("1.0.${env.BUILD_ID}")
+                        }
+                    }
+                }
+            }
+        }
+
+
+        stage ("push xld package for invoice") {
+            steps {
+                sh "cd invoice && ./gradlew clean  sourcesForRelease -PimageTag=1.0.${env.BUILD_ID} --no-daemon"
+                sh "./xlw apply -f xebialabs/xld-kubernetes-invoice-app.yaml"
+            }
+        }
+
     }
 }
