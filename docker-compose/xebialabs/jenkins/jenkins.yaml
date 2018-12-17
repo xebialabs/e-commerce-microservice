@@ -1,9 +1,10 @@
 jenkins:
   systemMessage: "Jenkins configured as code"
+  numExecutors: 3
 
 jobs:
   - script: >
-      pipelineJob('devops-as-code-eks-blueprint') {
+      pipelineJob('devops-as-code-eks-blueprint-store-svc') {
           definition {
               cpsScm {
                   scm {
@@ -16,6 +17,40 @@ jobs:
                       }
                   }
                   scriptPath('store/Jenkinsfile')
+              }
+          }
+      }
+  - script: >
+      pipelineJob('devops-as-code-eks-blueprint-notification-svc') {
+          definition {
+              cpsScm {
+                  scm {
+                      git {
+                          branch("master")
+                          remote {
+                        	credentials('github-credentials')
+                        	url('https://github.com/xebialabs/e-commerce-microservice.git')
+                          }
+                      }
+                  }
+                  scriptPath('notification/Jenkinsfile')
+              }
+          }
+      }
+  - script: >
+      pipelineJob('devops-as-code-eks-blueprint-invoice-svc') {
+          definition {
+              cpsScm {
+                  scm {
+                      git {
+                          branch("master")
+                          remote {
+                          credentials('github-credentials')
+                          url('https://github.com/xebialabs/e-commerce-microservice.git')
+                          }
+                      }
+                  }
+                  scriptPath('invoice/Jenkinsfile')
               }
           }
       }

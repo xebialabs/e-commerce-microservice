@@ -286,17 +286,10 @@ compileJava.dependsOn processResources
 processResources.dependsOn cleanResources,bootBuildInfo
 bootBuildInfo.mustRunAfter cleanResources
 
-repositories {
-    jcenter()
-}
-
-apply plugin: 'java'
-
 
 if (!hasProperty('imageTag')) {
     ext.imageTag = "latest"
 }
-
 
 task sourcesForRelease(type: Copy) {
     outputs.upToDateWhen { false }
