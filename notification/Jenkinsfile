@@ -27,12 +27,14 @@ pipeline {
         }
         stage ("backend tests") {
             steps {
-                try {
-                    sh "cd notification && ./gradlew test -PnodeInstall --no-daemon"
-                } catch(err) {
-                    throw err
-                } finally {
-                    junit '**/build/**/TEST-*.xml'
+                script {
+                    try {
+                        sh "cd notification && ./gradlew test -PnodeInstall --no-daemon"
+                    } catch(err) {
+                        throw err
+                    } finally {
+                        junit '**/build/**/TEST-*.xml'
+                    }
                 }
             }
         }
