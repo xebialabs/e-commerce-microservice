@@ -34,7 +34,7 @@ spec:
                 done
       containers:
       - name: notification-app
-        image: xebialabsunsupported/ecommerce-notification
+        image: <your-dockerhub-user>/ecommerce-notification
         imagePullPolicy: Always
         env:
         - name: SPRING_PROFILES_ACTIVE
