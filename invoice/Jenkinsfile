@@ -50,7 +50,7 @@ pipeline {
                     stage ("build docker") {
                         sh "cp -R invoice/src/main/docker invoice/build/"
                         sh "cp invoice/build/libs/*.war invoice/build/docker/"
-                        dockerImage = docker.build('xebialabsunsupported/ecommerce-invoice', 'invoice/build/docker')
+                        dockerImage = docker.build('<your-dockerhub-user>/ecommerce-invoice', 'invoice/build/docker')
                     }
                     stage ("publish docker") {
                         docker.withRegistry('https://index.docker.io/v1/', 'docker-login') {
