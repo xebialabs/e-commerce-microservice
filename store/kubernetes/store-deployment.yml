@@ -34,7 +34,7 @@ spec:
                 done
       containers:
       - name: store-app
-        image: <your-dockerhub-user>/ecommerce-store:@IMAGE_TAG@
+        image: xebialabsunsupported/ecommerce-store:latest
         imagePullPolicy: Always
         env:
         - name: SPRING_PROFILES_ACTIVE

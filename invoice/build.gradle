@@ -275,13 +275,3 @@ if (!hasProperty('imageTag')) {
     ext.imageTag = "latest"
 }
 
-
-task sourcesForRelease(type: Copy) {
-    outputs.upToDateWhen { false }
-    from 'kubernetes'
-    exclude "build"
-    into 'build/kubernetes'
-    filter(ReplaceTokens, tokens: [IMAGE_TAG: project.imageTag])
-}
-
-

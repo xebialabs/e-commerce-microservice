@@ -34,7 +34,7 @@ spec:
                 done
       containers:
       - name: invoice-app
-        image: <your-dockerhub-user>/ecommerce-invoice:@IMAGE_TAG@
+        image: xebialabsunsupported/ecommerce-invoice:latest
         imagePullPolicy: Always
         env:
         - name: SPRING_PROFILES_ACTIVE
