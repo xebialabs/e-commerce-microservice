@@ -149,7 +149,7 @@ export class CustomerUpdate extends React.Component<ICustomerUpdateProps, ICusto
                     validate={{
                       required: { value: true, errorMessage: translate('entity.validation.required') },
                       pattern: {
-                        value: '^[^@s]+@[^@s]+.[^@s]+$',
+                        value: '^[^@\s]+@[^@\s]+.[^@\s]+$',
                         errorMessage: translate('entity.validation.pattern', { pattern: '^[^@s]+@[^@s]+.[^@s]+$' })
                       }
                     }}
