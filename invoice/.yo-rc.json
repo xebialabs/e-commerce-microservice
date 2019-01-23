@@ -1,38 +1,39 @@
 {
   "generator-jhipster": {
-    "applicationType": "microservice",
-    "authenticationType": "jwt",
-    "baseName": "invoice",
-    "buildTool": "gradle",
-    "cacheProvider": "hazelcast",
-    "clientPackageManager": "npm",
     "databaseType": "sql",
     "devDatabaseType": "h2Disk",
     "enableHibernateCache": true,
     "enableSwaggerCodegen": false,
     "enableTranslation": true,
     "jhiPrefix": "jhi",
-    "jhipsterVersion": "5.3.1",
-    "jwtSecretKey": "ZTk4MjZjYjg5ODE0NTJlODFiNTlmOTJmZWNkNmY0MTFhYTQ3M2IxYzFkNTMyYmI3MTg0MWNlNDdkYjFlZTAwNzQ2NTBjZGJlZjkyMjYzODhjNWMxY2NiMDEwYTQ5MDM3Y2Y2NTAzOGRhZmFkNDYzZjcyMDIxZDA4ZDEyMzE0ZGQ=",
     "languages": [
       "en",
-      "nl"
+      "fr"
     ],
     "messageBroker": false,
     "nativeLanguage": "en",
-    "packageFolder": "com/xebialabs/invoice",
     "packageName": "com.xebialabs.invoice",
+    "packageFolder": "com/xebialabs/invoice",
     "prodDatabaseType": "mysql",
-    "promptValues": {
-      "nativeLanguage": "en",
-      "packageName": "com.xebialabs.invoice"
-    },
     "searchEngine": false,
-    "serverPort": "8081",
     "serviceDiscoveryType": "eureka",
     "skipClient": true,
-    "skipUserManagement": true,
     "testFrameworks": [],
-    "websocket": false
-  }
+    "websocket": false,
+    "baseName": "invoice",
+    "applicationType": "microservice",
+    "authenticationType": "jwt",
+    "buildTool": "gradle",
+    "serverPort": "8081",
+    "skipUserManagement": true,
+    "jhipsterVersion": "5.7.0",
+    "clientPackageManager": "npm",
+    "cacheProvider": "hazelcast",
+    "jwtSecretKey": "ZTk4ZDVjMTU1NDc2MWMyN2FjZDNlMzJiNjcxYmNiY2UzMWRiNzRjZTFhODJiNTg5Zjg2YzEyMGFkZmRiNzBhZmU4NzkxY2JhMzEzMGI2ZmNjZWMxODYzNTcyOTI5ZmFkZDA5ZmU2NTgwOGQ5MDdiYWQ4OTRlYjNjM2EzZjU1Y2Q=",
+    "otherModules": []
+  },
+  "entities": [
+    "Invoice",
+    "Shipment"
+  ]
 }

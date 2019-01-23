@@ -33,10 +33,6 @@ import orderItem, {
   OrderItemState
 } from 'app/entities/order-item/order-item.reducer';
 // prettier-ignore
-import notification, {
-  NotificationState
-} from 'app/entities/notification/notification/notification.reducer';
-// prettier-ignore
 import invoice, {
   InvoiceState
 } from 'app/entities/invoice/invoice/invoice.reducer';
@@ -44,6 +40,10 @@ import invoice, {
 import shipment, {
   ShipmentState
 } from 'app/entities/invoice/shipment/shipment.reducer';
+// prettier-ignore
+import notification, {
+  NotificationState
+} from 'app/entities/notification/notification/notification.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 export interface IRootState {
@@ -62,9 +62,9 @@ export interface IRootState {
   readonly customer: CustomerState;
   readonly productOrder: ProductOrderState;
   readonly orderItem: OrderItemState;
-  readonly notification: NotificationState;
   readonly invoice: InvoiceState;
   readonly shipment: ShipmentState;
+  readonly notification: NotificationState;
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
 }
@@ -85,9 +85,9 @@ const rootReducer = combineReducers<IRootState>({
   customer,
   productOrder,
   orderItem,
-  notification,
   invoice,
   shipment,
+  notification,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   loadingBar
 });

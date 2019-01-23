@@ -58,7 +58,8 @@
             "otherEntityRelationshipName": "invoice"
         }
     ],
-    "changelogDate": "20180912102643",
+    "changelogDate": "20190123145723",
+    "javadoc": "Entities for Invoice microservice",
     "entityTableName": "invoice",
     "dto": "no",
     "pagination": "pagination",
@@ -66,6 +67,9 @@
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,
     "clientRootFolder": "",
-    "applications": "*",
+    "applications": [
+        "store",
+        "invoice"
+    ],
     "microserviceName": "invoice"
 }

@@ -13,55 +13,55 @@ export default class ShipmentUpdatePage {
     return this.pageTitle;
   }
 
-  setTrackingCodeInput(trackingCode) {
-    this.trackingCodeInput.sendKeys(trackingCode);
+  async setTrackingCodeInput(trackingCode) {
+    await this.trackingCodeInput.sendKeys(trackingCode);
   }
 
-  getTrackingCodeInput() {
+  async getTrackingCodeInput() {
     return this.trackingCodeInput.getAttribute('value');
   }
 
-  setDateInput(date) {
-    this.dateInput.sendKeys(date);
+  async setDateInput(date) {
+    await this.dateInput.sendKeys(date);
   }
 
-  getDateInput() {
+  async getDateInput() {
     return this.dateInput.getAttribute('value');
   }
 
-  setDetailsInput(details) {
-    this.detailsInput.sendKeys(details);
+  async setDetailsInput(details) {
+    await this.detailsInput.sendKeys(details);
   }
 
-  getDetailsInput() {
+  async getDetailsInput() {
     return this.detailsInput.getAttribute('value');
   }
 
-  invoiceSelectLastOption() {
-    this.invoiceSelect
+  async invoiceSelectLastOption() {
+    await this.invoiceSelect
       .all(by.tagName('option'))
       .last()
       .click();
   }
 
-  invoiceSelectOption(option) {
-    this.invoiceSelect.sendKeys(option);
+  async invoiceSelectOption(option) {
+    await this.invoiceSelect.sendKeys(option);
   }
 
   getInvoiceSelect() {
     return this.invoiceSelect;
   }
 
-  getInvoiceSelectedOption() {
+  async getInvoiceSelectedOption() {
     return this.invoiceSelect.element(by.css('option:checked')).getText();
   }
 
-  save() {
-    return this.saveButton.click();
+  async save() {
+    await this.saveButton.click();
   }
 
-  cancel() {
-    this.cancelButton.click();
+  async cancel() {
+    await this.cancelButton.click();
   }
 
   getSaveButton() {

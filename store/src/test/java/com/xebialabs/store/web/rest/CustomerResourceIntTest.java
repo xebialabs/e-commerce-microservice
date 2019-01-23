@@ -21,6 +21,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.Validator;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -51,8 +52,8 @@ public class CustomerResourceIntTest {
     private static final Gender DEFAULT_GENDER = Gender.MALE;
     private static final Gender UPDATED_GENDER = Gender.FEMALE;
 
-    private static final String DEFAULT_EMAIL = "Y@q.<";
-    private static final String UPDATED_EMAIL = "B]@C.u";
+    private static final String DEFAULT_EMAIL = "d@[.kk";
+    private static final String UPDATED_EMAIL = "\\>@(].vh";
 
     private static final String DEFAULT_PHONE = "AAAAAAAAAA";
     private static final String UPDATED_PHONE = "BBBBBBBBBB";
@@ -71,7 +72,7 @@ public class CustomerResourceIntTest {
 
     @Autowired
     private CustomerRepository customerRepository;
-    
+
     @Autowired
     private CustomerService customerService;
 
@@ -87,6 +88,9 @@ public class CustomerResourceIntTest {
     @Autowired
     private EntityManager em;
 
+    @Autowired
+    private Validator validator;
+
     private MockMvc restCustomerMockMvc;
 
     private Customer customer;
@@ -99,7 +103,8 @@ public class CustomerResourceIntTest {
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
             .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jacksonMessageConverter).build();
+            .setMessageConverters(jacksonMessageConverter)
+            .setValidator(validator).build();
     }
 
     /**

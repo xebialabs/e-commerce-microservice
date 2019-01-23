@@ -43,14 +43,18 @@
         }
     ],
     "relationships": [],
-    "changelogDate": "20180912102605",
+    "changelogDate": "20190123145725",
+    "javadoc": "Entities for notification microservice",
     "entityTableName": "notification",
     "dto": "no",
     "pagination": "no",
     "service": "no",
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,
-    "clientRootFolder": "notification",
-    "applications": "*",
+    "clientRootFolder": "",
+    "applications": [
+        "store",
+        "notification"
+    ],
     "microserviceName": "notification"
 }

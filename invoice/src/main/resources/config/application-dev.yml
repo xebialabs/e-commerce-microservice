@@ -39,7 +39,8 @@ spring:
         livereload:
             enabled: false # we use Webpack dev server + BrowserSync for livereload
     jackson:
-        serialization.indent_output: true
+        serialization:
+            indent-output: true
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
         url: jdbc:h2:file:./build/h2db/db/invoice;DB_CLOSE_DELAY=-1
@@ -75,6 +76,9 @@ spring:
         cache-duration: PT1S # 1 second, see the ISO 8601 standard
     thymeleaf:
         cache: false
+    sleuth:
+        sampler:
+            probability: 1 # report 100% of traces
     zipkin: # Use the "zipkin" Maven profile to have the Spring Cloud Zipkin dependencies
         base-url: http://localhost:9411
         enabled: false
@@ -115,7 +119,7 @@ jhipster:
         authentication:
             jwt:
                 # This token must be encoded using Base64 (you can type `echo 'secret-key'|base64` on your command line)
-                base64-secret: ZTk4MjZjYjg5ODE0NTJlODFiNTlmOTJmZWNkNmY0MTFhYTQ3M2IxYzFkNTMyYmI3MTg0MWNlNDdkYjFlZTAwNzQ2NTBjZGJlZjkyMjYzODhjNWMxY2NiMDEwYTQ5MDM3Y2Y2NTAzOGRhZmFkNDYzZjcyMDIxZDA4ZDEyMzE0ZGQ=
+                base64-secret: ZTk4ZDVjMTU1NDc2MWMyN2FjZDNlMzJiNjcxYmNiY2UzMWRiNzRjZTFhODJiNTg5Zjg2YzEyMGFkZmRiNzBhZmU4NzkxY2JhMzEzMGI2ZmNjZWMxODYzNTcyOTI5ZmFkZDA5ZmU2NTgwOGQ5MDdiYWQ4OTRlYjNjM2EzZjU1Y2Q=
                 # Token is valid 24 hours
                 token-validity-in-seconds: 86400
                 token-validity-in-seconds-for-remember-me: 2592000
@@ -125,6 +129,8 @@ jhipster:
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
         jmx:
             enabled: true
+        prometheus:
+            enabled: false #expose metrics via prometheus
         logs: # Reports Dropwizard metrics in the logs
             enabled: false
             report-frequency: 60 # in seconds

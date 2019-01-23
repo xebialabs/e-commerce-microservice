@@ -1,6 +1,6 @@
 # ===================================================================
 # Spring Cloud Config bootstrap configuration for the "dev" profile
-# In prod profile, properties will be overwriten by the ones defined in bootstrap-prod.yml
+# In prod profile, properties will be overwritten by the ones defined in bootstrap-prod.yml
 # ===================================================================
 
 jhipster:

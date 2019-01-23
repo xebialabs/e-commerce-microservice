@@ -10,8 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import java.util.Optional;
+
 /**
  * Service Implementation for managing Product.
  */
@@ -34,7 +34,8 @@ public class ProductService {
      * @return the persisted entity
      */
     public Product save(Product product) {
-        log.debug("Request to save Product : {}", product);        return productRepository.save(product);
+        log.debug("Request to save Product : {}", product);
+        return productRepository.save(product);
     }
 
     /**

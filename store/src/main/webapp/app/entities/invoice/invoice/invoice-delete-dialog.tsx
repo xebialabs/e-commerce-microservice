@@ -9,7 +9,7 @@ import { IInvoice } from 'app/shared/model/invoice/invoice.model';
 import { IRootState } from 'app/shared/reducers';
 import { getEntity, deleteEntity } from './invoice.reducer';
 
-export interface IInvoiceDeleteDialogProps extends StateProps, DispatchProps, RouteComponentProps<{ id: number }> {}
+export interface IInvoiceDeleteDialogProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export class InvoiceDeleteDialog extends React.Component<IInvoiceDeleteDialogProps> {
   componentDidMount() {

@@ -14,7 +14,7 @@ import { IInvoice } from 'app/shared/model/invoice/invoice.model';
 import { convertDateTimeFromServer } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
 
-export interface IInvoiceUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: number }> {}
+export interface IInvoiceUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export interface IInvoiceUpdateState {
   isNew: boolean;
@@ -26,6 +26,12 @@ export class InvoiceUpdate extends React.Component<IInvoiceUpdateProps, IInvoice
     this.state = {
       isNew: !this.props.match.params || !this.props.match.params.id
     };
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    if (nextProps.updateSuccess !== this.props.updateSuccess && nextProps.updateSuccess) {
+      this.handleClose();
+    }
   }
 
   componentDidMount() {
@@ -52,7 +58,6 @@ export class InvoiceUpdate extends React.Component<IInvoiceUpdateProps, IInvoice
       } else {
         this.props.updateEntity(entity);
       }
-      this.handleClose();
     }
   };
 
@@ -217,7 +222,8 @@ export class InvoiceUpdate extends React.Component<IInvoiceUpdateProps, IInvoice
 const mapStateToProps = (storeState: IRootState) => ({
   invoiceEntity: storeState.invoice.entity,
   loading: storeState.invoice.loading,
-  updating: storeState.invoice.updating
+  updating: storeState.invoice.updating,
+  updateSuccess: storeState.invoice.updateSuccess
 });
 
 const mapDispatchToProps = {

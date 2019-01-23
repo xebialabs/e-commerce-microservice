@@ -16,20 +16,26 @@ import { IProduct } from 'app/shared/model/product.model';
 import { convertDateTimeFromServer } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
 
-export interface IProductUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: number }> {}
+export interface IProductUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export interface IProductUpdateState {
   isNew: boolean;
-  productCategoryId: number;
+  productCategoryId: string;
 }
 
 export class ProductUpdate extends React.Component<IProductUpdateProps, IProductUpdateState> {
   constructor(props) {
     super(props);
     this.state = {
-      productCategoryId: 0,
+      productCategoryId: '0',
       isNew: !this.props.match.params || !this.props.match.params.id
     };
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    if (nextProps.updateSuccess !== this.props.updateSuccess && nextProps.updateSuccess) {
+      this.handleClose();
+    }
   }
 
   componentDidMount() {
@@ -63,7 +69,6 @@ export class ProductUpdate extends React.Component<IProductUpdateProps, IProduct
       } else {
         this.props.updateEntity(entity);
       }
-      this.handleClose();
     }
   };
 
@@ -231,7 +236,8 @@ const mapStateToProps = (storeState: IRootState) => ({
   productCategories: storeState.productCategory.entities,
   productEntity: storeState.product.entity,
   loading: storeState.product.loading,
-  updating: storeState.product.updating
+  updating: storeState.product.updating,
+  updateSuccess: storeState.product.updateSuccess
 });
 
 const mapDispatchToProps = {

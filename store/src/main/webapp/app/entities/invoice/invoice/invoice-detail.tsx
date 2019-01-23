@@ -12,7 +12,7 @@ import { IInvoice } from 'app/shared/model/invoice/invoice.model';
 // tslint:disable-next-line:no-unused-variable
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 
-export interface IInvoiceDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: number }> {}
+export interface IInvoiceDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export class InvoiceDetail extends React.Component<IInvoiceDetailProps> {
   componentDidMount() {

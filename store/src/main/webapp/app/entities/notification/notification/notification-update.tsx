@@ -14,7 +14,7 @@ import { INotification } from 'app/shared/model/notification/notification.model'
 import { convertDateTimeFromServer } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
 
-export interface INotificationUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: number }> {}
+export interface INotificationUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export interface INotificationUpdateState {
   isNew: boolean;
@@ -26,6 +26,12 @@ export class NotificationUpdate extends React.Component<INotificationUpdateProps
     this.state = {
       isNew: !this.props.match.params || !this.props.match.params.id
     };
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    if (nextProps.updateSuccess !== this.props.updateSuccess && nextProps.updateSuccess) {
+      this.handleClose();
+    }
   }
 
   componentDidMount() {
@@ -52,7 +58,6 @@ export class NotificationUpdate extends React.Component<INotificationUpdateProps
       } else {
         this.props.updateEntity(entity);
       }
-      this.handleClose();
     }
   };
 
@@ -151,7 +156,7 @@ export class NotificationUpdate extends React.Component<INotificationUpdateProps
                   </Label>
                   <AvField
                     id="notification-userId"
-                    type="number"
+                    type="string"
                     className="form-control"
                     name="userId"
                     validate={{
@@ -166,7 +171,7 @@ export class NotificationUpdate extends React.Component<INotificationUpdateProps
                   </Label>
                   <AvField
                     id="notification-productId"
-                    type="number"
+                    type="string"
                     className="form-control"
                     name="productId"
                     validate={{
@@ -198,7 +203,8 @@ export class NotificationUpdate extends React.Component<INotificationUpdateProps
 const mapStateToProps = (storeState: IRootState) => ({
   notificationEntity: storeState.notification.entity,
   loading: storeState.notification.loading,
-  updating: storeState.notification.updating
+  updating: storeState.notification.updating,
+  updateSuccess: storeState.notification.updateSuccess
 });
 
 const mapDispatchToProps = {

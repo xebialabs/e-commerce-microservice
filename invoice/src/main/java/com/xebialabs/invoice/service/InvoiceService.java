@@ -10,8 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import java.util.Optional;
+
 /**
  * Service Implementation for managing Invoice.
  */
@@ -34,7 +34,8 @@ public class InvoiceService {
      * @return the persisted entity
      */
     public Invoice save(Invoice invoice) {
-        log.debug("Request to save Invoice : {}", invoice);        return invoiceRepository.save(invoice);
+        log.debug("Request to save Invoice : {}", invoice);
+        return invoiceRepository.save(invoice);
     }
 
     /**

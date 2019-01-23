@@ -26,7 +26,7 @@
             "otherEntityField": "code"
         }
     ],
-    "changelogDate": "20180912102446",
+    "changelogDate": "20190123145724",
     "entityTableName": "shipment",
     "dto": "no",
     "pagination": "pagination",
@@ -34,6 +34,9 @@
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,
     "clientRootFolder": "",
-    "applications": "*",
+    "applications": [
+        "store",
+        "invoice"
+    ],
     "microserviceName": "invoice"
 }

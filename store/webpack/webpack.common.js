@@ -55,7 +55,7 @@ module.exports = options => ({
         test: /\.tsx?$/,
         use: getTsLoaderRule(options.env),
         include: [utils.root('./src/main/webapp/app')],
-        exclude: ['node_modules']
+        exclude: [utils.root('node_modules')]
       },
       {
         test: /\.(jpe?g|png|gif|svg|woff2?|ttf|eot)$/i,
@@ -75,7 +75,7 @@ module.exports = options => ({
         test: /\.tsx?$/,
         enforce: 'pre',
         loader: 'tslint-loader',
-        exclude: ['node_modules']
+        exclude: [utils.root('node_modules')]
       }
     ]
   },
@@ -128,7 +128,7 @@ module.exports = options => ({
       output: {
         groupBy: [
                     { pattern: "./src/main/webapp/i18n/en/*.json", fileName: "./i18n/en.json" },
-                    { pattern: "./src/main/webapp/i18n/nl/*.json", fileName: "./i18n/nl.json" }
+                    { pattern: "./src/main/webapp/i18n/fr/*.json", fileName: "./i18n/fr.json" }
                     // jhipster-needle-i18n-language-webpack - JHipster will add/remove languages in this array
                 ]
       }

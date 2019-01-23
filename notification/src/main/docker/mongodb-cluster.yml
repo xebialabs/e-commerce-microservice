@@ -1,7 +1,7 @@
 version: '2'
 services:
     notification-mongodb:
-        image: mongo:3.6.3
+        image: mongo:4.0.2
         ports:
             - "27017:27017"
         command: mongos --configdb notification-mongodb-config
@@ -11,6 +11,6 @@ services:
             dockerfile: mongodb/MongoDB.Dockerfile
         command: mongod --replSet rs1 --noprealloc --smallfiles
     notification-mongodb-config:
-        image: mongo:3.6.3
+        image: mongo:4.0.2
         container_name: notification-mongodb-config
         command: mongod --noprealloc --smallfiles --configsvr --dbpath /data/db

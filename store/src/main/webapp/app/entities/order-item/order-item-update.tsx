@@ -18,22 +18,28 @@ import { IOrderItem } from 'app/shared/model/order-item.model';
 import { convertDateTimeFromServer } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
 
-export interface IOrderItemUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: number }> {}
+export interface IOrderItemUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export interface IOrderItemUpdateState {
   isNew: boolean;
-  productId: number;
-  orderId: number;
+  productId: string;
+  orderId: string;
 }
 
 export class OrderItemUpdate extends React.Component<IOrderItemUpdateProps, IOrderItemUpdateState> {
   constructor(props) {
     super(props);
     this.state = {
-      productId: 0,
-      orderId: 0,
+      productId: '0',
+      orderId: '0',
       isNew: !this.props.match.params || !this.props.match.params.id
     };
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    if (nextProps.updateSuccess !== this.props.updateSuccess && nextProps.updateSuccess) {
+      this.handleClose();
+    }
   }
 
   componentDidMount() {
@@ -60,7 +66,6 @@ export class OrderItemUpdate extends React.Component<IOrderItemUpdateProps, IOrd
       } else {
         this.props.updateEntity(entity);
       }
-      this.handleClose();
     }
   };
 
@@ -101,7 +106,7 @@ export class OrderItemUpdate extends React.Component<IOrderItemUpdateProps, IOrd
                   </Label>
                   <AvField
                     id="order-item-quantity"
-                    type="number"
+                    type="string"
                     className="form-control"
                     name="quantity"
                     validate={{
@@ -213,7 +218,8 @@ const mapStateToProps = (storeState: IRootState) => ({
   productOrders: storeState.productOrder.entities,
   orderItemEntity: storeState.orderItem.entity,
   loading: storeState.orderItem.loading,
-  updating: storeState.orderItem.updating
+  updating: storeState.orderItem.updating,
+  updateSuccess: storeState.orderItem.updateSuccess
 });
 
 const mapDispatchToProps = {

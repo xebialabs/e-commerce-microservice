@@ -1,0 +1,23 @@
+{
+  "generator-jhipster": {
+    "deploymentType": "kubernetes",
+    "gatewayType": "zuul",
+    "monitoring": "no",
+    "directoryPath": "../",
+    "appsFolders": [
+      "store",
+      "invoice",
+      "notification"
+    ],
+    "clusteredDbApps": [],
+    "consoleOptions": [],
+    "serviceDiscoveryType": "eureka",
+    "dockerRepositoryName": "xebialabsunsupported",
+    "dockerPushCommand": "docker push",
+    "kubernetesNamespace": "xl-demo",
+    "kubernetesServiceType": "LoadBalancer",
+    "ingressDomain": "",
+    "istio": "no",
+    "istioRoute": false
+  }
+}

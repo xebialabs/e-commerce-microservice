@@ -15,66 +15,66 @@ export default class NotificationUpdatePage {
     return this.pageTitle;
   }
 
-  setDateInput(date) {
-    this.dateInput.sendKeys(date);
+  async setDateInput(date) {
+    await this.dateInput.sendKeys(date);
   }
 
-  getDateInput() {
+  async getDateInput() {
     return this.dateInput.getAttribute('value');
   }
 
-  setDetailsInput(details) {
-    this.detailsInput.sendKeys(details);
+  async setDetailsInput(details) {
+    await this.detailsInput.sendKeys(details);
   }
 
-  getDetailsInput() {
+  async getDetailsInput() {
     return this.detailsInput.getAttribute('value');
   }
 
-  setSentDateInput(sentDate) {
-    this.sentDateInput.sendKeys(sentDate);
+  async setSentDateInput(sentDate) {
+    await this.sentDateInput.sendKeys(sentDate);
   }
 
-  getSentDateInput() {
+  async getSentDateInput() {
     return this.sentDateInput.getAttribute('value');
   }
 
-  setFormatSelect(format) {
-    this.formatSelect.sendKeys(format);
+  async setFormatSelect(format) {
+    await this.formatSelect.sendKeys(format);
   }
 
-  getFormatSelect() {
+  async getFormatSelect() {
     return this.formatSelect.element(by.css('option:checked')).getText();
   }
 
-  formatSelectLastOption() {
-    this.formatSelect
+  async formatSelectLastOption() {
+    await this.formatSelect
       .all(by.tagName('option'))
       .last()
       .click();
   }
-  setUserIdInput(userId) {
-    this.userIdInput.sendKeys(userId);
+  async setUserIdInput(userId) {
+    await this.userIdInput.sendKeys(userId);
   }
 
-  getUserIdInput() {
+  async getUserIdInput() {
     return this.userIdInput.getAttribute('value');
   }
 
-  setProductIdInput(productId) {
-    this.productIdInput.sendKeys(productId);
+  async setProductIdInput(productId) {
+    await this.productIdInput.sendKeys(productId);
   }
 
-  getProductIdInput() {
+  async getProductIdInput() {
     return this.productIdInput.getAttribute('value');
   }
 
-  save() {
-    return this.saveButton.click();
+  async save() {
+    await this.saveButton.click();
   }
 
-  cancel() {
-    this.cancelButton.click();
+  async cancel() {
+    await this.cancelButton.click();
   }
 
   getSaveButton() {

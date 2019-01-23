@@ -3,7 +3,7 @@
 // Import Bootstrap source files from node_modules
 @import 'node_modules/bootstrap/scss/bootstrap';
 body {
-  background: green;
+  background: #fafafa;
   margin: 0;
 }
 
@@ -87,7 +87,7 @@ Custom button styles
 Generic styles
 ========================================================================== */
 
-/* Temperory workaround for availity-reactstrap-validation */
+/* Temporary workaround for availity-reactstrap-validation */
 .invalid-feedback {
   display: inline;
 }
@@ -308,6 +308,11 @@ http://stackoverflow.com/questions/23436430/bootstrap-3-input-group-100-width */
 
 .width-min {
   width: 1% !important;
+}
+
+// Fix checkbox alignment https://github.com/jhipster/generator-jhipster/issues/8463
+.form-check-input {
+  margin-top: -0.5rem;
 }
 
 /* jhipster-needle-css-add-main JHipster will add new css style */

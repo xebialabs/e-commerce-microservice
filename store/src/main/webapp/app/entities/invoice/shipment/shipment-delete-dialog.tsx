@@ -9,7 +9,7 @@ import { IShipment } from 'app/shared/model/invoice/shipment.model';
 import { IRootState } from 'app/shared/reducers';
 import { getEntity, deleteEntity } from './shipment.reducer';
 
-export interface IShipmentDeleteDialogProps extends StateProps, DispatchProps, RouteComponentProps<{ id: number }> {}
+export interface IShipmentDeleteDialogProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export class ShipmentDeleteDialog extends React.Component<IShipmentDeleteDialogProps> {
   componentDidMount() {

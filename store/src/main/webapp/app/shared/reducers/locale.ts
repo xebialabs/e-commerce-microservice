@@ -17,7 +17,6 @@ export default (state: LocaleState = initialState, action): LocaleState => {
     case ACTION_TYPES.SET_LOCALE:
       const currentLocale = action.locale;
       if (state.currentLocale !== currentLocale) {
-        Storage.session.set('locale', currentLocale);
         TranslatorContext.setLocale(currentLocale);
       }
       return {
@@ -30,7 +29,7 @@ export default (state: LocaleState = initialState, action): LocaleState => {
 
 export const setLocale = locale => async dispatch => {
   if (!Object.keys(TranslatorContext.context.translations).includes(locale)) {
-    const response = await axios.get(`i18n/${locale}.json?buildTimestamp=${process.env.BUILD_TIMESTAMP}`);
+    const response = await axios.get(`i18n/${locale}.json?buildTimestamp=${process.env.BUILD_TIMESTAMP}`, { baseURL: '' });
     TranslatorContext.registerTranslations(locale, response.data);
   }
   dispatch({

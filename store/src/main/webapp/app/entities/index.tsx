@@ -9,9 +9,9 @@ import ProductCategory from './product-category';
 import Customer from './customer';
 import ProductOrder from './product-order';
 import OrderItem from './order-item';
-import Notification from './notification/notification';
 import Invoice from './invoice/invoice';
 import Shipment from './invoice/shipment';
+import Notification from './notification/notification';
 /* jhipster-needle-add-route-import - JHipster will add routes here */
 
 const Routes = ({ match }) => (
@@ -23,9 +23,9 @@ const Routes = ({ match }) => (
       <ErrorBoundaryRoute path={`${match.url}/customer`} component={Customer} />
       <ErrorBoundaryRoute path={`${match.url}/product-order`} component={ProductOrder} />
       <ErrorBoundaryRoute path={`${match.url}/order-item`} component={OrderItem} />
-      <ErrorBoundaryRoute path={`${match.url}/notification`} component={Notification} />
       <ErrorBoundaryRoute path={`${match.url}/invoice`} component={Invoice} />
       <ErrorBoundaryRoute path={`${match.url}/shipment`} component={Shipment} />
+      <ErrorBoundaryRoute path={`${match.url}/notification`} component={Notification} />
       {/* jhipster-needle-add-route-path - JHipster will routes here */}
     </Switch>
   </div>

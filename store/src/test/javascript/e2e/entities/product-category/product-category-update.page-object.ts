@@ -11,28 +11,28 @@ export default class ProductCategoryUpdatePage {
     return this.pageTitle;
   }
 
-  setNameInput(name) {
-    this.nameInput.sendKeys(name);
+  async setNameInput(name) {
+    await this.nameInput.sendKeys(name);
   }
 
-  getNameInput() {
+  async getNameInput() {
     return this.nameInput.getAttribute('value');
   }
 
-  setDescriptionInput(description) {
-    this.descriptionInput.sendKeys(description);
+  async setDescriptionInput(description) {
+    await this.descriptionInput.sendKeys(description);
   }
 
-  getDescriptionInput() {
+  async getDescriptionInput() {
     return this.descriptionInput.getAttribute('value');
   }
 
-  save() {
-    return this.saveButton.click();
+  async save() {
+    await this.saveButton.click();
   }
 
-  cancel() {
-    this.cancelButton.click();
+  async cancel() {
+    await this.cancelButton.click();
   }
 
   getSaveButton() {

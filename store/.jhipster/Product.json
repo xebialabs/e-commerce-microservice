@@ -43,7 +43,7 @@
             "otherEntityField": "name"
         }
     ],
-    "changelogDate": "20180912102127",
+    "changelogDate": "20190123145718",
     "javadoc": "Product sold by the Online store",
     "entityTableName": "product",
     "dto": "no",
@@ -52,5 +52,7 @@
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,
     "clientRootFolder": "",
-    "applications": "*"
+    "applications": [
+        "store"
+    ]
 }

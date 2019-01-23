@@ -14,7 +14,7 @@ import { IProductCategory } from 'app/shared/model/product-category.model';
 import { convertDateTimeFromServer } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
 
-export interface IProductCategoryUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: number }> {}
+export interface IProductCategoryUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export interface IProductCategoryUpdateState {
   isNew: boolean;
@@ -26,6 +26,12 @@ export class ProductCategoryUpdate extends React.Component<IProductCategoryUpdat
     this.state = {
       isNew: !this.props.match.params || !this.props.match.params.id
     };
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    if (nextProps.updateSuccess !== this.props.updateSuccess && nextProps.updateSuccess) {
+      this.handleClose();
+    }
   }
 
   componentDidMount() {
@@ -49,7 +55,6 @@ export class ProductCategoryUpdate extends React.Component<IProductCategoryUpdat
       } else {
         this.props.updateEntity(entity);
       }
-      this.handleClose();
     }
   };
 
@@ -126,7 +131,8 @@ export class ProductCategoryUpdate extends React.Component<IProductCategoryUpdat
 const mapStateToProps = (storeState: IRootState) => ({
   productCategoryEntity: storeState.productCategory.entity,
   loading: storeState.productCategory.loading,
-  updating: storeState.productCategory.updating
+  updating: storeState.productCategory.updating,
+  updateSuccess: storeState.productCategory.updateSuccess
 });
 
 const mapDispatchToProps = {

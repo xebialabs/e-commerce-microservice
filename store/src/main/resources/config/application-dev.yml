@@ -29,14 +29,18 @@ eureka:
 spring:
     profiles:
         active: dev
-        include: swagger
+        include:
+            - swagger
+            # Uncomment to activate TLS for the dev profile
+            #- tls
     devtools:
         restart:
             enabled: true
         livereload:
             enabled: false # we use Webpack dev server + BrowserSync for livereload
     jackson:
-        serialization.indent_output: true
+        serialization:
+            indent-output: true
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
         url: jdbc:h2:file:./build/h2db/db/store;DB_CLOSE_DELAY=-1
@@ -72,6 +76,9 @@ spring:
         cache-duration: PT1S # 1 second, see the ISO 8601 standard
     thymeleaf:
         cache: false
+    sleuth:
+        sampler:
+            probability: 1 # report 100% of traces
     zipkin: # Use the "zipkin" Maven profile to have the Spring Cloud Zipkin dependencies
         base-url: http://localhost:9411
         enabled: false
@@ -79,22 +86,8 @@ spring:
             discovery:
                 enabled: true
 
-# ===================================================================
-# To enable SSL in development, uncomment the the "server.ssl" properties below.
-#
-# JHipster has generated a self-signed certificate, which will be used to encrypt traffic.
-# As your browser will not understand this certificate, you will need to import it.
-#
-# Another (easiest) solution with Chrome is to enable the "allow-insecure-localhost" flag
-# at chrome://flags/#allow-insecure-localhost
-# ===================================================================
 server:
     port: 8080
-#    ssl:
-#        key-store: classpath:config/tls/keystore.p12
-#        key-store-password: password
-#        key-store-type: PKCS12
-#        key-alias: selfsigned
 
 # ===================================================================
 # JHipster specific properties
@@ -111,7 +104,7 @@ jhipster:
         authorized-microservices-endpoints: # Access Control Policy, if left empty for a route, all endpoints will be accessible
             app1: /api,/v2/api-docs # recommended dev configuration
     http:
-        version: V_1_1 # To use HTTP/2 you will need SSL support (see above the "server.ssl" configuration)
+        version: V_1_1 # To use HTTP/2 you will need to activate TLS (see application-tls.yml)
     cache: # Cache configuration
         hazelcast: # Hazelcast distributed cache
             time-to-live-seconds: 3600
@@ -132,7 +125,7 @@ jhipster:
         authentication:
             jwt:
                 # This token must be encoded using Base64 (you can type `echo 'secret-key'|base64` on your command line)
-                base64-secret: MTU0MzNkYjY0N2Y5Y2U5Y2IxOGE1YjZiYTVjMGQ1YjVhOWI5ZTY5NjA0ZjgwYTkzMWVkYmJiNTY1ZjljNmEwNjFiNmU5Y2Q3ZTMxMTkzOGI3MTFiZjhkZmM1OTRhNmZlNDNjODI2MzQxMDAxNDkyZDA1MjliOTEyZThhZjZjZjM=
+                base64-secret: MThhNWFjZDkxYjBkNTVhM2Y5NzJhMDgzZjY2YTllY2ZkZmQ0OWEyM2JjZTk0ODA2Y2JjODgyODJmNTRkZDllMWJjZmRlMWRjOTM3YjQ1YzFjNzM1ZGEwMTZkMGJkMTExMGNlMTMxMGFmYzUzNzA3ODA4Mzc0ZDI2MzhiZjhiYjg=
                 # Token is valid 24 hours
                 token-validity-in-seconds: 86400
                 token-validity-in-seconds-for-remember-me: 2592000
@@ -142,6 +135,8 @@ jhipster:
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
         jmx:
             enabled: true
+        prometheus:
+            enabled: false #expose metrics via prometheus
         logs: # Reports Dropwizard metrics in the logs
             enabled: false
             report-frequency: 60 # in seconds

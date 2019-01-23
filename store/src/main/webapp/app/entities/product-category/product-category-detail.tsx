@@ -12,7 +12,7 @@ import { IProductCategory } from 'app/shared/model/product-category.model';
 // tslint:disable-next-line:no-unused-variable
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 
-export interface IProductCategoryDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: number }> {}
+export interface IProductCategoryDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export class ProductCategoryDetail extends React.Component<IProductCategoryDetailProps> {
   componentDidMount() {

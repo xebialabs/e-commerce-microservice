@@ -1,0 +1,30 @@
+{
+  "storeApp": {
+    "notificationNotification": {
+      "home": {
+        "title": "Notifications",
+        "createLabel": "Créer un nouveau Notification",
+        "createOrEditLabel": "Créer ou éditer un Notification"
+      },
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Notification {{ id }} ?"
+      },
+      "detail": {
+        "title": "Notification"
+      },
+      "date": "Date",
+      "details": "Details",
+      "sentDate": "Sent Date",
+      "format": "Format",
+      "userId": "User Id",
+      "productId": "Product Id"
+    }
+  },
+  "notificationApp": {
+    "notificationNotification": {
+      "created": "Un nouveau Notification a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Notification avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Notification avec l'identifiant {{ param }} a été supprimé"
+    }
+  }
+}

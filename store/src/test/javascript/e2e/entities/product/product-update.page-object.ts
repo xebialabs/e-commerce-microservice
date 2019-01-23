@@ -15,77 +15,77 @@ export default class ProductUpdatePage {
     return this.pageTitle;
   }
 
-  setNameInput(name) {
-    this.nameInput.sendKeys(name);
+  async setNameInput(name) {
+    await this.nameInput.sendKeys(name);
   }
 
-  getNameInput() {
+  async getNameInput() {
     return this.nameInput.getAttribute('value');
   }
 
-  setDescriptionInput(description) {
-    this.descriptionInput.sendKeys(description);
+  async setDescriptionInput(description) {
+    await this.descriptionInput.sendKeys(description);
   }
 
-  getDescriptionInput() {
+  async getDescriptionInput() {
     return this.descriptionInput.getAttribute('value');
   }
 
-  setPriceInput(price) {
-    this.priceInput.sendKeys(price);
+  async setPriceInput(price) {
+    await this.priceInput.sendKeys(price);
   }
 
-  getPriceInput() {
+  async getPriceInput() {
     return this.priceInput.getAttribute('value');
   }
 
-  setSizeSelect(size) {
-    this.sizeSelect.sendKeys(size);
+  async setSizeSelect(size) {
+    await this.sizeSelect.sendKeys(size);
   }
 
-  getSizeSelect() {
+  async getSizeSelect() {
     return this.sizeSelect.element(by.css('option:checked')).getText();
   }
 
-  sizeSelectLastOption() {
-    this.sizeSelect
+  async sizeSelectLastOption() {
+    await this.sizeSelect
       .all(by.tagName('option'))
       .last()
       .click();
   }
-  setImageInput(image) {
-    this.imageInput.sendKeys(image);
+  async setImageInput(image) {
+    await this.imageInput.sendKeys(image);
   }
 
-  getImageInput() {
+  async getImageInput() {
     return this.imageInput.getAttribute('value');
   }
 
-  productCategorySelectLastOption() {
-    this.productCategorySelect
+  async productCategorySelectLastOption() {
+    await this.productCategorySelect
       .all(by.tagName('option'))
       .last()
       .click();
   }
 
-  productCategorySelectOption(option) {
-    this.productCategorySelect.sendKeys(option);
+  async productCategorySelectOption(option) {
+    await this.productCategorySelect.sendKeys(option);
   }
 
   getProductCategorySelect() {
     return this.productCategorySelect;
   }
 
-  getProductCategorySelectedOption() {
+  async getProductCategorySelectedOption() {
     return this.productCategorySelect.element(by.css('option:checked')).getText();
   }
 
-  save() {
-    return this.saveButton.click();
+  async save() {
+    await this.saveButton.click();
   }
 
-  cancel() {
-    this.cancelButton.click();
+  async cancel() {
+    await this.cancelButton.click();
   }
 
   getSaveButton() {

@@ -9,7 +9,7 @@ import { INotification } from 'app/shared/model/notification/notification.model'
 import { IRootState } from 'app/shared/reducers';
 import { getEntity, deleteEntity } from './notification.reducer';
 
-export interface INotificationDeleteDialogProps extends StateProps, DispatchProps, RouteComponentProps<{ id: number }> {}
+export interface INotificationDeleteDialogProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export class NotificationDeleteDialog extends React.Component<INotificationDeleteDialogProps> {
   componentDidMount() {

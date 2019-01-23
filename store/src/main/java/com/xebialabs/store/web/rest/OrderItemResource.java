@@ -94,7 +94,7 @@ public class OrderItemResource {
         log.debug("REST request to get a page of OrderItems");
         Page<OrderItem> page = orderItemService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/order-items");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**

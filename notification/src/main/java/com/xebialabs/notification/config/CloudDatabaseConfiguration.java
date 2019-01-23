@@ -24,6 +24,7 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Configuration
 @EnableMongoRepositories("com.xebialabs.notification.repository")
 @Profile(JHipsterConstants.SPRING_PROFILE_CLOUD)

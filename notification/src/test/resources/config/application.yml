@@ -43,10 +43,6 @@ server:
     port: 10344
     address: localhost
 
-info:
-    project:
-        version: #project.version#
-
 # ===================================================================
 # JHipster specific properties
 #
@@ -69,7 +65,7 @@ jhipster:
         authentication:
             jwt:
                 # This token must be encoded using Base64 (you can type `echo 'secret-key'|base64` on your command line)
-                base64-secret: NTdlMTRhNzU4YTQ5MDQ0NDczMjJiZjVkM2UwNWI3N2VkZWNiMWI5YzlhZWQyYzlhZGI1Yzk3MDZkZDA2MGIwOWJjNmQxMTYwOWZkM2Y0MzgwYjc4YzIxOWFmNWU1NDBiOTUzMzZkNTNmYmNlMTkzY2RlNjA2Y2JjZWNlMzUwNTc=
+                base64-secret: ZjFiMzA2MWVjMjI5Y2RhNDMzYzQ4MjlmOTZiNjcyNDdmMDI1ZGZmYmJkMGRmODllNmJlNWJkMjU5NGQ2YTMwZmY2NTQyZmY3M2I2NjM1NWJlMzNkNzkzZTkwZjY1MWE2MTBjODg0ZWU3MzA0ZTZjODFmZWYwM2RjNGY4MjNmZWQ=
                 # Token is valid 24 hours
                 token-validity-in-seconds: 86400
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration

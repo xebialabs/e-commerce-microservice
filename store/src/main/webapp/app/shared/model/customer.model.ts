@@ -1,4 +1,4 @@
-import { IUser } from './user.model';
+import { IUser } from 'app/shared/model/user.model';
 import { IProductOrder } from 'app/shared/model//product-order.model';
 
 export const enum Gender {

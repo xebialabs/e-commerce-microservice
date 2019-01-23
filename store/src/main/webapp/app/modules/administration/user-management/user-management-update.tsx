@@ -22,7 +22,11 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
   };
 
   componentDidMount() {
-    !this.state.isNew && this.props.getUser(this.props.match.params.login);
+    if (this.state.isNew) {
+      this.props.reset();
+    } else {
+      this.props.getUser(this.props.match.params.login);
+    }
     this.props.getRoles();
   }
 
@@ -46,7 +50,6 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
   render() {
     const isInvalid = false;
     const { user, loading, updating, roles } = this.props;
-    const { isNew } = this.state;
     return (
       <div>
         <Row className="justify-content-center">

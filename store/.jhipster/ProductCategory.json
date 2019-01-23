@@ -21,7 +21,7 @@
             "otherEntityRelationshipName": "productCategory"
         }
     ],
-    "changelogDate": "20180912102128",
+    "changelogDate": "20190123145719",
     "entityTableName": "product_category",
     "dto": "no",
     "pagination": "no",
@@ -29,5 +29,7 @@
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,
     "clientRootFolder": "",
-    "applications": "*"
+    "applications": [
+        "store"
+    ]
 }

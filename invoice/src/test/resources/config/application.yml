@@ -50,6 +50,7 @@ spring:
             hibernate.cache.use_query_cache: false
             hibernate.generate_statistics: true
             hibernate.hbm2ddl.auto: validate
+            hibernate.jdbc.time_zone: UTC
     liquibase:
         contexts: test
     mail:
@@ -66,10 +67,6 @@ spring:
 server:
     port: 10344
     address: localhost
-
-info:
-    project:
-        version: #project.version#
 
 # ===================================================================
 # JHipster specific properties
@@ -93,7 +90,7 @@ jhipster:
         authentication:
             jwt:
                 # This token must be encoded using Base64 (you can type `echo 'secret-key'|base64` on your command line)
-                base64-secret: ZTk4MjZjYjg5ODE0NTJlODFiNTlmOTJmZWNkNmY0MTFhYTQ3M2IxYzFkNTMyYmI3MTg0MWNlNDdkYjFlZTAwNzQ2NTBjZGJlZjkyMjYzODhjNWMxY2NiMDEwYTQ5MDM3Y2Y2NTAzOGRhZmFkNDYzZjcyMDIxZDA4ZDEyMzE0ZGQ=
+                base64-secret: ZTk4ZDVjMTU1NDc2MWMyN2FjZDNlMzJiNjcxYmNiY2UzMWRiNzRjZTFhODJiNTg5Zjg2YzEyMGFkZmRiNzBhZmU4NzkxY2JhMzEzMGI2ZmNjZWMxODYzNTcyOTI5ZmFkZDA5ZmU2NTgwOGQ5MDdiYWQ4OTRlYjNjM2EzZjU1Y2Q=
                 # Token is valid 24 hours
                 token-validity-in-seconds: 86400
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration

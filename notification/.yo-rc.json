@@ -1,38 +1,38 @@
 {
   "generator-jhipster": {
-    "applicationType": "microservice",
-    "authenticationType": "jwt",
-    "baseName": "notification",
-    "buildTool": "gradle",
-    "cacheProvider": "no",
-    "clientPackageManager": "npm",
     "databaseType": "mongodb",
     "devDatabaseType": "mongodb",
     "enableHibernateCache": false,
     "enableSwaggerCodegen": false,
     "enableTranslation": true,
     "jhiPrefix": "jhi",
-    "jhipsterVersion": "5.3.1",
-    "jwtSecretKey": "NTdlMTRhNzU4YTQ5MDQ0NDczMjJiZjVkM2UwNWI3N2VkZWNiMWI5YzlhZWQyYzlhZGI1Yzk3MDZkZDA2MGIwOWJjNmQxMTYwOWZkM2Y0MzgwYjc4YzIxOWFmNWU1NDBiOTUzMzZkNTNmYmNlMTkzY2RlNjA2Y2JjZWNlMzUwNTc=",
     "languages": [
       "en",
-      "nl"
+      "fr"
     ],
     "messageBroker": false,
     "nativeLanguage": "en",
-    "packageFolder": "com/xebialabs/notification",
     "packageName": "com.xebialabs.notification",
+    "packageFolder": "com/xebialabs/notification",
     "prodDatabaseType": "mongodb",
-    "promptValues": {
-      "nativeLanguage": "en",
-      "packageName": "com.xebialabs.notification"
-    },
     "searchEngine": false,
-    "serverPort": "8082",
     "serviceDiscoveryType": "eureka",
     "skipClient": true,
-    "skipUserManagement": true,
     "testFrameworks": [],
-    "websocket": false
-  }
+    "websocket": false,
+    "baseName": "notification",
+    "applicationType": "microservice",
+    "authenticationType": "jwt",
+    "cacheProvider": "no",
+    "buildTool": "gradle",
+    "serverPort": "8082",
+    "skipUserManagement": true,
+    "jhipsterVersion": "5.7.0",
+    "clientPackageManager": "npm",
+    "jwtSecretKey": "ZjFiMzA2MWVjMjI5Y2RhNDMzYzQ4MjlmOTZiNjcyNDdmMDI1ZGZmYmJkMGRmODllNmJlNWJkMjU5NGQ2YTMwZmY2NTQyZmY3M2I2NjM1NWJlMzNkNzkzZTkwZjY1MWE2MTBjODg0ZWU3MzA0ZTZjODFmZWYwM2RjNGY4MjNmZWQ=",
+    "otherModules": []
+  },
+  "entities": [
+    "Notification"
+  ]
 }

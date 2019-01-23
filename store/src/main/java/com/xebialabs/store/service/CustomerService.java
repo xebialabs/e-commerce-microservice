@@ -10,8 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import java.util.Optional;
+
 /**
  * Service Implementation for managing Customer.
  */
@@ -34,7 +34,8 @@ public class CustomerService {
      * @return the persisted entity
      */
     public Customer save(Customer customer) {
-        log.debug("Request to save Customer : {}", customer);        return customerRepository.save(customer);
+        log.debug("Request to save Customer : {}", customer);
+        return customerRepository.save(customer);
     }
 
     /**

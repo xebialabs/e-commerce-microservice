@@ -19,109 +19,109 @@ export default class CustomerUpdatePage {
     return this.pageTitle;
   }
 
-  setFirstNameInput(firstName) {
-    this.firstNameInput.sendKeys(firstName);
+  async setFirstNameInput(firstName) {
+    await this.firstNameInput.sendKeys(firstName);
   }
 
-  getFirstNameInput() {
+  async getFirstNameInput() {
     return this.firstNameInput.getAttribute('value');
   }
 
-  setLastNameInput(lastName) {
-    this.lastNameInput.sendKeys(lastName);
+  async setLastNameInput(lastName) {
+    await this.lastNameInput.sendKeys(lastName);
   }
 
-  getLastNameInput() {
+  async getLastNameInput() {
     return this.lastNameInput.getAttribute('value');
   }
 
-  setGenderSelect(gender) {
-    this.genderSelect.sendKeys(gender);
+  async setGenderSelect(gender) {
+    await this.genderSelect.sendKeys(gender);
   }
 
-  getGenderSelect() {
+  async getGenderSelect() {
     return this.genderSelect.element(by.css('option:checked')).getText();
   }
 
-  genderSelectLastOption() {
-    this.genderSelect
+  async genderSelectLastOption() {
+    await this.genderSelect
       .all(by.tagName('option'))
       .last()
       .click();
   }
-  setEmailInput(email) {
-    this.emailInput.sendKeys(email);
+  async setEmailInput(email) {
+    await this.emailInput.sendKeys(email);
   }
 
-  getEmailInput() {
+  async getEmailInput() {
     return this.emailInput.getAttribute('value');
   }
 
-  setPhoneInput(phone) {
-    this.phoneInput.sendKeys(phone);
+  async setPhoneInput(phone) {
+    await this.phoneInput.sendKeys(phone);
   }
 
-  getPhoneInput() {
+  async getPhoneInput() {
     return this.phoneInput.getAttribute('value');
   }
 
-  setAddressLine1Input(addressLine1) {
-    this.addressLine1Input.sendKeys(addressLine1);
+  async setAddressLine1Input(addressLine1) {
+    await this.addressLine1Input.sendKeys(addressLine1);
   }
 
-  getAddressLine1Input() {
+  async getAddressLine1Input() {
     return this.addressLine1Input.getAttribute('value');
   }
 
-  setAddressLine2Input(addressLine2) {
-    this.addressLine2Input.sendKeys(addressLine2);
+  async setAddressLine2Input(addressLine2) {
+    await this.addressLine2Input.sendKeys(addressLine2);
   }
 
-  getAddressLine2Input() {
+  async getAddressLine2Input() {
     return this.addressLine2Input.getAttribute('value');
   }
 
-  setCityInput(city) {
-    this.cityInput.sendKeys(city);
+  async setCityInput(city) {
+    await this.cityInput.sendKeys(city);
   }
 
-  getCityInput() {
+  async getCityInput() {
     return this.cityInput.getAttribute('value');
   }
 
-  setCountryInput(country) {
-    this.countryInput.sendKeys(country);
+  async setCountryInput(country) {
+    await this.countryInput.sendKeys(country);
   }
 
-  getCountryInput() {
+  async getCountryInput() {
     return this.countryInput.getAttribute('value');
   }
 
-  userSelectLastOption() {
-    this.userSelect
+  async userSelectLastOption() {
+    await this.userSelect
       .all(by.tagName('option'))
       .last()
       .click();
   }
 
-  userSelectOption(option) {
-    this.userSelect.sendKeys(option);
+  async userSelectOption(option) {
+    await this.userSelect.sendKeys(option);
   }
 
   getUserSelect() {
     return this.userSelect;
   }
 
-  getUserSelectedOption() {
+  async getUserSelectedOption() {
     return this.userSelect.element(by.css('option:checked')).getText();
   }
 
-  save() {
-    return this.saveButton.click();
+  async save() {
+    await this.saveButton.click();
   }
 
-  cancel() {
-    this.cancelButton.click();
+  async cancel() {
+    await this.cancelButton.click();
   }
 
   getSaveButton() {

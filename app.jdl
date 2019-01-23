@@ -172,3 +172,14 @@ enum NotificationType {
 }
 
 microservice Notification with notification
+
+
+deployment {
+  deploymentType kubernetes
+  appsFolders [store, invoice, notification]
+  serviceDiscoveryType eureka
+  dockerRepositoryName "xebialabsunsupported"
+  kubernetesNamespace xl-demo
+  kubernetesServiceType LoadBalancer
+  gatewayType zuul
+}

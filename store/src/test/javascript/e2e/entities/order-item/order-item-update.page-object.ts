@@ -14,80 +14,80 @@ export default class OrderItemUpdatePage {
     return this.pageTitle;
   }
 
-  setQuantityInput(quantity) {
-    this.quantityInput.sendKeys(quantity);
+  async setQuantityInput(quantity) {
+    await this.quantityInput.sendKeys(quantity);
   }
 
-  getQuantityInput() {
+  async getQuantityInput() {
     return this.quantityInput.getAttribute('value');
   }
 
-  setTotalPriceInput(totalPrice) {
-    this.totalPriceInput.sendKeys(totalPrice);
+  async setTotalPriceInput(totalPrice) {
+    await this.totalPriceInput.sendKeys(totalPrice);
   }
 
-  getTotalPriceInput() {
+  async getTotalPriceInput() {
     return this.totalPriceInput.getAttribute('value');
   }
 
-  setStatusSelect(status) {
-    this.statusSelect.sendKeys(status);
+  async setStatusSelect(status) {
+    await this.statusSelect.sendKeys(status);
   }
 
-  getStatusSelect() {
+  async getStatusSelect() {
     return this.statusSelect.element(by.css('option:checked')).getText();
   }
 
-  statusSelectLastOption() {
-    this.statusSelect
+  async statusSelectLastOption() {
+    await this.statusSelect
       .all(by.tagName('option'))
       .last()
       .click();
   }
-  productSelectLastOption() {
-    this.productSelect
+  async productSelectLastOption() {
+    await this.productSelect
       .all(by.tagName('option'))
       .last()
       .click();
   }
 
-  productSelectOption(option) {
-    this.productSelect.sendKeys(option);
+  async productSelectOption(option) {
+    await this.productSelect.sendKeys(option);
   }
 
   getProductSelect() {
     return this.productSelect;
   }
 
-  getProductSelectedOption() {
+  async getProductSelectedOption() {
     return this.productSelect.element(by.css('option:checked')).getText();
   }
 
-  orderSelectLastOption() {
-    this.orderSelect
+  async orderSelectLastOption() {
+    await this.orderSelect
       .all(by.tagName('option'))
       .last()
       .click();
   }
 
-  orderSelectOption(option) {
-    this.orderSelect.sendKeys(option);
+  async orderSelectOption(option) {
+    await this.orderSelect.sendKeys(option);
   }
 
   getOrderSelect() {
     return this.orderSelect;
   }
 
-  getOrderSelectedOption() {
+  async getOrderSelectedOption() {
     return this.orderSelect.element(by.css('option:checked')).getText();
   }
 
-  save() {
-    return this.saveButton.click();
+  async save() {
+    await this.saveButton.click();
   }
 
-  cancel() {
-    this.cancelButton.click();
+  async cancel() {
+    await this.cancelButton.click();
   }
 
   getSaveButton() {

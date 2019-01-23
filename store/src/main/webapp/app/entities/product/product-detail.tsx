@@ -12,7 +12,7 @@ import { IProduct } from 'app/shared/model/product.model';
 // tslint:disable-next-line:no-unused-variable
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 
-export interface IProductDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: number }> {}
+export interface IProductDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export class ProductDetail extends React.Component<IProductDetailProps> {
   componentDidMount() {

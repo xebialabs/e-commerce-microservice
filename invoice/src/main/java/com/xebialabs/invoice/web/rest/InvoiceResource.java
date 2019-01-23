@@ -94,7 +94,7 @@ public class InvoiceResource {
         log.debug("REST request to get a page of Invoices");
         Page<Invoice> page = invoiceService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/invoices");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**

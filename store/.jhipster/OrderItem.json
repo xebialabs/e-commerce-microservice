@@ -44,7 +44,7 @@
             "otherEntityField": "code"
         }
     ],
-    "changelogDate": "20180912102131",
+    "changelogDate": "20190123145722",
     "entityTableName": "order_item",
     "dto": "no",
     "pagination": "pagination",
@@ -52,5 +52,7 @@
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,
     "clientRootFolder": "",
-    "applications": "*"
+    "applications": [
+        "store"
+    ]
 }

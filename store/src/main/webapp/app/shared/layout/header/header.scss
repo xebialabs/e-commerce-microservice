@@ -86,19 +86,18 @@ Navbar styles
     text-decoration: none;
   }
   .brand-icon {
+    height: 35px;
     width: auto;
     display: inline-block;
-    margin-right: 10px;
     img {
-      height: 40px;
+      height: 45px;
     }
   }
 }
 
 .brand-title {
   font-size: 24px;
-  color: #0faee9;
-  margin-top: 3px;
+  color: $header-color;
   &:hover {
     color: $header-color-hover;
     text-decoration: none;

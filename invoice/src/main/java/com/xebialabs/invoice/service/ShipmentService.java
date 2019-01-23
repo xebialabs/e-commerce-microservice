@@ -10,8 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import java.util.Optional;
+
 /**
  * Service Implementation for managing Shipment.
  */
@@ -34,7 +34,8 @@ public class ShipmentService {
      * @return the persisted entity
      */
     public Shipment save(Shipment shipment) {
-        log.debug("Request to save Shipment : {}", shipment);        return shipmentRepository.save(shipment);
+        log.debug("Request to save Shipment : {}", shipment);
+        return shipmentRepository.save(shipment);
     }
 
     /**

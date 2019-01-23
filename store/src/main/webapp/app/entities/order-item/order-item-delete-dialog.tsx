@@ -9,7 +9,7 @@ import { IOrderItem } from 'app/shared/model/order-item.model';
 import { IRootState } from 'app/shared/reducers';
 import { getEntity, deleteEntity } from './order-item.reducer';
 
-export interface IOrderItemDeleteDialogProps extends StateProps, DispatchProps, RouteComponentProps<{ id: number }> {}
+export interface IOrderItemDeleteDialogProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export class OrderItemDeleteDialog extends React.Component<IOrderItemDeleteDialogProps> {
   componentDidMount() {

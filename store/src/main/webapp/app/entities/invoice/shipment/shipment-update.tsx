@@ -16,20 +16,26 @@ import { IShipment } from 'app/shared/model/invoice/shipment.model';
 import { convertDateTimeFromServer } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
 
-export interface IShipmentUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: number }> {}
+export interface IShipmentUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export interface IShipmentUpdateState {
   isNew: boolean;
-  invoiceId: number;
+  invoiceId: string;
 }
 
 export class ShipmentUpdate extends React.Component<IShipmentUpdateProps, IShipmentUpdateState> {
   constructor(props) {
     super(props);
     this.state = {
-      invoiceId: 0,
+      invoiceId: '0',
       isNew: !this.props.match.params || !this.props.match.params.id
     };
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    if (nextProps.updateSuccess !== this.props.updateSuccess && nextProps.updateSuccess) {
+      this.handleClose();
+    }
   }
 
   componentDidMount() {
@@ -57,7 +63,6 @@ export class ShipmentUpdate extends React.Component<IShipmentUpdateProps, IShipm
       } else {
         this.props.updateEntity(entity);
       }
-      this.handleClose();
     }
   };
 
@@ -163,7 +168,8 @@ const mapStateToProps = (storeState: IRootState) => ({
   invoices: storeState.invoice.entities,
   shipmentEntity: storeState.shipment.entity,
   loading: storeState.shipment.loading,
-  updating: storeState.shipment.updating
+  updating: storeState.shipment.updating,
+  updateSuccess: storeState.shipment.updateSuccess
 });
 
 const mapDispatchToProps = {

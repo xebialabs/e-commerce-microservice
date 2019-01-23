@@ -12,7 +12,7 @@ import { IOrderItem } from 'app/shared/model/order-item.model';
 // tslint:disable-next-line:no-unused-variable
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 
-export interface IOrderItemDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: number }> {}
+export interface IOrderItemDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export class OrderItemDetail extends React.Component<IOrderItemDetailProps> {
   componentDidMount() {

@@ -1,40 +1,50 @@
 {
   "generator-jhipster": {
-    "applicationType": "gateway",
-    "authenticationType": "jwt",
-    "baseName": "store",
-    "buildTool": "gradle",
-    "cacheProvider": "hazelcast",
-    "clientFramework": "react",
-    "clientPackageManager": "npm",
     "databaseType": "sql",
     "devDatabaseType": "h2Disk",
     "enableHibernateCache": true,
     "enableSwaggerCodegen": false,
     "enableTranslation": true,
     "jhiPrefix": "jhi",
-    "jhipsterVersion": "5.3.1",
-    "jwtSecretKey": "MTU0MzNkYjY0N2Y5Y2U5Y2IxOGE1YjZiYTVjMGQ1YjVhOWI5ZTY5NjA0ZjgwYTkzMWVkYmJiNTY1ZjljNmEwNjFiNmU5Y2Q3ZTMxMTkzOGI3MTFiZjhkZmM1OTRhNmZlNDNjODI2MzQxMDAxNDkyZDA1MjliOTEyZThhZjZjZjM=",
     "languages": [
       "en",
-      "nl"
+      "fr"
     ],
     "messageBroker": false,
     "nativeLanguage": "en",
-    "packageFolder": "com/xebialabs/store",
     "packageName": "com.xebialabs.store",
+    "packageFolder": "com/xebialabs/store",
     "prodDatabaseType": "mysql",
-    "promptValues": {
-      "nativeLanguage": "en",
-      "packageName": "com.xebialabs.store"
-    },
     "searchEngine": false,
-    "serverPort": "8080",
     "serviceDiscoveryType": "eureka",
+    "skipClient": false,
+    "skipServer": false,
     "testFrameworks": [
       "protractor"
     ],
+    "websocket": false,
+    "baseName": "store",
+    "applicationType": "gateway",
+    "authenticationType": "jwt",
+    "cacheProvider": "hazelcast",
+    "buildTool": "gradle",
+    "clientFramework": "react",
     "useSass": true,
-    "websocket": false
-  }
+    "jhipsterVersion": "5.7.0",
+    "skipUserManagement": false,
+    "clientPackageManager": "npm",
+    "serverPort": "8080",
+    "jwtSecretKey": "MThhNWFjZDkxYjBkNTVhM2Y5NzJhMDgzZjY2YTllY2ZkZmQ0OWEyM2JjZTk0ODA2Y2JjODgyODJmNTRkZDllMWJjZmRlMWRjOTM3YjQ1YzFjNzM1ZGEwMTZkMGJkMTExMGNlMTMxMGFmYzUzNzA3ODA4Mzc0ZDI2MzhiZjhiYjg=",
+    "otherModules": []
+  },
+  "entities": [
+    "Product",
+    "ProductCategory",
+    "Customer",
+    "ProductOrder",
+    "OrderItem",
+    "Invoice",
+    "Shipment",
+    "Notification"
+  ]
 }

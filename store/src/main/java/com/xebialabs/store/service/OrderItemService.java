@@ -10,8 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import java.util.Optional;
+
 /**
  * Service Implementation for managing OrderItem.
  */
@@ -34,7 +34,8 @@ public class OrderItemService {
      * @return the persisted entity
      */
     public OrderItem save(OrderItem orderItem) {
-        log.debug("Request to save OrderItem : {}", orderItem);        return orderItemRepository.save(orderItem);
+        log.debug("Request to save OrderItem : {}", orderItem);
+        return orderItemRepository.save(orderItem);
     }
 
     /**

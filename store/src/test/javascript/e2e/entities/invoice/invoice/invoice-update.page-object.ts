@@ -16,80 +16,80 @@ export default class InvoiceUpdatePage {
     return this.pageTitle;
   }
 
-  setCodeInput(code) {
-    this.codeInput.sendKeys(code);
+  async setCodeInput(code) {
+    await this.codeInput.sendKeys(code);
   }
 
-  getCodeInput() {
+  async getCodeInput() {
     return this.codeInput.getAttribute('value');
   }
 
-  setDateInput(date) {
-    this.dateInput.sendKeys(date);
+  async setDateInput(date) {
+    await this.dateInput.sendKeys(date);
   }
 
-  getDateInput() {
+  async getDateInput() {
     return this.dateInput.getAttribute('value');
   }
 
-  setDetailsInput(details) {
-    this.detailsInput.sendKeys(details);
+  async setDetailsInput(details) {
+    await this.detailsInput.sendKeys(details);
   }
 
-  getDetailsInput() {
+  async getDetailsInput() {
     return this.detailsInput.getAttribute('value');
   }
 
-  setStatusSelect(status) {
-    this.statusSelect.sendKeys(status);
+  async setStatusSelect(status) {
+    await this.statusSelect.sendKeys(status);
   }
 
-  getStatusSelect() {
+  async getStatusSelect() {
     return this.statusSelect.element(by.css('option:checked')).getText();
   }
 
-  statusSelectLastOption() {
-    this.statusSelect
+  async statusSelectLastOption() {
+    await this.statusSelect
       .all(by.tagName('option'))
       .last()
       .click();
   }
-  setPaymentMethodSelect(paymentMethod) {
-    this.paymentMethodSelect.sendKeys(paymentMethod);
+  async setPaymentMethodSelect(paymentMethod) {
+    await this.paymentMethodSelect.sendKeys(paymentMethod);
   }
 
-  getPaymentMethodSelect() {
+  async getPaymentMethodSelect() {
     return this.paymentMethodSelect.element(by.css('option:checked')).getText();
   }
 
-  paymentMethodSelectLastOption() {
-    this.paymentMethodSelect
+  async paymentMethodSelectLastOption() {
+    await this.paymentMethodSelect
       .all(by.tagName('option'))
       .last()
       .click();
   }
-  setPaymentDateInput(paymentDate) {
-    this.paymentDateInput.sendKeys(paymentDate);
+  async setPaymentDateInput(paymentDate) {
+    await this.paymentDateInput.sendKeys(paymentDate);
   }
 
-  getPaymentDateInput() {
+  async getPaymentDateInput() {
     return this.paymentDateInput.getAttribute('value');
   }
 
-  setPaymentAmountInput(paymentAmount) {
-    this.paymentAmountInput.sendKeys(paymentAmount);
+  async setPaymentAmountInput(paymentAmount) {
+    await this.paymentAmountInput.sendKeys(paymentAmount);
   }
 
-  getPaymentAmountInput() {
+  async getPaymentAmountInput() {
     return this.paymentAmountInput.getAttribute('value');
   }
 
-  save() {
-    return this.saveButton.click();
+  async save() {
+    await this.saveButton.click();
   }
 
-  cancel() {
-    this.cancelButton.click();
+  async cancel() {
+    await this.cancelButton.click();
   }
 
   getSaveButton() {

@@ -1,4 +1,3 @@
-
 package com.xebialabs.store.gateway.responserewriting;
 
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -36,7 +36,6 @@ public class ProductCategory implements Serializable {
     @OneToMany(mappedBy = "productCategory")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Product> products = new HashSet<>();
-
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;

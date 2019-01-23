@@ -82,7 +82,7 @@
             "otherEntityRelationshipName": "customer"
         }
     ],
-    "changelogDate": "20180912102129",
+    "changelogDate": "20190123145720",
     "entityTableName": "customer",
     "dto": "no",
     "pagination": "pagination",
@@ -90,5 +90,7 @@
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,
     "clientRootFolder": "",
-    "applications": "*"
+    "applications": [
+        "store"
+    ]
 }
