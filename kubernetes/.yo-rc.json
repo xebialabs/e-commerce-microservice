@@ -18,6 +18,7 @@
     "kubernetesServiceType": "LoadBalancer",
     "ingressDomain": "",
     "istio": "no",
-    "istioRoute": false
+    "istioRoute": false,
+    "jwtSecretKey": "MzMwODA4YWVlYWVkOTgzMzE0ZDgxN2VhOGQyOGM2Y2E0M2NiY2Y0NTg2MTMzOTc1ODc1YmY1NDcwOTkzYTI1NWQ3ZDAyN2FlMWEwN2E4OWYzNGVjMjc3MWIyN2Q3YmIxYjJlOQ=="
   }
 }
