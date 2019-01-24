@@ -14,3 +14,9 @@ kubernetes/.gradle
 classes/
 out/
 account.json
+
+######################
+# Sublime Text
+######################
+e-commerce-microservice.sublime-project
+e-commerce-microservice.sublime-workspace
