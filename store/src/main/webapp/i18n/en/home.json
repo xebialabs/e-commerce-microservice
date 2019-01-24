@@ -1,13 +1,13 @@
 {
   "home": {
-    "title": "Welcome, Java Hipster!",
+    "title": "Welcome to XebiaLabs E-Commerce demo application!",
     "subtitle": "This is your homepage",
     "logged": {
       "message": "You are logged in as user \"{{username}}\"."
     },
     "question": "If you have any question on JHipster:",
     "link": {
-      "homepage": "JHipster homepage",
+      "homepage": "XebiaLabs homepage",
       "stackoverflow": "JHipster on Stack Overflow",
       "bugtracker": "JHipster bug tracker",
       "chat": "JHipster public chat room",
