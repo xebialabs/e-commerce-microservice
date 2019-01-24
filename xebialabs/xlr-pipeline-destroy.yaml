@@ -1,0 +1,71 @@
+apiVersion: xl-release/v1
+kind: Templates
+spec:
+- name: deepu-test-gke
+  type: xlrelease.Folder
+  children:
+  - name: deepu-test-gke-destroy
+    type: xlrelease.Release
+    description: |
+      This XL Release template shows how to undeploy an application, based on microservices architecture, to GCP GKE using XL Deploy and Terraform.
+    tags:
+    - GCP
+    - GKE
+    - deepu-test-gke
+    scriptUsername: !value XL_RELEASE_USERNAME
+    scriptUserPassword: !value XL_RELEASE_PASSWORD
+    phases:
+    - name: Undeploy Application
+      type: xlrelease.Phase
+      tasks:
+      - name: Undeploy stateless services
+        type: xlrelease.ParallelGroup
+        tasks:
+        - name: Undeploy registry svc
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/deepu-test-gke/gcp-terraform/deepu-test-gke-registry
+        - name: Undeploy invoice svc
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/deepu-test-gke/gcp-terraform/deepu-test-gke-invoice
+        - name: Undeploy notification svc
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/deepu-test-gke/gcp-terraform/deepu-test-gke-notification
+        - name: Undeploy store svc
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/deepu-test-gke/gcp-terraform/deepu-test-gke-store
+      - name: Undeploy stateful services
+        type: xlrelease.ParallelGroup
+        tasks:
+        - name: Undeploy invoice mysql svc
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/deepu-test-gke/gcp-terraform/deepu-test-gke-invoice-mysql
+        - name: Undeploy store mysql svc
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/deepu-test-gke/gcp-terraform/deepu-test-gke-store-mysql
+        - name: Undeploy notification mongodb svc
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/deepu-test-gke/gcp-terraform/deepu-test-gke-notification-mongodb
+      
+      # Un-provision namespace
+      - name: Undeploy xl-demo namespace
+        type: xldeploy.Undeploy
+        server: XL Deploy
+        deployedApplication: Environments/deepu-test-gke/gcp-terraform/deepu-test-gke-namespace
+      
+    
+    # De-provision Infra
+    - name: Deprovision Infrastructure
+      color: '#ff9e3b'
+      type: xlrelease.Phase
+      tasks:
+      - name: Deprovision GCP GKE cluster
+        type: xldeploy.Undeploy
+        server: XL Deploy
+        deployedApplication: Environments/deepu-test-gke/gcp-terraform/deepu-test-gke-terraform-gke

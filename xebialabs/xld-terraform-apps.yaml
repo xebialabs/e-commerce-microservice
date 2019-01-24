@@ -1,0 +1,60 @@
+apiVersion: xl-deploy/v1
+kind: Applications
+spec:
+- name: deepu-test-gke
+  type: core.Directory
+  children:
+
+# Provision GKE cluster using Terraform templates
+  - name: GKE-TERRAFORM
+    type: core.Directory
+    children:
+    - name: deepu-test-gke-terraform-gke
+      type: udm.Application
+      children:
+      - name: '1.0.0'
+        type: udm.DeploymentPackage
+        deployables:
+        - name: deepu-test-gke-gke
+          type: terraform.Module
+          file: !file ../terraform
+          inputVariables:
+            project_id: deepu-playground
+            name: deepu-test-gke
+            region: europe-west1
+            gke_master_user: admin
+            gke_master_pass: !value K8SMasterPassword
+          boundTemplates:
+          - "../gcp-gke-deepu-playground"
+        # - "../gcp-gke-deepu-playground-env"  
+
+        templates:
+        - name: gcp-gke-deepu-playground
+          type: template.k8s.Master
+          username: admin
+          password: !value K8SMasterPassword
+          apiServerURL: 'https://{{%outputVariables.endpoint%}}'
+          skipTLS: true
+          instanceName: deepu-test-gke/gcp-gke-deepu-playground
+        
+        # - name: gcp-gke-deepu-playground-env
+        #   type: template.udm.Environment
+        #   members:
+        #   - ../gcp-gke-deepu-playground
+        #   instanceName: deepu-test-gke/gcp-gke-deepu-playground
+
+
+  - name: K8S
+    type: core.Directory
+
+# Provision K8s namespace
+    children:
+    - name: deepu-test-gke-namespace
+      type: udm.Application
+      children:
+      - name: '1.0.0'
+        type: udm.DeploymentPackage
+        deployables:
+        - name: xl-demo
+          type: k8s.NamespaceSpec
+          namespaceName: 'xl-demo'
