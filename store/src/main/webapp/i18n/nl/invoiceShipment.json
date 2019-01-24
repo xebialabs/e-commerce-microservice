@@ -1,0 +1,28 @@
+{
+  "storeApp": {
+    "invoiceShipment": {
+      "home": {
+        "title": "Shipments",
+        "createLabel": "Maak een nieuwe Shipment",
+        "createOrEditLabel": "Maak of wijzig een Shipment"
+      },
+      "delete": {
+        "question": "Bent u zeker dat u Shipment {{ id }} wilt verwijderen?"
+      },
+      "detail": {
+        "title": "Shipment"
+      },
+      "trackingCode": "Tracking Code",
+      "date": "Date",
+      "details": "Details",
+      "invoice": "Invoice"
+    }
+  },
+  "invoiceApp": {
+    "invoiceShipment": {
+      "created": "A new Shipment is created with identifier {{ param }}",
+      "updated": "A Shipment is updated with identifier {{ param }}",
+      "deleted": "A Shipment is deleted with identifier {{ param }}"
+    }
+  }
+}

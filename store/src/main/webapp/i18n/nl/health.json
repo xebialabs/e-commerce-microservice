@@ -1,0 +1,32 @@
+{
+  "health": {
+    "title": "Status controle",
+    "refresh.button": "Ververs",
+    "stacktrace": "Stacktrace",
+    "details": {
+      "details": "Details",
+      "properties": "Eigenschappen",
+      "name": "Naam",
+      "value": "Waarde",
+      "error": "Fout"
+    },
+    "indicator": {
+      "discoveryComposite": "Discovery Composite",
+      "refreshScope": "Microservice Refresh Scope",
+      "configServer": "Microservice Config Server",
+      "hystrix": "Hystrix",
+      "diskSpace": "Schijfruimte",
+      "mail": "Email",
+      "db": "Databank"
+    },
+    "table": {
+      "service": "Dienstnaam",
+      "status": "Status"
+    },
+    "status": {
+      "UNKNOWN": "UNKNOWN",
+      "UP": "UP",
+      "DOWN": "DOWN"
+    }
+  }
+}
