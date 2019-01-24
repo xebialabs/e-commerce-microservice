@@ -1,7 +1,0 @@
-*.tfstate
-*.tfstate.backup
-*.tfvars
-.terraform
-tfplan
-account.json
-servive-account.json

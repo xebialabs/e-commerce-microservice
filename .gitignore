@@ -13,3 +13,4 @@ kubernetes/.gradle
 *.orig
 classes/
 out/
+account.json
