@@ -50,7 +50,7 @@ spec:
         - name: SPRING_DATA_MONGODB_DATABASE
           value: notification
         - name: SPRING_DATA_MONGODB_URI
-          value: "mongodb://notification-mongodb-0.notification-mongodb.xl-demo:27017"
+          value: "mongodb://notification-mongodb.xl-demo.svc.cluster.local:27017"
         - name: SPRING_SLEUTH_PROPAGATION_KEYS
           value: "x-request-id,x-ot-span-context"
         - name: JAVA_OPTS
