@@ -4,7 +4,7 @@ jenkins:
 
 jobs:
   - script: >
-      pipelineJob('devops-as-code-eks-blueprint-store-svc') {
+      pipelineJob('devops-as-code-blueprint-store-svc') {
           definition {
               cpsScm {
                   scm {
@@ -12,7 +12,7 @@ jobs:
                           branch("master")
                           remote {
                             credentials('github-credentials')
-                            url('https://github.com/<your-github-username>/e-commerce-microservice.git')
+                            url('https://github.com/${GITHUB_USER}/e-commerce-microservice.git')
                           }
                       }
                   }
@@ -21,7 +21,7 @@ jobs:
           }
       }
   - script: >
-      pipelineJob('devops-as-code-eks-blueprint-notification-svc') {
+      pipelineJob('devops-as-code-blueprint-notification-svc') {
           definition {
               cpsScm {
                   scm {
@@ -29,7 +29,7 @@ jobs:
                           branch("master")
                           remote {
                         	credentials('github-credentials')
-                        	url('https://github.com/<your-github-username>/e-commerce-microservice.git')
+                        	url('https://github.com/${GITHUB_USER}/e-commerce-microservice.git')
                           }
                       }
                   }
@@ -38,7 +38,7 @@ jobs:
           }
       }
   - script: >
-      pipelineJob('devops-as-code-eks-blueprint-invoice-svc') {
+      pipelineJob('devops-as-code-blueprint-invoice-svc') {
           definition {
               cpsScm {
                   scm {
@@ -46,7 +46,7 @@ jobs:
                           branch("master")
                           remote {
                           credentials('github-credentials')
-                          url('https://github.com/<your-github-username>/e-commerce-microservice.git')
+                          url('https://github.com/${GITHUB_USER}/e-commerce-microservice.git')
                           }
                       }
                   }
