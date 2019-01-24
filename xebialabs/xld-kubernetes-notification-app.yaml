@@ -1,0 +1,30 @@
+apiVersion: xl-deploy/v1
+kind: Applications
+spec:
+- name: gke-blueprint-demo
+  type: core.Directory
+  children:
+    - name: K8S
+      type: core.Directory
+      children:
+      - name: gke-blueprint-demo-notification-mongodb
+        type: udm.Application
+        children:
+        - name: 1.0.0
+          type: udm.DeploymentPackage
+          deployables:
+          - name: gke-blueprint-demo-notification-mongodb
+            type: k8s.ResourcesFile
+            file: !file ../kubernetes/notification/notification-mongodb.yml
+      - name: gke-blueprint-demo-notification
+        type: udm.Application
+        children:
+        - name: 1.0.0
+          type: udm.DeploymentPackage
+          deployables:
+          - name: gke-blueprint-demo-invoice-notification
+            type: k8s.ResourcesFile
+            file: !file ../kubernetes/notification/notification-deployment.yml
+          - name: gke-blueprint-demo-notification-svc
+            type: k8s.ResourcesFile
+            file: !file ../kubernetes/notification/notification-service.yml

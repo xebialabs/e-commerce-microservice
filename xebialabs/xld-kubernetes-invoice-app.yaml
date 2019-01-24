@@ -1,0 +1,30 @@
+apiVersion: xl-deploy/v1
+kind: Applications
+spec:
+- name: gke-blueprint-demo
+  type: core.Directory
+  children:
+    - name: K8S
+      type: core.Directory
+      children:
+      - name: gke-blueprint-demo-invoice-mysql
+        type: udm.Application
+        children:
+        - name: 1.0.0
+          type: udm.DeploymentPackage
+          deployables:
+          - name: gke-blueprint-demo-invoice-mysql
+            type: k8s.ResourcesFile
+            file: !file ../kubernetes/invoice/invoice-mysql.yml
+      - name: gke-blueprint-demo-invoice
+        type: udm.Application
+        children:
+        - name: 1.0.0
+          type: udm.DeploymentPackage
+          deployables:
+          - name: gke-blueprint-demo-invoice-deployment
+            type: k8s.ResourcesFile
+            file: !file ../kubernetes/invoice/invoice-deployment.yml
+          - name: gke-blueprint-demo-invoice-svc
+            type: k8s.ResourcesFile
+            file: !file ../kubernetes/invoice/invoice-service.yml

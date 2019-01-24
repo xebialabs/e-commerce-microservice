@@ -11,6 +11,7 @@ application {
     clientFramework react,
     useSass true,
     testFrameworks [protractor]
+    languages [en, nl]
   }
   entities *
 }

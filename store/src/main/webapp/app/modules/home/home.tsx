@@ -20,10 +20,13 @@ export class Home extends React.Component<IHomeProp> {
     const { account } = this.props;
     return (
       <Row>
-        <Col md="12">
+        <Col md="9">
           <h2>
             <Translate contentKey="home.title">Welcome, Java Hipster!</Translate>
           </h2>
+          <p className="lead">
+            <Translate contentKey="home.subtitle">This is your homepage</Translate>
+          </p>
           {account && account.login ? (
             <div>
               <Alert color="success">
@@ -31,8 +34,6 @@ export class Home extends React.Component<IHomeProp> {
                   You are logged in as user {account.login}.
                 </Translate>
               </Alert>
-              <div>Explore the application pages by visiting the menu items in header</div>
-              <br />
             </div>
           ) : (
             <div>
@@ -57,23 +58,48 @@ export class Home extends React.Component<IHomeProp> {
               </Alert>
             </div>
           )}
-        </Col>
-        <Col md="12" className="pad">
-          <span className="hipster rounded" />
-        </Col>
-        <Col md="12" className="pad">
+          <p>
+            <Translate contentKey="home.question">If you have any question on JHipster:</Translate>
+          </p>
+
           <ul>
             <li>
-              <a href="https://www.xebialabs.com/" target="_blank" rel="noopener noreferrer">
-                <Translate contentKey="home.link.homepage">XebiaLabs homepage</Translate>
+              <a href="https://www.jhipster.tech/" target="_blank" rel="noopener noreferrer">
+                <Translate contentKey="home.link.homepage">JHipster homepage</Translate>
               </a>
             </li>
             <li>
-              <a href="https://github.com/xebialabs/e-commerce-monolith" target="_blank" rel="noopener noreferrer">
-                Application source code - Monolith
+              <a href="http://stackoverflow.com/tags/jhipster/info" target="_blank" rel="noopener noreferrer">
+                <Translate contentKey="home.link.stackoverflow">JHipster on Stack Overflow</Translate>
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/jhipster/generator-jhipster/issues?state=open" target="_blank" rel="noopener noreferrer">
+                <Translate contentKey="home.link.bugtracker">JHipster bug tracker</Translate>
+              </a>
+            </li>
+            <li>
+              <a href="https://gitter.im/jhipster/generator-jhipster" target="_blank" rel="noopener noreferrer">
+                <Translate contentKey="home.link.chat">JHipster public chat room</Translate>
+              </a>
+            </li>
+            <li>
+              <a href="https://twitter.com/java_hipster" target="_blank" rel="noopener noreferrer">
+                <Translate contentKey="home.link.follow">follow @java_hipster on Twitter</Translate>
               </a>
             </li>
           </ul>
+
+          <p>
+            <Translate contentKey="home.like">If you like JHipster, do not forget to give us a star on</Translate>{' '}
+            <a href="https://github.com/jhipster/generator-jhipster" target="_blank" rel="noopener noreferrer">
+              Github
+            </a>
+            !
+          </p>
+        </Col>
+        <Col md="3" className="pad">
+          <span className="hipster rounded" />
         </Col>
       </Row>
     );
