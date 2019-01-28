@@ -35,7 +35,7 @@ node {
     stage('build docker') {
         sh "cp -R src/main/docker build/"
         sh "cp build/libs/*.war build/docker/"
-        dockerImage = docker.build('xebialabsunsupported/invoice', 'build/docker')
+        dockerImage = docker.build('${env.DOCKER_USER}/ecommerce-invoice', 'build/docker')
     }
 
     stage('publish docker') {
