@@ -34,7 +34,7 @@ spec:
                 done
       containers:
       - name: invoice-app
-        image: xebialabsunsupported/invoice
+        image: xebialabsunsupported/ecommerce-invoice
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: prod

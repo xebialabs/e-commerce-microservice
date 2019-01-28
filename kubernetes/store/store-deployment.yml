@@ -34,7 +34,7 @@ spec:
                 done
       containers:
       - name: store-app
-        image: xebialabsunsupported/store
+        image: xebialabsunsupported/ecommerce-store
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: prod

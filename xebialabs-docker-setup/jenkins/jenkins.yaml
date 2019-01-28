@@ -9,7 +9,7 @@ jobs:
               cpsScm {
                   scm {
                       git {
-                          branch("master")
+                          branch("gke-blueprint")
                           remote {
                             credentials('github-credentials')
                             url('https://github.com/${GITHUB_USER}/e-commerce-microservice.git')
@@ -26,7 +26,7 @@ jobs:
               cpsScm {
                   scm {
                       git {
-                          branch("master")
+                          branch("gke-blueprint")
                           remote {
                         	credentials('github-credentials')
                         	url('https://github.com/${GITHUB_USER}/e-commerce-microservice.git')
@@ -43,7 +43,7 @@ jobs:
               cpsScm {
                   scm {
                       git {
-                          branch("master")
+                          branch("gke-blueprint")
                           remote {
                           credentials('github-credentials')
                           url('https://github.com/${GITHUB_USER}/e-commerce-microservice.git')
