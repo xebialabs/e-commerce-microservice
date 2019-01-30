@@ -10,14 +10,14 @@ node {
     }
 
     stage('clean') {
-        sh "chmod +x gradlew"
-        sh "./gradlew clean --no-daemon"
+        sh "cd invoice && chmod +x gradlew"
+        sh "cd invoice && ./gradlew clean --no-daemon"
     }
 
 
     stage('backend tests') {
         try {
-            sh "./gradlew test -PnodeInstall --no-daemon"
+            sh "cd invoice && ./gradlew test -PnodeInstall --no-daemon"
         } catch(err) {
             throw err
         } finally {
@@ -26,16 +26,16 @@ node {
     }
 
     stage('packaging') {
-        sh "./gradlew bootWar -x test -Pprod -PnodeInstall --no-daemon"
+        sh "cd invoice && ./gradlew bootWar -x test -Pprod -PnodeInstall --no-daemon"
         archiveArtifacts artifacts: '**/build/libs/*.war', fingerprint: true
     }
 
 
     def dockerImage
     stage('build docker') {
-        sh "cp -R src/main/docker build/"
-        sh "cp build/libs/*.war build/docker/"
-        dockerImage = docker.build('${env.DOCKER_USER}/ecommerce-invoice', 'build/docker')
+        sh "cp -R invoice/src/main/docker invoice/build/"
+        sh "cp invoice/build/libs/*.war invoice/build/docker/"
+        dockerImage = docker.build('${env.DOCKER_USER}/ecommerce-invoice', 'invoice/build/docker')
     }
 
     stage('publish docker') {

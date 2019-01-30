@@ -10,14 +10,14 @@ node {
     }
 
     stage('clean') {
-        sh "chmod +x gradlew"
-        sh "./gradlew clean --no-daemon"
+        sh "cd notification && chmod +x gradlew"
+        sh "cd notification && ./gradlew clean --no-daemon"
     }
 
 
     stage('backend tests') {
         try {
-            sh "./gradlew test -PnodeInstall --no-daemon"
+            sh "cd notification && ./gradlew test -PnodeInstall --no-daemon"
         } catch(err) {
             throw err
         } finally {
@@ -26,16 +26,16 @@ node {
     }
 
     stage('packaging') {
-        sh "./gradlew bootWar -x test -Pprod -PnodeInstall --no-daemon"
+        sh "cd notification && ./gradlew bootWar -x test -Pprod -PnodeInstall --no-daemon"
         archiveArtifacts artifacts: '**/build/libs/*.war', fingerprint: true
     }
 
 
     def dockerImage
     stage('build docker') {
-        sh "cp -R src/main/docker build/"
-        sh "cp build/libs/*.war build/docker/"
-        dockerImage = docker.build('${env.DOCKER_USER}/ecommerce-notification', 'build/docker')
+        sh "cp -R notification/src/main/docker notification/build/"
+        sh "cp notification/build/libs/*.war notification/build/docker/"
+        dockerImage = docker.build('${env.DOCKER_USER}/ecommerce-notification', 'notification/build/docker')
     }
 
     stage('publish docker') {
