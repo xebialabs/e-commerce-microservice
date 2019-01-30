@@ -48,7 +48,7 @@ node {
     stage('build docker') {
         sh "cp -R store/src/main/docker store/build/"
         sh "cp store/build/libs/*.war store/build/docker/"
-        dockerImage = docker.build('${env.DOCKER_USER}/ecommerce-store', 'store/build/docker')
+        dockerImage = docker.build("${env.DOCKER_USER}/ecommerce-store", 'store/build/docker')
     }
 
     stage('publish docker') {
