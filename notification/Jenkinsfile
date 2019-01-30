@@ -35,7 +35,7 @@ node {
     stage('build docker') {
         sh "cp -R notification/src/main/docker notification/build/"
         sh "cp notification/build/libs/*.war notification/build/docker/"
-        dockerImage = docker.build('${env.DOCKER_USER}/ecommerce-notification', 'notification/build/docker')
+        dockerImage = docker.build("${env.DOCKER_USER}/ecommerce-notification", 'notification/build/docker')
     }
 
     stage('publish docker') {
