@@ -34,7 +34,7 @@ node {
     def dockerImage
     stage('build docker') {
         sh "cp -R invoice/src/main/docker invoice/build/"
-        sh "cp invoice/build/libs/*.war invoice/build/docker/"
+        sh "cp invoice/build/libs/invoice-*-SNAPSHOT.war invoice/build/docker/"
         dockerImage = docker.build("${env.DOCKER_USER}/ecommerce-invoice", 'invoice/build/docker')
     }
 
