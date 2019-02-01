@@ -21,7 +21,7 @@ export const NavDropdown = props => (
 
 export const BrandIcon = props => (
   <div {...props} className="brand-icon">
-    <img src="content/images/xl-full-white-32-px" alt="Logo" />
+    <img src="content/images/xl-full-white-32-px.svg" alt="Logo" />
   </div>
 );
 
