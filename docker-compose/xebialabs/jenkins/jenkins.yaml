@@ -12,7 +12,7 @@ jobs:
                           branch("master")
                           remote {
                             credentials('github-credentials')
-                            url('https://github.com/<your-github-username>/e-commerce-microservice.git')
+                            url('https://github.com/${GITHUB_USER}/e-commerce-microservice.git')
                           }
                       }
                   }
@@ -29,7 +29,7 @@ jobs:
                           branch("master")
                           remote {
                         	credentials('github-credentials')
-                        	url('https://github.com/<your-github-username>/e-commerce-microservice.git')
+                        	url('https://github.com/${GITHUB_USER}/e-commerce-microservice.git')
                           }
                       }
                   }
@@ -46,7 +46,7 @@ jobs:
                           branch("master")
                           remote {
                           credentials('github-credentials')
-                          url('https://github.com/<your-github-username>/e-commerce-microservice.git')
+                          url('https://github.com/${GITHUB_USER}/e-commerce-microservice.git')
                           }
                       }
                   }
