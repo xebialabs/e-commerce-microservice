@@ -1,6 +1,7 @@
 secrets.xlvals
 kubernetes/build
 kubernetes/.gradle
+*.lic
 
 ######################
 # Intellij
