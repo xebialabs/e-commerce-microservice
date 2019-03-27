@@ -1,15 +1,12 @@
-FROM xebialabsunsupported/xl-deploy:8.5.0
+FROM xebialabs/xl-deploy:8.6.1
 
 COPY default-conf/* /opt/xebialabs/xl-deploy-server/default-conf/
 
-# workarounds to get Terraform working
+# install Terraform
+ENV TERRAFORM_VERSION=0.11.13
 
-RUN rm -f /opt/xebialabs/xl-deploy-server/lib/provision-8.5.0.jar
-COPY lib/provision-8.6.0-SNAPSHOT.jar /opt/xebialabs/xl-deploy-server/lib/
-
-RUN rm -f /opt/xebialabs/xl-deploy-server/default-plugins/xld-terraform-plugin-*.xldp
-COPY lib/xld-terraform-plugin-8.0.1-SNAPSHOT.xldp /opt/xebialabs/xl-deploy-server/default-plugins/
-
-COPY terraform/terraform /usr/local/bin/terraform
 USER root
-RUN chmod +x /usr/local/bin/terraform
+
+RUN curl --fail-early -o /tmp/terraform.zip https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip && \
+    unzip /tmp/terraform.zip -d /usr/local/bin && \
+    rm -f /tmp/terraform.zip
