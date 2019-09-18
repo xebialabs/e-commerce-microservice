@@ -1,0 +1,104 @@
+apiVersion: xl-release/v1
+kind: Templates
+spec:
+- name: e-commerce
+  type: xlrelease.Folder
+  children:
+  - name: e-commerce-destroy
+    type: xlrelease.Release
+    description: |
+      This XL Release template shows how to undeploy an application, based on microservices architecture, to AWS EKS using XL Deploy.
+    tags:
+    - AWS
+    - EKS
+    - e-commerce
+    scriptUsername: !value XL_RELEASE_USERNAME
+    scriptUserPassword: !value XL_RELEASE_PASSWORD
+    phases:
+    - name: Undeploy Application
+      type: xlrelease.Phase
+      tasks:
+      - name: Undeploy stateless services
+        type: xlrelease.ParallelGroup
+        tasks:
+        - name: Undeploy registry svc
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/e-commerce/aws-eks-e-commerce/e-commerce-registry
+        - name: Undeploy invoice svc
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/e-commerce/aws-eks-e-commerce/e-commerce-invoice
+        - name: Undeploy notification svc
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/e-commerce/aws-eks-e-commerce/e-commerce-notification
+        - name: Undeploy store svc
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/e-commerce/aws-eks-e-commerce/e-commerce-store
+      - name: Undeploy stateful services
+        type: xlrelease.ParallelGroup
+        tasks:
+        - name: Undeploy invoice mysql svc
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/e-commerce/aws-eks-e-commerce/e-commerce-invoice-mysql
+        - name: Undeploy store mysql svc
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/e-commerce/aws-eks-e-commerce/e-commerce-store-mysql
+        - name: Undeploy notification mongodb svc
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/e-commerce/aws-eks-e-commerce/e-commerce-notification-mongodb
+      
+      # Un-provision namespace
+      - name: Undeploy xl-demo namespace
+        type: xldeploy.Undeploy
+        server: XL Deploy
+        deployedApplication: Environments/e-commerce/aws-eks-e-commerce/e-commerce-namespace
+      
+    
+    # De-provision Infra
+    - name: Deprovision Infrastructure
+      color: '#ff9e3b'
+      type: xlrelease.Phase
+      tasks:
+      - name: Deprovision AWS EKS cluster
+        type: xlrelease.SequentialGroup
+        tasks:
+        - name: Deprovision EKS config map for workers
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/e-commerce/AWS-PREREQUISITE/e-commerce-k8s-configmap
+        - name: Deprovision EKS workers nodes
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/e-commerce/aws-cloudformation-e-commerce/e-commerce-cloudformation-eks-workers
+        - name: Deprovision EKS master node
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/e-commerce/aws-cloudformation-e-commerce/e-commerce-cloudformation-eks-master
+      - name: Delete artifacts from S3
+        type: xlrelease.SequentialGroup
+        tasks:
+        - name: Delete artifacts from S3
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/e-commerce/aws-cloudformation-e-commerce/e-commerce-lambda-artifacts
+        - name: Delete S3 bucket
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/e-commerce/aws-cloudformation-e-commerce/e-commerce-lambda-bucket
+      - name: Deprovision AWS VPC and IAM resources
+        type: xlrelease.ParallelGroup
+        tasks:
+        - name: Deprovision AWS IAM resources
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/e-commerce/aws-cloudformation-e-commerce/e-commerce-cloudformation-eks-user
+        - name: Deprovision AWS VPC
+          type: xldeploy.Undeploy
+          server: XL Deploy
+          deployedApplication: Environments/e-commerce/aws-cloudformation-e-commerce/e-commerce-cloudformation-eks-vpc

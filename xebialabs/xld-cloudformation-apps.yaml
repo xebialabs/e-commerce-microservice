@@ -1,0 +1,128 @@
+apiVersion: xl-deploy/v1
+kind: Applications
+spec:
+- name: e-commerce
+  type: core.Directory
+  children:
+
+  - name: EKS-LAMBDA
+    type: core.Directory
+    children:
+    ### create S3 bucket ###
+    - name: e-commerce-lambda-bucket
+      type: udm.Application
+      children:
+      - name: '1.0.0'
+        type: udm.DeploymentPackage
+        deployables:
+        - name: s3-bucket-e-commerce-lambda
+          type: aws.s3.BucketSpec
+          bucketName: e-commerce-lambda
+          region: us-east-2
+    ### upload the artifacts to S3 bucket ###
+    - name: e-commerce-lambda-artifacts
+      type: udm.Application
+      children:
+      - name: '1.0.0'
+        type: udm.DeploymentPackage
+        deployables:
+        - name: e-commerce-lambda-artifacts
+          type: aws.s3.File
+          file: !file ../cloudformation/cfn-secret-provider.zip
+          acl: bucket-owner-full-control
+          scanPlaceholders: false
+# Provision EKS cluster using Cloudformation templates
+  - name: EKS-CLOUDFORMATION
+    type: core.Directory
+    children:
+    - name: e-commerce-cloudformation-eks-user
+      type: udm.Application
+      children:
+      - name: '1.0.0'
+        type: udm.DeploymentPackage
+        deployables:
+        - name: e-commerce-eks-user
+          type: aws.cloudformation.Template
+          file: !file ../cloudformation/eks-user.yaml
+          capabilities:
+          - CAPABILITY_IAM
+          - CAPABILITY_NAMED_IAM
+          inputVariables:
+            ProjectName: e-commerce
+            UserStackName: e-commerce-eks-user
+            S3BucketPrefix: e-commerce-lambda
+    - name: e-commerce-cloudformation-eks-vpc
+      type: udm.Application
+      children:
+      - name: '1.0.0'
+        type: udm.DeploymentPackage
+        deployables:
+        - name: e-commerce-eks-vpc
+          type: aws.cloudformation.Template
+          file: !file ../cloudformation/eks-vpc.yaml
+          capabilities:
+          - CAPABILITY_IAM
+          - CAPABILITY_NAMED_IAM
+          inputVariables:
+            ProjectName: e-commerce
+            VPCStackName: e-commerce-eks-vpc
+            AvailabilityZones: us-east-2a, us-east-2b
+    - name: e-commerce-cloudformation-eks-master
+      type: udm.Application
+      children:
+      - name: '1.0.0'
+        type: udm.DeploymentPackage
+        deployables:
+        - name: e-commerce-eks-master
+          type: aws.cloudformation.Template
+          file: !file ../cloudformation/eks-master.yaml
+          capabilities:
+          - CAPABILITY_IAM
+          - CAPABILITY_NAMED_IAM
+          inputVariables:
+            ProjectName: e-commerce
+            VPCStackName: e-commerce-eks-vpc
+    - name: e-commerce-cloudformation-eks-workers
+      type: udm.Application
+      children:
+      - name: '1.0.0'
+        type: udm.DeploymentPackage
+        deployables:
+        - name: e-commerce-eks-workers
+          type: aws.cloudformation.Template
+          file: !file ../cloudformation/eks-workers.yaml
+          capabilities:
+          - CAPABILITY_IAM
+          - CAPABILITY_NAMED_IAM
+          inputVariables:
+            ProjectName: e-commerce
+            VPCStackName: e-commerce-eks-vpc
+            UserStackName: e-commerce-eks-user
+            ClusterStackName: e-commerce-eks-master
+            ClusterName: e-commerce-master
+            NodeGroupName: e-commerce
+    - name: e-commerce-k8s-configmap
+      type: udm.Application
+      children:
+      - name: '1.0.0'
+        type: udm.DeploymentPackage
+        deployables:
+        - name: e-commerce-aws-auth
+          type: k8s.ResourcesFile
+          file: !file ../kubernetes/aws-auth-cm.yaml
+          delimiters: "## ##"
+
+  - name: K8S
+    type: core.Directory
+
+# Provision K8s namespace
+    children:
+    - name: e-commerce-namespace
+      type: udm.Application
+      children:
+      - name: '1.0.0'
+        type: udm.DeploymentPackage
+        deployables:
+        - name: xl-demo
+          type: k8s.NamespaceSpec
+          namespaceName: 'xl-demo'

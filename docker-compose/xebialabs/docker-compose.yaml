@@ -32,10 +32,10 @@ services:
       - ./jenkins/jenkins.yaml:/var/jenkins_home/casc_configs/jenkins.yaml
     environment:
       - CASC_JENKINS_CONFIG=/var/jenkins_home/casc_configs/jenkins.yaml
-      - GITHUB_USER=${GITHUB_USER}
-      - GITHUB_TOKEN=${GITHUB_TOKEN}
-      - DOCKER_USER=${DOCKER_USER}
-      - DOCKER_PASS=${DOCKER_PASS}
+      - GITHUB_USER=psimon-XL
+      - GITHUB_TOKEN=da028363e4dd3048b6fd059f58a6e832acaee5af
+      - DOCKER_USER=psimon@xebialabs.com
+      #- DOCKER_PASS=Demerit$1
     ports:
       - 8080:8080
       - 55888:55888

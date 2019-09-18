@@ -1,0 +1,30 @@
+apiVersion: xl-deploy/v1
+kind: Applications
+spec:
+- name: e-commerce
+  type: core.Directory
+  children:
+    - name: K8S
+      type: core.Directory
+      children:
+      - name: e-commerce-notification-mongodb
+        type: udm.Application
+        children:
+        - name: !value BUILD_ID
+          type: udm.DeploymentPackage
+          deployables:
+          - name: e-commerce-notification-mongodb
+            type: k8s.ResourcesFile
+            file: !file ../notification/build/kubernetes/notification-mongodb.yml
+      - name: e-commerce-notification
+        type: udm.Application
+        children:
+        - name: !value BUILD_ID
+          type: udm.DeploymentPackage
+          deployables:
+          - name: e-commerce-invoice-notification
+            type: k8s.ResourcesFile
+            file: !file ../notification/build/kubernetes/notification-deployment.yml
+          - name: e-commerce-notification-svc
+            type: k8s.ResourcesFile
+            file: !file ../notification/build/kubernetes/notification-service.yml

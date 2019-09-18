@@ -1,0 +1,42 @@
+apiVersion: xl-deploy/v1
+kind: Applications
+spec:
+- name: e-commerce
+  type: core.Directory
+  children:
+    - name: K8S
+      type: core.Directory
+      children:
+      - name: e-commerce-store-mysql
+        type: udm.Application
+        children:
+        - name: !value BUILD_ID
+          type: udm.DeploymentPackage
+          deployables:
+          - name: e-commerce-store-mysql
+            type: k8s.ResourcesFile
+            file: !file ../store/build/kubernetes/store-mysql.yml
+      - name: e-commerce-registry
+        type: udm.Application
+        children:
+        - name: !value BUILD_ID
+          type: udm.DeploymentPackage
+          deployables:
+          - name: e-commerce-application-config
+            type: k8s.ResourcesFile
+            file: !file ../registry/kubernetes/application-configmap.yml
+          - name: e-commerce-jhipster-registry
+            type: k8s.ResourcesFile
+            file: !file ../registry/kubernetes/jhipster-registry.yml
+      - name: e-commerce-store
+        type: udm.Application
+        children:
+        - name: !value BUILD_ID
+          type: udm.DeploymentPackage
+          deployables:
+          - name: e-commerce-store-deployment
+            type: k8s.ResourcesFile
+            file: !file ../store/build/kubernetes/store-deployment.yml
+          - name: e-commerce-store-svc
+            type: k8s.ResourcesFile
+            file: !file ../store/build/kubernetes/store-service.yml
