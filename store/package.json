@@ -94,7 +94,7 @@
     "sourcemap-istanbul-instrumenter-loader": "0.2.0",
     "stripcomment-loader": "0.1.0",
     "style-loader": "0.22.1",
-    "swagger-ui": "2.2.10",
+    "swagger-ui": "3.23.11",
     "postcss-loader": "3.0.0",
     "sass": "1.13.0",
     "sass-loader": "7.1.0",
