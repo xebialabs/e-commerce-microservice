@@ -32,7 +32,7 @@ services:
       - ./jenkins/jenkins.yaml:/var/jenkins_home/casc_configs/jenkins.yaml
     environment:
       - CASC_JENKINS_CONFIG=/var/jenkins_home/casc_configs/jenkins.yaml
-      - GITHUB_USER=${GITHUB_USER}
+      - GITHUB_USER=spaliwal-agld
       - GITHUB_TOKEN=${GITHUB_TOKEN}
       - DOCKER_USER=${DOCKER_USER}
       - DOCKER_PASS=${DOCKER_PASS}
