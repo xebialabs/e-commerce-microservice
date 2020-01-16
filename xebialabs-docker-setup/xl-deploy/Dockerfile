@@ -1,4 +1,4 @@
-FROM xebialabs/xl-deploy:9.5.1
+FROM xebialabs/xl-deploy:9.5
 
 COPY default-conf/* /opt/xebialabs/xl-deploy-server/default-conf/
 
@@ -8,5 +8,6 @@ ENV TERRAFORM_VERSION=0.12.19
 USER root
 
 RUN curl --fail-early -o /tmp/terraform.zip https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip && \
-    unzip /tmp/terraform.zip -d /usr/local/bin && \
-    rm -f /tmp/terraform.zip
+    echo y | unzip /tmp/terraform.zip -d /usr/local/bin
+
+RUN rm -f /tmp/terraform.zip
