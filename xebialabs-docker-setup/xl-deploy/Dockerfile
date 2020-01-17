@@ -3,7 +3,7 @@ FROM xebialabs/xl-deploy:9.5.1
 COPY default-conf/* /opt/xebialabs/xl-deploy-server/default-conf/
 
 # install Terraform
-ENV TERRAFORM_VERSION=0.11.13
+ENV TERRAFORM_VERSION=0.12.19
 
 USER root
 
