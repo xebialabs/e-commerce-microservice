@@ -3,14 +3,14 @@ services:
   xl-deploy:
     build: xl-deploy
     ports:
-    - 4516:4516
+    - "4516:4516"
     environment:
     - ADMIN_PASSWORD=admin
 
   xl-release:
     build: xl-release
     ports:
-    - 5516:5516
+    - "5516:5516"
     depends_on:
     - xl-deploy
     environment:
@@ -19,7 +19,6 @@ services:
   xl-cli:
     build: xl-cli
     depends_on:
-    - xl-deploy
     - xl-release
     command: ["apply", "--xl-deploy-url", "http://xl-deploy:4516/", "--xl-release-url", "http://xl-release:5516/", "-f", "/data/configure-xl-devops-platform.yaml"]
     volumes:
@@ -37,5 +36,5 @@ services:
       - DOCKER_USER=${DOCKER_USER}
       - DOCKER_PASS=${DOCKER_PASS}
     ports:
-      - 8080:8080
-      - 55888:55888
+      - "8080:8080"
+      - "55888:55888"
