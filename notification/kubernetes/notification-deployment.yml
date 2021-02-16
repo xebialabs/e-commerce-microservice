@@ -34,7 +34,7 @@ spec:
                 done
       containers:
       - name: notification-app
-        image: <your-dockerhub-user>/ecommerce-notification:@IMAGE_TAG@
+        image: sijycloud/ecommerce-notification:@IMAGE_TAG@
         imagePullPolicy: Always
         env:
         - name: SPRING_PROFILES_ACTIVE
